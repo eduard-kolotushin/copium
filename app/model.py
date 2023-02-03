@@ -14,16 +14,16 @@ class DbOps:
         try:
             db.session.add(self)
             db.session.commit()
-            return None
         except Exception as e:
             return str(e)
+        return None
 
     def update_db(self):
         try:
             db.session.commit()
-            return None
         except Exception as e:
             return str(e)
+        return None
 
     def update(self, json_data):
         for key, value in json_data.items():
@@ -43,7 +43,7 @@ class User(db.Model, DbOps, UserMixin):
     degree = db.Column(db.String(1000))
     position = db.Column(db.String(1000))
     password_hash = db.Column(db.String(128))
-    publications = db.relationship("Publication", backref="user")
+    # publications = db.relationship("Publication", backref="user")
 
     def __repr__(self):
         return f"User {self.first_name} {self.last_name} " \
@@ -83,7 +83,7 @@ class Publication(db.Model, DbOps):
     date = db.Column(db.Date, nullable=False)
     created = db.Column(db.DateTime, default=datetime.datetime.utcnow(), nullable=False)
     publication_type = db.Column(db.String(1000), nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
+    # user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
 
     def __repr__(self):
         return f"Publication entitled {self.title} " \

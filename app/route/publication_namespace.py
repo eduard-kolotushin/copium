@@ -3,6 +3,7 @@ from ..extensions import db
 from ..model import Publication
 from flask_restx import reqparse
 from utils.logger import create_logger
+import datetime
 
 api = Namespace('publications', description='Publication related operations')
 api.logger = create_logger(__name__)
@@ -20,9 +21,11 @@ publication_parser.add_argument('p_type', help='Publication type')
 
 publication_model = api.model('publication_model', {"id": fields.Integer,
                                                     "title": fields.String,
-                                                    "authors": fields.String})
+                                                    "authors": fields.String,
+                                                    "date": fields.Date})
 
 
+# noinspection PyArgumentList
 class Publications(Resource):
     @api.marshal_list_with(publication_model)
     def get(self):
@@ -41,7 +44,7 @@ class Publications(Resource):
                           page=args.get('page'),
                           doi=args.get('doi'),
                           abstract=args.get('abstract'),
-                          date=args.get('date'),
+                          date=datetime.date.fromisoformat(args.get('date')),
                           publication_type=args.get('p_type'))
         pub.save_db()
         return pub, 201

@@ -6,9 +6,18 @@ from . import model
 from utils.logger import create_logger
 
 
-def create_app():
+def create_app(config_string="development"):
+    match config_string:
+        case "development":
+            config_object = DevelopConfig
+        case "production":
+            config_object = ProductionConfig
+        case "testing":
+            config_object = TestingConfig
+        case _:
+            config_object = DevelopConfig
     app = Flask(__name__)
-    app.config.from_object(ProductionConfig)
+    app.config.from_object(config_object)
     app.logger = create_logger(__name__)
     register_extensions(app)
     return app

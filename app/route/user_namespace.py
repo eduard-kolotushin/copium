@@ -23,6 +23,7 @@ user_id_model = api.model('user_id_model', {
 })
 
 
+# noinspection PyArgumentList
 class Users(Resource):
     @api.marshal_list_with(user_model)
     def get(self):
