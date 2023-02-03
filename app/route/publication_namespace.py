@@ -10,9 +10,13 @@ api.logger = create_logger(__name__)
 publication_parser = reqparse.RequestParser()
 publication_parser.add_argument('title', help='Publication title', required=True)
 publication_parser.add_argument('authors', help='Publication authors', required=True)
-publication_parser.add_argument('affiliations', help='Publication affiliations')
+publication_parser.add_argument('journal', help='Publication journal')
+publication_parser.add_argument('volume', help='Publication volume')
+publication_parser.add_argument('page', help='Publication page')
 publication_parser.add_argument('doi', help='Publication doi')
-publication_parser.add_argument('summary', help='Publication summary')
+publication_parser.add_argument('abstract', help='Publication abstract')
+publication_parser.add_argument('date', help='Publication date')
+publication_parser.add_argument('p_type', help='Publication type')
 
 publication_model = api.model('publication_model', {"id": fields.Integer,
                                                     "title": fields.String,
@@ -32,11 +36,14 @@ class Publications(Resource):
         api.logger.info(f"Create publication with properties {args}")
         pub = Publication(title=args.get('title'),
                           authors=args.get('authors'),
-                          affiliations=args.get('affiliations'),
+                          journal=args.get('journal'),
+                          volume=args.get('volume'),
+                          page=args.get('page'),
                           doi=args.get('doi'),
-                          summary=args.get('summary'))
-        db.session.add(pub)
-        db.session.commit()
+                          abstract=args.get('abstract'),
+                          date=args.get('date'),
+                          publication_type=args.get('p_type'))
+        pub.save_db()
         return pub, 201
 
 
@@ -52,12 +59,20 @@ class PublicationsId(Resource):
         pub = Publication.query.filter_by(id=pid).first()
         if pub is None:
             return pub, 404
+
+        api.logger.info(f"Update publication with properties {args}")
+
         pub.title = args.get('title') if args.get('title') is not None else pub.title
         pub.authors = args.get('authors') if args.get('authors') is not None else pub.authors
-        pub.affiliations = args.get('affiliations') if args.get('affiliations') is not None else pub.affiliations
+        pub.journal = args.get('journal') if args.get('journal') is not None else pub.journal
+        pub.volume = args.get('volume') if args.get('volume') is not None else pub.volume
+        pub.page = args.get('page') if args.get('page') is not None else pub.page
         pub.doi = args.get('doi') if args.get('doi') is not None else pub.doi
-        pub.summary = args.get('summary') if args.get('summary') is not None else pub.summary
-        db.session.commit()
+        pub.abstract = args.get('abstract') if args.get('abstract') is not None else pub.abstract
+        pub.date = args.get('date') if args.get('date') is not None else pub.date
+        pub.publication_type = args.get('p_type') if args.get('p_type') is not None else pub.publication_type
+
+        pub.update_db()
         return pub, 200
 
     @api.marshal_with(publication_model)

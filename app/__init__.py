@@ -1,5 +1,5 @@
 from flask import Flask
-from .extensions import db, api, migrate
+from .extensions import db, api, migrate, login
 from config import DevelopConfig, ProductionConfig, TestingConfig
 from . import route
 from . import model
@@ -18,3 +18,4 @@ def register_extensions(app):
     db.init_app(app)
     api.init_app(app)    #, doc=False, add_specs=False
     migrate.init_app(app, db)
+    login.init_app(app)

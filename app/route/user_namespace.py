@@ -2,16 +2,18 @@ from flask_restx import Namespace, Resource, fields
 from ..extensions import db
 from ..model import User
 from flask_restx import reqparse
+from utils.logger import create_logger
 
 api = Namespace('users', description='User related operations')
+api.logger = create_logger(__name__)
 
 user_id_parser = reqparse.RequestParser()
-user_id_parser.add_argument('username', help='User name', required=True)
-user_id_parser.add_argument('lastname', help='User lastname', required=True)
+user_id_parser.add_argument('first_name', help='User firstname', required=True)
+user_id_parser.add_argument('last_name', help='User lastname', required=True)
 user_id_parser.add_argument('email', help='User email', required=True)
 
-user_model = api.model('user_model', {"username": fields.String,
-                                      "lastname": fields.String,
+user_model = api.model('user_model', {"first_name": fields.String,
+                                      "last_name": fields.String,
                                       "email": fields.String})
 
 user_id_model = api.model('user_id_model', {
@@ -31,14 +33,13 @@ class Users(Resource):
     @api.expect(user_id_parser)
     def post(self):
         args = user_id_parser.parse_args()
-        user = User(username=args.get('username'),
-                    lastname=args.get('lastname'),
+        user = User(first_name=args.get('first_name'),
+                    last_name=args.get('last_name'),
                     email=args.get('email'))
-        db.session.add(user)
-        db.session.commit()
+        error = user.save_db()
         response = {"response": f"User with id {user.id}",
                     "user": user,
-                    "error": None}
+                    "error": error}
         return response, 201
 
 
@@ -57,13 +58,13 @@ class UserId(Resource):
         user = User.query.filter_by(id=uid).first()
         if user is None:
             return user, 404
-        user.username = args.get('username')
-        user.lastname = args.get('lastname')
+        user.first_name = args.get('first_name')
+        user.last_name = args.get('last_name')
         user.email = args.get('email')
-        db.session.commit()
+        error = user.update_db()
         response = {"response": f"Updated user with id {uid}",
                     "user": user,
-                    "error": None}
+                    "error": error}
         return response, 200
 
     @api.marshal_with(user_id_model)
