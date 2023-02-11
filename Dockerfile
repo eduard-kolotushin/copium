@@ -15,7 +15,7 @@ ENV DB_HOST=localhost
 ENV DB_PORT=5432
 ENV SQLALCHEMY_TRACK_MODIFICATIONS=True
 
-RUN pip install -f requirements.txt
+RUN pip install -r requirements.txt
 
 ENTRYPOINT ["python"]
 CMD ["run.py"]
