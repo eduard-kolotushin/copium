@@ -10,6 +10,7 @@ class DevelopConfig(Config):
     # database envs
     FLASK_ENV = "development"
     DB_DIALECT = os.getenv("DB_DIALECT", default="sqlite")
+    DB_DRIVER = os.getenv("DB_DRIVER", default="")
     DB_NAME = os.getenv("DB_NAME", default="copium_db")
     DB_USER = os.getenv("DB_USER", default="copium_user")
     DB_PASSWORD = os.getenv("DB_PASSWORD", default="copium_password")
@@ -18,8 +19,12 @@ class DevelopConfig(Config):
     if DB_DIALECT == "sqlite":
         SQLALCHEMY_DATABASE_URI = f"{DB_DIALECT}:///{DB_NAME}"
     else:
-        SQLALCHEMY_DATABASE_URI = f"{DB_DIALECT}://{DB_USER}:{DB_PASSWORD}@" \
-                                  f"{DB_HOST}:{DB_PORT}/{DB_NAME}"
+        if DB_DRIVER:
+            SQLALCHEMY_DATABASE_URI = f"{DB_DIALECT}+{DB_DRIVER}://{DB_USER}:{DB_PASSWORD}@" \
+                                      f"{DB_HOST}:{DB_PORT}/{DB_NAME}"
+        else:
+            SQLALCHEMY_DATABASE_URI = f"{DB_DIALECT}://{DB_USER}:{DB_PASSWORD}@" \
+                                      f"{DB_HOST}:{DB_PORT}/{DB_NAME}"
     SQLALCHEMY_TRACK_MODIFICATIONS = True
 
 
@@ -27,6 +32,7 @@ class ProductionConfig(Config):
     # database envs
     FLASK_ENV = "production"
     DB_DIALECT = os.getenv("DB_DIALECT", default="sqlite")
+    DB_DRIVER = os.getenv("DB_DRIVER", default="")
     DB_NAME = os.getenv("DB_NAME", default="copium_db")
     DB_USER = os.getenv("DB_USER", default="copium_user")
     DB_PASSWORD = os.getenv("DB_PASSWORD", default="copium_password")
@@ -35,8 +41,12 @@ class ProductionConfig(Config):
     if DB_DIALECT == "sqlite":
         SQLALCHEMY_DATABASE_URI = f"{DB_DIALECT}:///{DB_NAME}"
     else:
-        SQLALCHEMY_DATABASE_URI = f"{DB_DIALECT}://{DB_USER}:{DB_PASSWORD}@" \
-                                  f"{DB_HOST}:{DB_PORT}/{DB_NAME}"
+        if DB_DRIVER:
+            SQLALCHEMY_DATABASE_URI = f"{DB_DIALECT}+{DB_DRIVER}://{DB_USER}:{DB_PASSWORD}@" \
+                                      f"{DB_HOST}:{DB_PORT}/{DB_NAME}"
+        else:
+            SQLALCHEMY_DATABASE_URI = f"{DB_DIALECT}://{DB_USER}:{DB_PASSWORD}@" \
+                                      f"{DB_HOST}:{DB_PORT}/{DB_NAME}"
     SQLALCHEMY_TRACK_MODIFICATIONS = True
 
 
