@@ -24,6 +24,16 @@ pipeline {
         stage('Deploy') {
             steps {
                 echo 'Deploying...'
+                sshagent(['ssh_to_kubectl']) {
+					sh 'scp -r -o StrictHostKeyChecking=no node-deployment.yaml root@94.198.216.254:/root'
+					script {
+						try {
+							sh 'ssh root@94.198.216.254 kubectl apply -f /root/node-deployment.yaml --kubeconfig=/root/config-jenkins-tutorial'
+						}catch(error) {
+
+						}
+					}
+				}
             }
         }
     }
