@@ -16,6 +16,11 @@ spec:
          containers:
            - name: copium
              image: "evkolotushin/test_jenkins:latest"
+         envFrom:
+           - configMapRef:
+               name: copium-configmap
+           - secretRef:
+               name: db-secret
   replicas: 1
   selector:
     matchLabels:
