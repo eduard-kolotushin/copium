@@ -19,6 +19,8 @@ pipeline {
                 sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
                 echo 'Push image to repo...'
                 sh 'docker push evkolotushin/test_jenkins:latest'
+                echo 'Delete image...'
+                sh 'docker rmi evkolotushin/test_jenkins:latest'
             }
         }
         stage('Test') {
