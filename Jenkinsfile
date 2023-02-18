@@ -34,11 +34,8 @@ pipeline {
 					sh 'scp -r -o StrictHostKeyChecking=no k8s/environment-configmap.yaml root@94.198.216.254:/root'
 					script {
 						try {
-						    sh 'ssh root@94.198.216.254 kubectl delete secret db-secret --kubeconfig=/root/config-jenkins-tutorial'
-						    sh 'ssh root@94.198.216.254 kubectl create secret generic db-secret --from-literal=DB_NAME=$DB_NAME --from-literal=DB_USER=$DB_USER --from-literal=DB_PASSWORD=$DB_PASSWORD --from-literal=DB_HOST=$DB_HOST --from-literal=DB_PORT=$DB_PORT --kubeconfig=/root/config-jenkins-tutorial'
-						    sh 'ssh root@94.198.216.254 kubectl delete -f environment-configmap.yaml --kubeconfig=/root/config-jenkins-tutorial'
+						    sh 'ssh root@94.198.216.254 kubectl create secret generic db-secret --from-literal=DB_NAME=$DB_NAME --from-literal=DB_USER=$DB_USER --from-literal=DB_PASSWORD=$DB_PASSWORD --from-literal=DB_HOST=$DB_HOST --from-literal=DB_PORT=$DB_PORT --kubeconfig=/root/config-jenkins-tutorial --save-config --dry-run=client -o yaml | kubectl apply -f - --kubeconfig=/root/config-jenkins-tutorial'
 						    sh 'ssh root@94.198.216.254 kubectl apply -f environment-configmap.yaml --kubeconfig=/root/config-jenkins-tutorial'
-						    sh 'ssh root@94.198.216.254 kubectl delete -f /root/deployment.yaml --kubeconfig=/root/config-jenkins-tutorial'
 							sh 'ssh root@94.198.216.254 kubectl apply -f /root/deployment.yaml --kubeconfig=/root/config-jenkins-tutorial'
 						}catch(error) {
 
