@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
+
+    <changeSet id="create-tables-init" author="EVKolotushin">
+        <createTable tableName="user">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="first_name" type="varchar(128)"/>
+            <column name="last_name" type="varchar(128)"/>
+            <column name="second_name" type="varchar(128)"/>
+            <column name="email" type="varchar(256)">
+                <constraints unique="true"/>
+            </column>
+            <column name="degree" type="varchar(128)"/>
+            <column name="position" type="varchar(128)"/>
+            <column name="password_hash" type="varchar(256)"/>
+        </createTable>
+        <createTable tableName="publication">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="title" type="varchar(1000)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="authors" type="clob">
+                <constraints nullable="false"/>
+            </column>
+            <column name="journal" type="clob"/>
+            <column name="volume" type="int"/>
+            <column name="page" type="int"/>
+            <column name="doi" type="varchar(1000)">
+                <constraints unique="true"/>
+            </column>
+            <column name="abstract" type="clob"/>
+            <column name="date" type="date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created" type="datetime" defaultValueDate="current_timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="publication_type" type="varchar(128)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>
