@@ -27,12 +27,10 @@ pipeline {
             steps {
                 echo 'Testing...'
                 sh 'python3 -m venv venv'
-                sh '/bin/bash'
                 sh 'source ./venv/bin/activate'
                 sh 'pip install -r requirements.txt'
                 sh 'pytest --junitxml=report.xml'
                 sh 'deactivate'
-                sh 'exit'
                 sh 'rm -r venv'
             }
         }
