@@ -26,12 +26,8 @@ pipeline {
         stage('Test') {
             steps {
                 echo 'Testing...'
-                sh 'python3 -m venv venv'
-                sh 'source ./venv/bin/activate'
                 sh 'pip install -r requirements.txt'
                 sh 'pytest --junitxml=report.xml'
-                sh 'deactivate'
-                sh 'rm -r venv'
             }
         }
         stage('Deploy') {
@@ -57,6 +53,7 @@ pipeline {
 		always {
 			sh 'docker logout'
 			junit 'report.xml'
+			sh 'pip uninstall -r requirements.txt'
 		}
 	}
 }
