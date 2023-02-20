@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: copium-configmap
+  labels:
+    app: copium
+    type: back-end
+data:
+  FLASK_ENV: "production"
+  DB_DIALECT: "postgresql"
+  DB_DRIVER: "psycopg2"
+  SQLALCHEMY_TRACK_MODIFICATIONS: "True"
