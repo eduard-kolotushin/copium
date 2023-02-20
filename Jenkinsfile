@@ -27,9 +27,7 @@ pipeline {
             steps {
                 echo 'Testing...'
                 sh 'python3 -m venv venv'
-                script {
-                    sh 'source venv/bin/activate'
-                }
+                sh '/bin/bash source venv/bin/activate'
                 sh 'pip install -r requirements.txt'
                 sh 'pytest --junitxml=report.xml'
                 sh 'deactivate'
