@@ -26,6 +26,7 @@ pipeline {
         stage('Test') {
             steps {
                 echo 'Testing...'
+                sh 'pytest --junitxml=report.xml'
             }
         }
         stage('Deploy') {
@@ -50,6 +51,7 @@ pipeline {
     post {
 		always {
 			sh 'docker logout'
+			junit 'report.xml'
 		}
 	}
 }
