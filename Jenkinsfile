@@ -26,6 +26,9 @@ pipeline {
         stage('Test') {
             steps {
                 echo 'Testing...'
+                sh 'python3 -m venv venv'
+                sh 'venv/bin/python -m pip install -r requirements.txt'
+                sh 'venv/bin/python -m pytest --junitxml=report.xml'
             }
         }
         stage('Deploy') {
@@ -50,6 +53,8 @@ pipeline {
     post {
 		always {
 			sh 'docker logout'
+			junit 'report.xml'
+			sh 'rm -r venv'
 		}
 	}
 }
