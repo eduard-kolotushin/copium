@@ -26,7 +26,7 @@ pipeline {
         stage('Test') {
             steps {
                 echo 'Testing...'
-                sh 'pip install -r requirements.txt'
+                sh 'python3 -m pip install -r requirements.txt'
                 sh 'pytest --junitxml=report.xml'
             }
         }
@@ -53,7 +53,7 @@ pipeline {
 		always {
 			sh 'docker logout'
 			junit 'report.xml'
-			sh 'pip uninstall -r requirements.txt'
+			sh 'python3 -m pip uninstall -r requirements.txt'
 		}
 	}
 }
