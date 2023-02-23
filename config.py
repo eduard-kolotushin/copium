@@ -1,4 +1,5 @@
 import os
+basedir = os.path.abspath(os.path.dirname(__file__))
 
 
 class Config:
@@ -53,5 +54,5 @@ class ProductionConfig(Config):
 class TestingConfig(Config):
     # database envs
     FLASK_ENV = "testing"
-    SQLALCHEMY_DATABASE_URI = "sqlite:///copium_db.db"
+    SQLALCHEMY_DATABASE_URI = "".join(["sqlite:///", os.path.join(basedir, "copium_db.db")])
     SQLALCHEMY_TRACK_MODIFICATIONS = True
