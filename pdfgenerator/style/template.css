@@ -7,6 +7,11 @@ table {
   border: 2px solid rgb(200,200,200);
   letter-spacing: 1px;
   font-size: 0.8rem;
+  thead {
+    display: table-header-group;
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
 }
 
 td, th {
