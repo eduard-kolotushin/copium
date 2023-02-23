@@ -1,0 +1,20 @@
+<hr />
+<p style="text-align: center;"><strong>Contract</strong></p>
+<hr />
+<table>
+{% for row in list_of_val %}
+  {% if loop.first %}
+    <thead>
+      <tr>
+        <th>Index</th>
+        <th>Value</th>
+      </tr>
+    </thead>
+  {% else %}
+    <tr>
+      <td>{{loop.index0}}</td>
+      <td>{{row}}</td>
+    </tr>
+  {% endif %}
+{% endfor %}
+</table>
