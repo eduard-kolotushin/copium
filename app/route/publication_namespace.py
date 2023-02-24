@@ -1,3 +1,4 @@
+from flask_login import login_required
 from flask_restx import Namespace, Resource, fields
 from ..extensions import db
 from ..model import Publication
@@ -28,12 +29,14 @@ publication_model = api.model('publication_model', {"id": fields.Integer,
 # noinspection PyArgumentList
 class Publications(Resource):
     @api.marshal_list_with(publication_model)
+    @login_required
     def get(self):
         pubs = Publication.query.all()
         return pubs
 
     @api.marshal_with(publication_model)
     @api.expect(publication_parser)
+    @login_required
     def post(self):
         args = publication_parser.parse_args()
         api.logger.info(f"Create publication with properties {args}")
@@ -52,11 +55,13 @@ class Publications(Resource):
 
 class PublicationsId(Resource):
     @api.marshal_with(publication_model, skip_none=True)
+    @login_required
     def get(self, pid):
         pub = Publication.query.filter_by(id=pid).first()
         return pub, 200
 
     @api.marshal_with(publication_model, skip_none=True)
+    @login_required
     def put(self, pid):
         args = publication_parser.parse_args()
         pub = Publication.query.filter_by(id=pid).first()
@@ -79,6 +84,7 @@ class PublicationsId(Resource):
         return pub, 200
 
     @api.marshal_with(publication_model)
+    @login_required
     def delete(self, pid):
         pub = None
         try:

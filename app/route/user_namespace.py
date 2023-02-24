@@ -1,3 +1,4 @@
+from flask_login import login_required
 from flask_restx import Namespace, Resource, fields
 from ..extensions import db
 from ..model import User
@@ -26,12 +27,14 @@ user_id_model = api.model('user_id_model', {
 # noinspection PyArgumentList
 class Users(Resource):
     @api.marshal_list_with(user_model)
+    @login_required
     def get(self):
         users = User.query.all()
         return users
 
     @api.marshal_with(user_id_model)
     @api.expect(user_id_parser)
+    @login_required
     def post(self):
         args = user_id_parser.parse_args()
         user = User(first_name=args.get('first_name'),
@@ -46,6 +49,7 @@ class Users(Resource):
 
 class UserId(Resource):
     @api.marshal_with(user_id_model, skip_none=True)
+    @login_required
     def get(self, uid):
         user = User.query.filter_by(id=uid).first()
         response = {"response": f"User with id {uid}",
@@ -54,6 +58,7 @@ class UserId(Resource):
         return response, 200
 
     @api.marshal_with(user_id_model, skip_none=True)
+    @login_required
     def put(self, uid):
         args = user_id_parser.parse_args()
         user = User.query.filter_by(id=uid).first()
@@ -69,6 +74,7 @@ class UserId(Resource):
         return response, 200
 
     @api.marshal_with(user_id_model)
+    @login_required
     def delete(self, uid):
         user = None
         error = None
