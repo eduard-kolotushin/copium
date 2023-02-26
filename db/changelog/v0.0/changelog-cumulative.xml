@@ -8,12 +8,6 @@
         <tagDatabase tag="v.1.0.0"/>
     </changeSet>
 
-    <changeSet author="EVKolotushin" id="create-copium-schema">
-        <sql>
-            CREATE SCHEMA IF NOT EXISTS copium;
-        </sql>
-    </changeSet>
-
     <include file="create-table.xml" relativeToChangelogFile="true"/>
 
 </databaseChangeLog>
