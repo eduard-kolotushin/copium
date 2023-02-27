@@ -12,14 +12,16 @@ def app():
     with app.app_context():
         db.drop_all()
         db.create_all()
-        db.session.add(User(
+        admin = User(
             email='ekolotushin@gmoil.cam',
             first_name='Egor',
             last_name='Kolotushin',
             second_name='Vladimirovich',
             degree='PhD',
             position='Assistant Professor',
-        ))
+        )
+        admin.set_password("admin")
+        db.session.add(admin)
         db.session.add(User(
             email='drodionov@gmoil.cim',
             first_name='Danil',
