@@ -1,3 +1,6 @@
+def KUBECTL_IP = "94.198.217.67"
+def KUBECTL_USER = "eduard"
+
 pipeline {
     agent any
 
@@ -35,13 +38,13 @@ pipeline {
             steps {
                 echo 'Deploying...'
                 sshagent(['ssh_to_kubectl']) {
-					sh 'scp -r -o StrictHostKeyChecking=no k8s/deployment.yaml root@94.198.216.254:/root'
-					sh 'scp -r -o StrictHostKeyChecking=no k8s/environment-configmap.yaml root@94.198.216.254:/root'
+					sh 'scp -r -o StrictHostKeyChecking=no k8s/deployment.yaml $KUBECTL_USER@$KUBECTL_IP:/$KUBECTL_USER'
+					sh 'scp -r -o StrictHostKeyChecking=no k8s/environment-configmap.yaml $KUBECTL_USER@$KUBECTL_IP:/$KUBECTL_USER'
 					script {
 						try {
-						    sh 'ssh root@94.198.216.254 kubectl create secret generic db-secret --from-literal=DB_NAME=$DB_NAME --from-literal=DB_USER=$DB_USER --from-literal=DB_PASSWORD=$DB_PASSWORD --from-literal=DB_HOST=$DB_HOST --from-literal=DB_PORT=$DB_PORT --kubeconfig=/root/config-jenkins-tutorial --save-config --dry-run=client -o yaml | ssh root@94.198.216.254 kubectl apply -f - --kubeconfig=/root/config-jenkins-tutorial'
-						    sh 'ssh root@94.198.216.254 kubectl apply -f environment-configmap.yaml --kubeconfig=/root/config-jenkins-tutorial'
-							sh 'ssh root@94.198.216.254 kubectl apply -f /root/deployment.yaml --kubeconfig=/root/config-jenkins-tutorial'
+						    sh 'ssh $KUBECTL_USER@$KUBECTL_IP kubectl create secret generic db-secret --from-literal=DB_NAME=$DB_NAME --from-literal=DB_USER=$DB_USER --from-literal=DB_PASSWORD=$DB_PASSWORD --from-literal=DB_HOST=$DB_HOST --from-literal=DB_PORT=$DB_PORT --save-config --dry-run=client -o yaml | ssh $KUBECTL_USER@$KUBECTL_IP kubectl apply -f -'
+						    sh 'ssh $KUBECTL_USER@$KUBECTL_IP kubectl apply -f environment-configmap.yaml'
+							sh 'ssh $KUBECTL_USER@$KUBECTL_IP kubectl apply -f /root/deployment.yaml'
 						}catch(error) {
 
 						}
