@@ -136,6 +136,7 @@
             <column name="created" type="datetime" defaultValueDate="current_timestamp">
                 <constraints nullable="false"/>
             </column>
+            <column name="isbn" type="clob"/>
             <column name="financial_support" type="clob"/>
             <column name="publisher" type="clob"/>
             <column name="total_pages" type="int"/>
