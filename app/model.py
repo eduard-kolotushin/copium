@@ -11,6 +11,9 @@ def load_user(id):
 
 
 class DbOps:
+    """
+    DbOps class represents database common operations for SQLAlchemy models
+    """
     def save_db(self):
         try:
             db.session.add(self)
@@ -33,6 +36,9 @@ class DbOps:
 
 
 class User(db.Model, DbOps, UserMixin):
+    """
+    SQLAlchemy model that represents users table
+    """
 
     __tablename__ = "users"
 
@@ -44,7 +50,6 @@ class User(db.Model, DbOps, UserMixin):
     degree = db.Column(db.String(1000))
     position = db.Column(db.String(1000))
     password_hash = db.Column(db.String(1000))
-    publications = db.relationship("Publication", backref="user")
     articles = db.relationship("Article", backref="user")
     theses = db.relationship("Thesis", backref="user")
     monographs = db.relationship("Monograph", backref="user")
@@ -73,6 +78,9 @@ class User(db.Model, DbOps, UserMixin):
 
 
 class Publication(db.Model, DbOps):
+    """
+    SQLAlchemy model that represents publications table
+    """
 
     __tablename__ = "publications"
 
@@ -87,7 +95,6 @@ class Publication(db.Model, DbOps):
     date = db.Column(db.Date, nullable=False)
     created = db.Column(db.DateTime, default=datetime.datetime.utcnow(), nullable=False)
     publication_type = db.Column(db.String(1000), nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
 
     def __repr__(self):
         return f"Publication entitled {self.title} " \
@@ -124,15 +131,18 @@ class Publication(db.Model, DbOps):
 
 
 class Article(db.Model, DbOps):
+    """
+    SQLAlchemy model that represents articles table
+    """
 
     __tablename__ = "articles"
 
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(1000), unique=True, nullable=False)
     authors = db.Column(ARRAY(db.String(128)), nullable=False)
-    journal = db.Column(db.Text)
-    volume = db.Column(db.Integer)
-    page = db.Column(db.Integer)
+    journal = db.Column(db.Text, nullable=False)
+    volume = db.Column(db.Integer, nullable=False)
+    page = db.Column(db.Integer, nullable=False)
     doi = db.Column(db.String(1000), unique=True)
     isbn = db.Column(db.Text)
     date = db.Column(db.Date, nullable=False)
@@ -163,6 +173,28 @@ class Article(db.Model, DbOps):
         return response
 
     @staticmethod
+    def check_args(**kwargs):
+        valid_args_names = [
+            "title",
+            "authors",
+            "journal",
+            "volume",
+            "page",
+            "doi",
+            "isbn",
+            "date",
+            "created",
+            "financial_support",
+            "publisher",
+            "user_id"
+        ]
+        kwargs_out = dict()
+        for key, value in kwargs.items():
+            if key in valid_args_names:
+                kwargs_out[key] = value
+        return kwargs_out
+
+    @staticmethod
     def delete_articles(ids):
         error = None
         try:
@@ -175,6 +207,9 @@ class Article(db.Model, DbOps):
 
 
 class Thesis(db.Model, DbOps):
+    """
+    SQLAlchemy model that represents theses table
+    """
 
     __tablename__ = "theses"
 
@@ -223,8 +258,32 @@ class Thesis(db.Model, DbOps):
             return error
         return error
 
+    @staticmethod
+    def check_args(**kwargs):
+        valid_args_names = [
+            "title",
+            "authors",
+            "title_book_of_abstracts",
+            "url",
+            "page",
+            "doi",
+            "date",
+            "created",
+            "financial_support",
+            "publisher",
+            "user_id"
+        ]
+        kwargs_out = dict()
+        for key, value in kwargs.items():
+            if key in valid_args_names:
+                kwargs_out[key] = value
+        return kwargs_out
+
 
 class Monograph(db.Model, DbOps):
+    """
+    SQLAlchemy model that represents monographs table
+    """
 
     __tablename__ = "monographs"
 
@@ -269,3 +328,21 @@ class Monograph(db.Model, DbOps):
             error = str(e)
             return error
         return error
+
+    @staticmethod
+    def check_args(**kwargs):
+        valid_args_names = [
+            "title",
+            "authors",
+            "total_pages",
+            "isbn",
+            "date",
+            "created",
+            "publisher",
+            "user_id"
+        ]
+        kwargs_out = dict()
+        for key, value in kwargs.items():
+            if key in valid_args_names:
+                kwargs_out[key] = value
+        return kwargs_out

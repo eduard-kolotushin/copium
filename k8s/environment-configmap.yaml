@@ -9,4 +9,5 @@ data:
   FLASK_ENV: "production"
   DB_DIALECT: "postgresql"
   DB_DRIVER: "psycopg2"
+  DB_SCHEMA: "copium"
   SQLALCHEMY_TRACK_MODIFICATIONS: "True"

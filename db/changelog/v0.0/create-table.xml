@@ -138,6 +138,7 @@
             </column>
             <column name="financial_support" type="clob"/>
             <column name="publisher" type="clob"/>
+            <column name="total_pages" type="int"/>
             <column name="user_id" type="int">
                 <constraints nullable="false" foreignKeyName="fk_monograph_user" referencedTableName="users" referencedColumnNames="id"/>
             </column>

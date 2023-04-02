@@ -13,8 +13,8 @@ user_id_parser.add_argument('first_name', help='User firstname', required=True)
 user_id_parser.add_argument('last_name', help='User lastname', required=True)
 user_id_parser.add_argument('email', help='User email', required=True)
 
-user_model = api.model('user_model', {"first_name": fields.String,
-                                      "last_name": fields.String,
+user_model = api.model('user_model', {"firstname": fields.String,
+                                      "lastname": fields.String,
                                       "email": fields.String})
 
 user_id_model = api.model('user_id_model', {
