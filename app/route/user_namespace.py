@@ -9,12 +9,12 @@ api = Namespace('users', description='User related operations')
 api.logger = create_logger(__name__)
 
 user_id_parser = reqparse.RequestParser()
-user_id_parser.add_argument('first_name', help='User firstname', required=True)
-user_id_parser.add_argument('last_name', help='User lastname', required=True)
+user_id_parser.add_argument('firstname', help='User firstname', required=True)
+user_id_parser.add_argument('lastname', help='User lastname', required=True)
 user_id_parser.add_argument('email', help='User email', required=True)
 
-user_model = api.model('user_model', {"first_name": fields.String,
-                                      "last_name": fields.String,
+user_model = api.model('user_model', {"firstname": fields.String,
+                                      "lastname": fields.String,
                                       "email": fields.String})
 
 user_id_model = api.model('user_id_model', {
@@ -37,8 +37,8 @@ class Users(Resource):
     @login_required
     def post(self):
         args = user_id_parser.parse_args()
-        user = User(first_name=args.get('first_name'),
-                    last_name=args.get('last_name'),
+        user = User(firstname=args.get('firstname'),
+                    lastname=args.get('lastname'),
                     email=args.get('email'))
         error = user.save_db()
         response = {"response": f"User with id {user.id}",
@@ -64,8 +64,8 @@ class UserId(Resource):
         user = User.query.filter_by(id=uid).first()
         if user is None:
             return user, 404
-        user.first_name = args.get('first_name')
-        user.last_name = args.get('last_name')
+        user.first_name = args.get('firstname')
+        user.last_name = args.get('lastname')
         user.email = args.get('email')
         error = user.update_db()
         response = {"response": f"Updated user with id {uid}",
