@@ -14,9 +14,9 @@ def app():
         db.create_all()
         admin = User(
             email='ekolotushin@gmoil.cam',
-            first_name='Egor',
-            last_name='Kolotushin',
-            second_name='Vladimirovich',
+            firstname='Egor',
+            lastname='Kolotushin',
+            middlename='Vladimirovich',
             degree='PhD',
             position='Assistant Professor',
         )
@@ -24,15 +24,15 @@ def app():
         db.session.add(admin)
         db.session.add(User(
             email='drodionov@gmoil.cim',
-            first_name='Danil',
-            last_name='Rodionov',
-            second_name='Vladimirovich',
+            firstname='Danil',
+            lastname='Rodionov',
+            middlename='Vladimirovich',
             degree='PhD',
             position='Assistant Professor',
         ))
         db.session.add(Publication(
             title='Wow paper',
-            authors='Egor Kolotushin, Danil Rodionov',
+            authors=['Egor Kolotushin', 'Danil Rodionov'],
             journal='Nature',
             volume=2,
             page=1,
