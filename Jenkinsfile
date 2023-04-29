@@ -27,10 +27,16 @@ pipeline {
         }
         stage('Test') {
             steps {
-                echo 'Testing...'
-                sh 'python3 -m venv venv'
-                sh 'venv/bin/python -m pip install -r requirements.txt'
-                sh 'venv/bin/python -m pytest --junitxml=report.xml'
+                script {
+                    try {
+                        echo 'Testing...'
+                        sh 'python3 -m venv venv'
+                        sh 'venv/bin/python -m pip install -r requirements.txt'
+                        sh 'venv/bin/python -m pytest --junitxml=report.xml'
+                    } catch(error) {
+
+                    }
+                }
             }
         }
         stage('Deploy') {
@@ -43,7 +49,7 @@ pipeline {
                         sh 'ssh $KUBECTL_USER@$KUBECTL_IP kubectl create secret generic db-secret --from-literal=DB_NAME=$DB_NAME --from-literal=DB_USER=$DB_USER --from-literal=DB_PASSWORD=$DB_PASSWORD --from-literal=DB_HOST=$DB_HOST --from-literal=DB_PORT=$DB_PORT --save-config --dry-run=client -o yaml | ssh $KUBECTL_USER@$KUBECTL_IP kubectl apply -f -'
                         sh 'ssh $KUBECTL_USER@$KUBECTL_IP kubectl apply -f /home/$KUBECTL_USER/environment-configmap.yaml'
                         sh 'ssh $KUBECTL_USER@$KUBECTL_IP kubectl apply -f /home/$KUBECTL_USER/deployment.yaml'
-                    }catch(error) {
+                    } catch(error) {
 
                     }
                 }

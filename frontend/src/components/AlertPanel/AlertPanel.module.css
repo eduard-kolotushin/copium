@@ -1,0 +1,90 @@
+.panel{
+    position: absolute;
+    top: 0;
+    right: 50%;
+    left: 50%;
+    transform: translate(-50%, -105%);
+
+    width: 800px;
+    /* height: 75px; */
+    border-style: solid;
+
+    border-radius: 10px;
+    border-width: 1px;
+}
+
+.initial{
+    display: none !important;
+}
+
+.success{
+    background-color: #c2ffd7;
+    border-color: #27b348;
+}
+
+.error{
+    background-color: #fff0f0;
+    border-color: #ffe0e0;
+}
+
+.visible{
+    transition: 0.5s;
+    transform: translate(-50%, 0%) !important;
+}
+
+.hidden{
+    transition: 0.5s;
+    transform: translate(-50%, -105%) !important;
+}
+
+.icon{
+    position: absolute;
+    top: 50%;
+    bottom: 50%;
+    transform: translateY(-50%);
+    left: 50px;
+
+    width: 60px;
+    height: 60px;
+}
+
+.message{
+    display: inline-flex;
+
+    height: 100%;
+    --width: 90%;
+    width: var(--width);
+
+    justify-content: center;
+    align-items: center;
+    margin: 15px calc((100% - var(--width)) / 2);
+
+    font-size: 15px;
+    /* letter-spacing: 1px;
+    word-spacing: 5px; */
+
+    text-transform: uppercase;
+}
+
+.button{
+    position: absolute;
+    right: 3px;
+    top: 3px;
+
+    --size: 25px;
+    width: var(--size);
+    height: var(--size);
+    opacity: 0.5;
+}
+
+.button:hover{
+    cursor: pointer;
+    transition: 0.5s;
+    transform: scale(1.1);
+    opacity: 1;
+}
+
+.button:active{
+    transition: 0.2s;
+    transform: rotate(-180deg) scale(0.9);
+}
