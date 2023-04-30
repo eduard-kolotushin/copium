@@ -92,16 +92,16 @@ const Search = () => {
   )
 }
 
-const Profile = ({ user: { first_name } }) => {
+const Profile = ({ user: { firstname } }) => {
   const [anchorEl, setAnchorEl] = useState(null);
 
   return(
     <Box>
       <ListItemButton sx={{ py: '12px' }} onClick={(event) => setAnchorEl(event.currentTarget)}>
         <Avatar sx={{ backgroundColor: '#82AEE4', width: '32px', height: '32px', mr: '6px', fontSize: '16px' }}>
-          {first_name[0]}
+          {firstname[0]}
         </Avatar>
-        <Typography px={'12px'}>{first_name}</Typography>
+        <Typography px={'12px'}>{firstname}</Typography>
         <ExpandMoreIcon/>
       </ListItemButton>
       <ProfileMenu onClose={() => setAnchorEl(null)} anchorEl={anchorEl}/>
