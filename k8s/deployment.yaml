@@ -44,7 +44,7 @@ spec:
      spec:
          containers:
            - name: react
-             image: nginx:latest
+             image: "evkolotushin/test_react:latest"
   replicas: 1
   selector:
     matchLabels:
