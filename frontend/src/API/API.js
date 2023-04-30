@@ -10,7 +10,7 @@ const constructForm = (data) => {
 }
 
 export function isFirstEnter(user){
-    return user?.first_name == null || user?.last_name == null
+    return user?.firstname == null || user?.lastname == null
 }
 
 export async function fetchPostLogin({email, password}){
@@ -40,7 +40,7 @@ export async function fetchPostCredential(data){
 }
 
 export async function fetchGetPublications(){
-    return fetch('/api/publications')
+    return fetch('/api/publication')
 }
 
 export async function fetchGetLogout(){

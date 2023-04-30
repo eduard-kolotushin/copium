@@ -25,18 +25,14 @@ const Register = () => {
         mode: 'onSubmit',
         defaultValues: {
             firstname: '',
+            middlename: '',
             lastname: ''
         }
     })
 
     const onSubmit = async (data) => {
         try{
-            const request_data = {
-                first_name: data.firstname,
-                second_name: data.middlename,
-                last_name: data.lastname
-            }
-            const status = await fetchPostCredential(request_data).then(responce => responce.status)
+            const status = await fetchPostCredential(data).then(responce => responce.status)
 
             if(status == 200)
                 navigate('/auth', { replace: true })
