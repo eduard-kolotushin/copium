@@ -69,7 +69,10 @@ const Add = () => {
   })
 
   const onSubmit = async (data) => {
-    await addPublication(data).unwrap()
+    let request_data = data
+    request_data.authors = request_data.authors.split(',').map(author => author.trim())
+
+    await addPublication(request_data).unwrap()
     navigate(-1)
   }
 

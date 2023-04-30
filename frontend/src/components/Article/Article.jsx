@@ -109,7 +109,7 @@ const Article = ({ publication: {
                         <Stack flexDirection='column'>
                             <Typography variant='overline' color='#9C9C9C'>{p_type}</Typography> 
                             <Typography variant='body1' fontWeight='bold' sx={{ py: '4px'}}>{title}</Typography>
-                            <Typography variant='body2' sx={{ py: '4px'}}>{authors}</Typography>
+                            <Typography variant='body2' sx={{ py: '4px'}}>{authors.join(', ')}</Typography>
                             { (isExpanded && date) && <Typography variant='body2' sx={{ py: '4px'}}>
                                 {['Дата публикации:', (new Date(date)).toLocaleDateString()].join(' ')}
                                 </Typography>}
