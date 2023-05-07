@@ -1,16 +1,18 @@
 import jinja2
 import pdfkit
-import os
+import pathlib
+
+dir_path = pathlib.Path(__file__).parent
 
 
 class PDFGenerator:
     def __init__(
             self,
             *,
-            template_root='./',
+            template_root=dir_path,
             template_path='./templates/template.html',
-            output_path='./pdf',
-            css_path='./style/template.css',
+            output_path=dir_path / 'pdf/',
+            css_path=dir_path / './style/template.css',
             wkhtmltopdf='C:/Program Files/wkhtmltopdf/bin/wkhtmltopdf.exe'
     ):
         self.template_root = template_root
@@ -26,4 +28,15 @@ class PDFGenerator:
         pdf_string = template.render(context)
         config = pdfkit.configuration(wkhtmltopdf=self.wkhtmltopdf)
         pdfkit.from_string(pdf_string, f'{self.output_path}/generated_{hash(pdf_string)}.pdf',
-                           configuration=config, css=os.path.join(self.template_root, self.css_path))
+                           configuration=config, css=self.css_path)
+
+
+if __name__ == '__main__':
+    context = {
+        "title": {
+            "text": "Отчет о сделанных публикациях за год."
+        },
+        "list_of_val": list(range(30))
+    }
+    pdf_gen = PDFGenerator()
+    pdf_gen.generate_pdf(context=context)
