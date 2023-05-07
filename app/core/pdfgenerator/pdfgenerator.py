@@ -1,8 +1,13 @@
 import jinja2
 import pdfkit
 import pathlib
+import platform
 
 dir_path = pathlib.Path(__file__).parent
+current_os = platform.system()
+wkhtmltopdf_path = "C:/Program Files/wkhtmltopdf/bin/wkhtmltopdf.exe"
+if current_os == "Linux":
+    wkhtmltopdf_path = "/usr/local/bin/wkhtmltopdf"
 
 
 class PDFGenerator:
@@ -13,7 +18,7 @@ class PDFGenerator:
             template_path='./templates/template.html',
             output_path=dir_path / 'pdf/',
             css_path=dir_path / './style/template.css',
-            wkhtmltopdf='C:/Program Files/wkhtmltopdf/bin/wkhtmltopdf.exe'
+            wkhtmltopdf=wkhtmltopdf_path
     ):
         self.template_root = template_root
         self.template_path = template_path
