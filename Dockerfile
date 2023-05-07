@@ -6,6 +6,8 @@ RUN apt-get install -y wkhtmltopdf
 
 COPY . .
 
+RUN mkdir "/app/core/pdfgenerator/pdf"
+
 RUN pip install -r requirements.txt
 
 EXPOSE 5000
