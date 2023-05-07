@@ -7,7 +7,7 @@ dir_path = pathlib.Path(__file__).parent
 current_os = platform.system()
 wkhtmltopdf_path = "C:/Program Files/wkhtmltopdf/bin/wkhtmltopdf.exe"
 if current_os == "Linux":
-    wkhtmltopdf_path = "/usr/local/bin/wkhtmltopdf"
+    wkhtmltopdf_path = "/usr/bin/wkhtmltopdf"
 
 
 class PDFGenerator:
