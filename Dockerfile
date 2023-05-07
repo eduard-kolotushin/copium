@@ -1,11 +1,8 @@
 FROM python:3.10
 
-RUN apt update \
-    && apt install -y wget
+RUN apt-get update
 
-RUN wget https://github.com/wkhtmltopdf/packaging/releases/download/0.12.6.1-2/wkhtmltox_0.12.6.1-2.jammy_amd64.deb
-
-RUN apt install -f ./wkhtmltox_0.12.6.1-2.jammy_amd64.deb
+RUN apt-get install wkhtmltopdf
 
 COPY . .
 
