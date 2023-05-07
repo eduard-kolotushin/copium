@@ -6,6 +6,7 @@ from .publication_namespace import api as ns4
 from .login_namespace import api as ns5
 from .logout_namespace import api as ns6
 from .credentials_namespace import api as ns7
+from .report_namespace import api as ns8
 
 api.add_namespace(ns1, path='/home')
 api.add_namespace(ns2, path='/user')
@@ -14,3 +15,4 @@ api.add_namespace(ns4, path='/publication')
 api.add_namespace(ns5, path='/login')
 api.add_namespace(ns6, path='/logout')
 api.add_namespace(ns7, path='/credentials')
+api.add_namespace(ns8, path='/report')

@@ -27,8 +27,9 @@ class PDFGenerator:
         template = template_env.get_template(self.template_path)
         pdf_string = template.render(context)
         config = pdfkit.configuration(wkhtmltopdf=self.wkhtmltopdf)
-        pdfkit.from_string(pdf_string, f'{self.output_path}/generated_{hash(pdf_string)}.pdf',
-                           configuration=config, css=self.css_path)
+        filename = f'{self.output_path}/generated_{hash(pdf_string)}.pdf'
+        pdfkit.from_string(pdf_string, filename, configuration=config, css=self.css_path)
+        return filename
 
 
 if __name__ == '__main__':

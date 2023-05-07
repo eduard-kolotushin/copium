@@ -5,19 +5,10 @@
 <p style="text-align: center;"><strong>{{title.text}}</strong></p>
 <hr />
 <table>
-{% for row in list_of_val %}
-  {% if loop.first %}
-    <thead>
-      <tr>
-        <th>Index</th>
-        <th>Value</th>
-      </tr>
-    </thead>
-  {% else %}
-    <tr>
-      <td>{{loop.index0}}</td>
-      <td>{{row}}</td>
-    </tr>
-  {% endif %}
+{% for pub in publications %}
+  <tr>
+    <td>{{loop.index}}</td>
+    <td>{{pub.title}}</td>
+  </tr>
 {% endfor %}
 </table>
