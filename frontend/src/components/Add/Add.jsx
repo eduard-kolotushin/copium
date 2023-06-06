@@ -14,6 +14,7 @@ import {
   MenuItem, 
   Stack 
 } from '@mui/material'
+import Grid from '@mui/material/Unstable_Grid2'
 
 import InputSelect from '../InputSelect/InputSelect'
 import InputText from '../InputText/InputText'
@@ -26,25 +27,34 @@ const CurrentPanel = ({ panel, control }) => {
     return(
       <>
         <Divider sx={{ my: '24px'}}/>
-        <Stack spacing={2}>
-          { panel.fields.map(field => <Field key={field.name} control={control} {...field}/>) }
-        </Stack>
+        <Grid container spacing={2}>
+          { panel.fields.map(field => (
+            <Grid xs={field?.xs || 12} key={field.name}>
+              <Field control={control} {...field} sx={{ width: 1 }}/>
+            </Grid>
+            )) }
+        </Grid>
       </>
     )
   else 
     return(<></>)
 }
 
-const Field = ({ control, name, type, title, rules, initialState }) => {
+const Field = ({ control, name, type, title, rules, initialState, sx }) => {
   switch (type) {
     case 'text':
       return(
-        <InputText name={name} control={control} label={title} rules={rules} defaultValue={initialState}/>
+        <InputText type='text' name={name} control={control} label={title} rules={rules} defaultValue={initialState} sx={sx}/>
+      )
+
+    case 'number':
+      return(
+        <InputText type='number' name={name} control={control} label={title} rules={rules} defaultValue={initialState} sx={sx}/>
       )
 
     case 'date':
       return(
-        <InputDate name={name} control={control} label={title} rules={rules} defaultValue={initialState}/>
+        <InputDate name={name} control={control} label={title} rules={rules} defaultValue={initialState} sx={sx}/>
       )
   
     default:

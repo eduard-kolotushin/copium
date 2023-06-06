@@ -6,7 +6,7 @@ export const publicationsApi = createApi({
     tagTypes: ['Publications'],
     endpoints: (build) => ({
         getPublications: build.query({
-            query: () => '/publication',
+            query: () => '/publication/',
             providesTags: (result) => result 
             ? [
                 ...result.map(({ id }) => ({ type: 'Publications', id})),
@@ -16,7 +16,7 @@ export const publicationsApi = createApi({
         }),
         addPublication: build.mutation({
             query: (publications) => ({
-                url: '/publication',
+                url: '/publication/',
                 method: 'POST',
                 body: publications
             }),
@@ -24,7 +24,7 @@ export const publicationsApi = createApi({
         }),
         deletePublication: build.mutation({
             query: (id) => ({
-                url: '/publication',
+                url: '/publication/',
                 method: 'DELETE',
                 body: { id }
             }),

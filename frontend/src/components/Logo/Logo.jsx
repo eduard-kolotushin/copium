@@ -3,7 +3,7 @@ import React from 'react'
 import { Typography } from '@mui/material'
 import { Box } from '@mui/material'
 
-const Logo = ({fontSize, ...props}) => {
+const Logo = ({ fontSize, shortForm, ...props }) => {
   return (
     <Box {...props}>
         <Typography sx={{
@@ -13,8 +13,8 @@ const Logo = ({fontSize, ...props}) => {
             fontFamily: 'TimesNewRoman',
             fontSize
         }}> 
-            <span style={{ color: 'rgb(0, 101, 202)'}}>Web</span>
-            <span style={{ color: 'rgb(14, 51, 101)'}}>Supplies</span>
+            <span style={{ color: 'rgb(0, 101, 202)'}}>{!shortForm ? "Web" : "W"}</span>
+            <span style={{ color: 'rgb(14, 51, 101)'}}>{!shortForm ? "Supplies" : "S"}</span>
         </Typography>
     </Box>
   )

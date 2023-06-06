@@ -5,7 +5,7 @@ import { Controller } from 'react-hook-form'
 import { TextField } from '@mui/material';
 
 
-const InputDate = ({ name, control, label, rules, defaultValue, ...props }) => {
+const InputDate = ({ name, control, label, rules, defaultValue, sx, ...props }) => {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <Controller
@@ -15,10 +15,10 @@ const InputDate = ({ name, control, label, rules, defaultValue, ...props }) => {
         rules={rules}
         render={({ field, formState: { errors } }) => (
           <DatePicker
-            label={label}
+            label={rules?.required ? `${label}*` : label}
             inputFormat="DD.MM.YYYY"
             {...field}
-            renderInput={(params) => <TextField {...params} />}
+            renderInput={(params) => <TextField {...params} sx={sx}/>}
           />
         )}
       />

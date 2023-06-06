@@ -1,7 +1,7 @@
 import React from 'react'
 import { useGetPublicationsQuery } from '../../redux/servicePublications'
 import ScrollableBox from '../ScrollableBox/ScrollableBox'
-import { Box, CircularProgress, Typography } from '@mui/material'
+import { Box, CircularProgress, List, Typography } from '@mui/material'
 import Article from '../Article/Article'
 
 const PublicansPanel = () => {
@@ -10,7 +10,7 @@ const PublicansPanel = () => {
 
   if(isLoading) 
     return(
-      <Box display='flex' justifyContent='center' my='18px'>
+      <Box width={1} display='flex' justifyContent='center' my='18px'>
         <CircularProgress color='inherit'/>
       </Box>
     )
@@ -21,11 +21,16 @@ const PublicansPanel = () => {
     )
 
   return(
-      <ScrollableBox height={1} width={1} sx={{ overflowY: 'auto'}}>
+    <List disablePadding sx={{ width: 1 }}>
         { data.length != 0 ? 
-          data.map(pub => <Article key={pub.doi} publication={pub}/>) : 
+          data.map((pub) => <Article key={pub.id} publication={pub}/>) : 
           <Typography width={1} textAlign='center' my={'12px'}>Список пока пуст.</Typography>}
-      </ScrollableBox>
+    </List>
+      // <ScrollableBox height={1} width={1} sx={{ overflowY: 'auto'}}>
+      //   { data.length != 0 ? 
+      //     data.map((pub) => <Article key={pub.id} publication={pub}/>) : 
+      //     <Typography width={1} textAlign='center' my={'12px'}>Список пока пуст.</Typography>}
+      // </ScrollableBox>
   )
 }
 

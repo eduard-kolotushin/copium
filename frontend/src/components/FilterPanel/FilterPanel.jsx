@@ -9,6 +9,13 @@ import ScrollableBox from '../ScrollableBox/ScrollableBox'
 import { useDispatch, useSelector } from 'react-redux'
 import { clearFilterPublications, setFilterPublications } from '../../redux/filterPublicationsSlice'
 
+const ResponsivePanel = () => {
+  return(
+    <>
+    </>
+  )
+}
+
 const FilterPanel = () => {
 
     const dispatch = useDispatch()

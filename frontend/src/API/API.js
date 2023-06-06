@@ -16,33 +16,33 @@ export function isFirstEnter(user){
 export async function fetchPostLogin({email, password}){
     const formData = constructForm({email, password})
 
-    return fetch('/api/login', {
+    return fetch('/api/login/', {
         method: 'POST',
         body: formData
     })
 }
 
 export async function fetchGetLogin(){
-    return fetch('/api/login')
+    return fetch('/api/login/')
 }
 
 export async function fetchGetCredential(){
-    return fetch('/api/credentials')
+    return fetch('/api/credentials/')
 }
 
 export async function fetchPostCredential(data){
     const formData = constructForm(data)
 
-    return fetch('/api/credentials',{
+    return fetch('/api/credentials/',{
         method: 'POST',
         body: formData
     })
 }
 
 export async function fetchGetPublications(){
-    return fetch('/api/publication')
+    return fetch('/api/publication/')
 }
 
 export async function fetchGetLogout(){
-    return fetch('/api/logout')
+    return fetch('/api/logout/')
 }

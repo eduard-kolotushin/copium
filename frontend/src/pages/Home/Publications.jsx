@@ -13,6 +13,8 @@ import {
     Stack,
     Divider,
     CircularProgress,
+    Fab,
+    useMediaQuery,
     } from '@mui/material'
 
 import Article from '../../components/Article/Article'
@@ -23,29 +25,45 @@ import AddIcon from '@mui/icons-material/Add'
 import { useGetPublicationsQuery } from '../../redux/servicePublications'
 
 import Filter from '../../components/Filter/Filter'
-import PublicansPanel from '../../components/PublicationsPanel/PublicansPanel'
+import PublicansPanel from '../../components/PublicationsPanel/PublicationsPanel'
 import FilterPanel from '../../components/FilterPanel/FilterPanel'
 
 
-const Header = () => {
+const Header = ({ gr_xs, onClickFilter }) => {
+
   const navigate = useNavigate()
   const fields = useSelector(state => state.filterPublications.fields)
 
   return(
     <Stack p='24px' spacing={2}>
         <Stack direction='row' width={1} justifyContent='space-between' boxSizing='border-box'>
-          <Stack direction='row' spacing={2}>
-            <Button variant='contained' endIcon={<AddIcon/>} onClick={() => navigate('add')}>Добавить</Button>
-            <Button variant='contained' endIcon={<FilterAltIcon/>}>Фильтр</Button>
+          <Stack direction='row' spacing={2} alignItems={'center'}>
+            <Fab variant={gr_xs ? 'extended' : 'circular'} color='primary' size={gr_xs ? 'medium' : 'small'} onClick={() => navigate('add')}>
+              <AddIcon/>
+              {gr_xs ? 'Добавить' : null}
+            </Fab>
+            <Fab variant='extended' color='primary' size='medium'>
+              Действия
+              <ExpandMoreIcon/>
+            </Fab>
+            {/* <Button variant='contained' endIcon={<AddIcon/>} onClick={() => navigate('add')}>Добавить</Button>
+            <Button variant='contained' endIcon={<FilterAltIcon/>}>Фильтр</Button> */}
           </Stack>
-          <Button variant='contained' disableElevation endIcon={<ExpandMoreIcon/>}>Экспорт</Button>
+          {!gr_xs &&
+          <Fab color='primary' size='medium' sx={{ flexShrink: 0 }} onClick={onClickFilter}>
+            <FilterAltIcon/>
+          </Fab>
+          }
+
+          {/* <Button variant='contained' disableElevation endIcon={<ExpandMoreIcon/>}>Экспорт</Button> */}
         </Stack>
+        { !!fields &&
         <Box width={1}>
           {(fields?.types != null) && fields.types.map((type, index) => <FilterItem label={type} key={`type-${index}`}/>)}
           {(fields?.doi != null) && <FilterItem label={`${fields.doi ? 'Есть' : 'Нет'} DOI`}/>}
           {(fields?.isbn != null) && <FilterItem label={`${fields.isbn ? 'Есть' : 'Нет'} ISBN`}/>}
           {(fields?.date != null) && <FilterItem label={`${(new Date(fields.date.date_from)).toLocaleDateString()} - ${(new Date(fields.date.date_to)).toLocaleDateString()}`}/>}
-        </Box>
+        </Box>}
     </Stack>
   )
 }
@@ -57,15 +75,17 @@ const FilterItem = ({ label }) => {
 }
 
 const Publications = () => {
+  const gr_xs = useMediaQuery('(min-width:1200px)')
+  const [isShowingFilter, setIsFilterShowing] = useState(gr_xs)
+
   return(
     <Stack direction='column' width={1}>
-      <Header/>
+      <Header gr_xs={gr_xs} onClickFilter={() => setIsFilterShowing(prev => !prev)}/>
       <Divider/>
       <Stack height={1} width={1} direction={'row'} spacing={2} sx={{ overflowX: 'hidden' }} divider={<Divider orientation="vertical" flexItem />}>
         <PublicansPanel/>
-        <FilterPanel/>
+        {(gr_xs || isShowingFilter) && <FilterPanel gr_xs={gr_xs}/>}
       </Stack>
-      {/* <Filter/> */}
       <Outlet/>
     </Stack>
   )

@@ -21,7 +21,10 @@ import { Container,
   IconButton,
   Avatar,
   Badge,
-  Divider
+  Divider,
+  useMediaQuery,
+  BottomNavigation,
+  BottomNavigationAction
   } from '@mui/material'
 
 import SettingsIcon from '@mui/icons-material/Settings'
@@ -33,46 +36,51 @@ import Logo from '../../components/Logo/Logo'
 import { Logout } from '@mui/icons-material'
 import { useLogout } from '../../hooks/useLogout'
 
-const SideBar = () => {
-  return(
-    <Stack flexDirection={'column'} sx={{
-      height: 1,
-      width: '250px',
-      backgroundColor: '#F5F5F5'
-    }}>
-      <Box mx={'auto'} pt={'16px'}>
-        <Logo fontSize={35}/>
-      </Box>
-      <Box sx={{
-        my: '150px',
-        width: '250px',
-      }}>
-        <List>
-          {routes.map((route, index) => <SidebarButton key={index} icon={route.icon} label={route.title} path={route.path}/>)}
-        </List>
-      </Box>
-    </Stack>
-  )
-}
-
-const SidebarButton = ({ icon, label, path }) => {
+const SideBar = ({ gr_xs }) => {
 
   const navigate = useNavigate()
 
-  const handlerClick = (event) => {
+  const handlerClick = (path) => (event) => {
     navigate(path)
   }
 
-  return(
-    <ListItem disablePadding>
-      <ListItemButton sx={{ color: '#575757'}} onClick={handlerClick}>
-        <ListItemIcon sx={{ color: 'inherit'}}>
-          {icon}
-        </ListItemIcon>
-        <ListItemText primary={label}/>
-      </ListItemButton>
-    </ListItem>
-  )
+  if(gr_xs){
+    return(
+      <Stack flexDirection={'column'} sx={{
+        height: 1,
+        width: '250px',
+        backgroundColor: '#F5F5F5'
+      }}>
+        <Box mx={'auto'} pt={'16px'}>
+          <Logo fontSize={35}/>
+        </Box>
+        <Box sx={{
+          my: '150px',
+          width: '250px',
+        }}>
+          <List>
+            {routes.map((route, index) => (
+                  <ListItem disablePadding key={index}>
+                    <ListItemButton sx={{ color: '#575757'}} onClick={handlerClick(route.path)}>
+                      <ListItemIcon sx={{ color: 'inherit'}}>
+                        {route.icon}
+                      </ListItemIcon>
+                      <ListItemText primary={route.title}/>
+                    </ListItemButton>
+                  </ListItem>
+            ))}
+          </List>
+        </Box>
+      </Stack>
+    )
+  }
+  else{
+    return(
+      <BottomNavigation>
+        {routes.map((route, id) => <BottomNavigationAction key={id} label={route.title} icon={route.icon} path={route.path} onClick={handlerClick(route.path)}/>)}
+      </BottomNavigation>
+    )
+  }
 }
 
 const Search = () => {
@@ -83,7 +91,7 @@ const Search = () => {
     }}>
       <InputBase placeholder='Поиск...' sx={{
         ml: '8px',
-        width: '250px'
+        maxWidth: '250px'
       }}/>
       <IconButton>
         <SearchIcon/>
@@ -92,16 +100,16 @@ const Search = () => {
   )
 }
 
-const Profile = ({ user: { firstname } }) => {
+const Profile = ({ user: { firstname }, gr_xs }) => {
   const [anchorEl, setAnchorEl] = useState(null);
 
   return(
     <Box>
-      <ListItemButton sx={{ py: '12px' }} onClick={(event) => setAnchorEl(event.currentTarget)}>
+      <ListItemButton sx={{ py: '12px', pr: '0px' }} onClick={(event) => setAnchorEl(event.currentTarget)}>
         <Avatar sx={{ backgroundColor: '#82AEE4', width: '32px', height: '32px', mr: '6px', fontSize: '16px' }}>
           {firstname[0]}
         </Avatar>
-        <Typography px={'12px'}>{firstname}</Typography>
+        {gr_xs && <Typography px={'12px'}>{firstname}</Typography>}
         <ExpandMoreIcon/>
       </ListItemButton>
       <ProfileMenu onClose={() => setAnchorEl(null)} anchorEl={anchorEl}/>
@@ -148,7 +156,7 @@ const ProfileMenu = ({ anchorEl, onClose }) => {
 
 
 
-const ToolBar = ({ user }) => {
+const ToolBar = ({ user, gr_xs }) => {
   return(
     <Stack flexDirection={'row'} justifyContent={'space-between'} alignItems={'center'} sx={{
       backgroundColor: 'white',
@@ -157,7 +165,11 @@ const ToolBar = ({ user }) => {
       px: '24px',
       flexShrink: 0
     }}>
-      <Search/>
+      <Stack direction='row' alignItems='center' spacing={3}>
+        {!gr_xs && <Logo fontSize={'32px'} shortForm={true}/>}
+        <Search/>
+      </Stack>
+
       <Stack direction='row' alignItems='center' spacing={1}>
         <Box>
           <IconButton>
@@ -166,23 +178,24 @@ const ToolBar = ({ user }) => {
             </Badge>
           </IconButton>
         </Box>
-        <Profile user={user}/>
+        <Profile user={user} gr_xs={gr_xs}/>
       </Stack>
     </Stack>
   )
 }
 
 const Home = () => {
-  
+
+  const gr_xs = useMediaQuery('(min-width:1200px)')
   const user = useSelector(state => state.user.credential)
 
   return (
     <Container maxWidth={false} sx={{ height: '100vh' }} disableGutters>
-      <Stack flexDirection={'row'} height={1}>
-        <SideBar/>
+      <Stack flexDirection={gr_xs ? 'row' : 'column-reverse'} height={1}>
+        <SideBar gr_xs={gr_xs}/>
         
-        <Stack flexDirection={'column'} width={1} mx={'24px'}>
-          <ToolBar user={user}/>
+        <Stack flexDirection={'column'} width={1} height={1} mx={gr_xs ? '24px' : '0px'}>
+          <ToolBar user={user} gr_xs={gr_xs}/>
           <Box sx={{ 
             display: 'flex',
             flexGrow: 1,
