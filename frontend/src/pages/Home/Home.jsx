@@ -154,15 +154,13 @@ const ProfileMenu = ({ anchorEl, onClose }) => {
   )
 }
 
-
-
 const ToolBar = ({ user, gr_xs }) => {
   return(
     <Stack flexDirection={'row'} justifyContent={'space-between'} alignItems={'center'} sx={{
       backgroundColor: 'white',
       borderBottomLeftRadius: '12px',
       borderBottomRightRadius: '12px',
-      px: '24px',
+      px: '16px',
       flexShrink: 0
     }}>
       <Stack direction='row' alignItems='center' spacing={3}>

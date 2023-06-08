@@ -11,6 +11,9 @@ import { store } from './redux/store'
 require('dayjs/locale/ru')
 dayjs.locale('ru')
 
+let vh = window.innerHeight * 0.01;
+document.documentElement.style.setProperty('--vh', `${vh}px`);
+
 ReactDOM.render(
   <Provider store={store}>
     <App />

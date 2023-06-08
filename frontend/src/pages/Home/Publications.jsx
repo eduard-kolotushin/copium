@@ -35,7 +35,7 @@ const Header = ({ gr_xs, onClickFilter }) => {
   const fields = useSelector(state => state.filterPublications.fields)
 
   return(
-    <Stack p='24px' spacing={2}>
+    <Stack p='16px' spacing={2}>
         <Stack direction='row' width={1} justifyContent='space-between' boxSizing='border-box'>
           <Stack direction='row' spacing={2} alignItems={'center'}>
             <Fab variant={gr_xs ? 'extended' : 'circular'} color='primary' size={gr_xs ? 'medium' : 'small'} onClick={() => navigate('add')}>
@@ -84,7 +84,7 @@ const Publications = () => {
       <Divider/>
       <Stack height={1} width={1} direction={'row'} spacing={2} sx={{ overflowX: 'hidden' }} divider={<Divider orientation="vertical" flexItem />}>
         <PublicansPanel/>
-        {(gr_xs || isShowingFilter) && <FilterPanel gr_xs={gr_xs}/>}
+        {(gr_xs || isShowingFilter) && <FilterPanel gr_xs={gr_xs} onClickClose={() => setIsFilterShowing(false)}/>}
       </Stack>
       <Outlet/>
     </Stack>

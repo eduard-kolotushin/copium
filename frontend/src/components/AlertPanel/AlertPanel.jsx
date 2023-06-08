@@ -1,12 +1,8 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
-// import { hideAlert } from '../../redux/actions/alertActions'
 import { Alert, Snackbar } from '@mui/material'
 import { hideAlert } from '../../redux/alertSlice'
-
-export const SUCCESS = 'success'
-export const ERROR = 'error'
 
 const AlertPanel = () => {
   const dispatch = useDispatch()

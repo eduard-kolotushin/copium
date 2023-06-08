@@ -12,7 +12,8 @@ import {
   DialogTitle, 
   Divider, 
   MenuItem, 
-  Stack 
+  Stack, 
+  useMediaQuery
 } from '@mui/material'
 import Grid from '@mui/material/Unstable_Grid2'
 
@@ -65,7 +66,10 @@ const Field = ({ control, name, type, title, rules, initialState, sx }) => {
 }
 
 const Add = () => {
+
+  const gr_sm = useMediaQuery('(min-width: 600px)')
   const navigate = useNavigate()
+
   const [addPublication, { data, isLoading, isError, isSuccess }] = useAddPublicationMutation()
 
   const { control, handleSubmit, formState: { isSubmitting } } = useForm({ 
@@ -89,11 +93,11 @@ const Add = () => {
   const panels = schemePublications
 
   return (
-    <Dialog open scroll='paper'>
+    <Dialog open fullScreen={!gr_sm} scroll='paper'>
       <form onSubmit={handleSubmit(onSubmit)}>
         <DialogTitle sx={{ textAlign: 'center' }}>Добавьте публикацию</DialogTitle>
         <DialogContent>
-          <Stack sx={{ minWidth: '450px', py: '24px' }}>
+          <Stack sx={{ minWidth: gr_sm ? '450px' : 1, py: '24px' }}>
             <InputSelect name={'p_type'} 
                   control={control}
                   label='Тип публикации'>

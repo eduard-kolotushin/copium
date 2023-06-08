@@ -27,6 +27,7 @@ import ExpandLessIcon from '@mui/icons-material/ExpandLess'
 import { ExpandLess } from '@mui/icons-material'
 import { useDeletePublicationMutation } from '../../redux/servicePublications'
 import { showErrorAlert } from '../../redux/alertSlice'
+import { schemePublications } from '../../schemes/schemePublications'
 
 const DialogConfirm = ({ title, id, deletePublication, setIsOpenDialogConfirm }) => {
 
@@ -149,7 +150,7 @@ const Article = ({ publication: {
                     } : null}>
                     <ExpandButton gr_xs={gr_xs} isExpanded={isExpanded} onClick={() => setIsExpanded(prev => !prev)}/>
                     <Stack flexDirection='column' width={1} px={'12px'}>
-                        <Typography variant='overline' color='#9C9C9C'>{p_type}</Typography> 
+                        <Typography variant='overline' color='#9C9C9C'>{schemePublications.find(el => el.p_type === p_type )?.title || 'Тип не определен'}</Typography> 
                         <Typography variant='body1' fontWeight='bold'>{title}</Typography>
                         <Typography variant='body2' fontStyle='italic'>{authors.join(', ')}</Typography>
                         { (isExpanded && date) && 
