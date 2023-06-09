@@ -180,15 +180,15 @@ const FilterPanel = ({ onClickClose }) => {
           </Accordion>
         </ScrollableBox>
 
-        <Box>
-
+        <Box display={'flex'} width={1}>
+          <form onSubmit={handleSubmit(applyFilter)} style={{ width: '100%' }}>
+            <Stack direction={'row'} justifyContent={'right'} py={'12px'} spacing={3} width={1}>
+              <Button disabled={countExpandedFields() == 0} variant='outlined' onClick={clearFilter}>Сбросить</Button>
+              <Button variant='contained' type='submit'>Применить</Button>
+            </Stack>
+          </form>
         </Box>
-        <form onSubmit={handleSubmit(applyFilter)}>
-          <Stack direction={'row'} justifyContent={'right'} py={'12px'} spacing={3}>
-            <Button disabled={countExpandedFields() == 0} variant='outlined' onClick={clearFilter}>Сбросить</Button>
-            <Button variant='contained' type='submit'>Применить</Button>
-          </Stack>
-        </form>
+
       </ResponsivePanel>
   )
 }
