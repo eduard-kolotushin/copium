@@ -1,30 +1,21 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { Outlet, useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-
-import { fetchGetPublications } from '../../API/API'
-import { useFetch } from '../../hooks/useFetch'
+import dayjs from 'dayjs'
 
 import {
-    Box,
-    Button,
-    Typography,
-    Chip,
-    Stack,
-    Divider,
-    CircularProgress,
-    Fab,
-    useMediaQuery,
-    } from '@mui/material'
-
-import Article from '../../components/Article/Article'
+  Box,
+  Chip,
+  Stack,
+  Divider,
+  Fab,
+  useMediaQuery,
+  } from '@mui/material'
 
 import FilterAltIcon from '@mui/icons-material/FilterAlt'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import AddIcon from '@mui/icons-material/Add'
-import { useGetPublicationsQuery } from '../../redux/servicePublications'
 
-import Filter from '../../components/Filter/Filter'
 import PublicansPanel from '../../components/PublicationsPanel/PublicationsPanel'
 import FilterPanel from '../../components/FilterPanel/FilterPanel'
 
@@ -33,6 +24,25 @@ const Header = ({ gr_xs, onClickFilter }) => {
 
   const navigate = useNavigate()
   const fields = useSelector(state => state.filterPublications.fields)
+
+  const isShowTypes = fields.types.length !== 0
+  const isShowFS = fields.fs.length !== 0
+  const isShowDB = fields.db.length !== 0
+  const isShowDOI = fields.doi !== null
+  const isShowISBN = fields.isbn !== null
+  const isShowDate = !dayjs(fields.date.from).isToday() ||  !dayjs(fields.date.to).isToday()
+
+  const isShow = () => {
+    return (
+      isShowTypes ||
+      isShowFS ||
+      isShowDB ||
+      isShowDOI ||
+      isShowISBN ||
+      isShowDate
+      )
+  }
+
 
   return(
     <Stack p='16px' spacing={2}>
@@ -46,24 +56,21 @@ const Header = ({ gr_xs, onClickFilter }) => {
               Действия
               <ExpandMoreIcon/>
             </Fab>
-            {/* <Button variant='contained' endIcon={<AddIcon/>} onClick={() => navigate('add')}>Добавить</Button>
-            <Button variant='contained' endIcon={<FilterAltIcon/>}>Фильтр</Button> */}
           </Stack>
           {!gr_xs &&
-          <Fab color='primary' size='medium' sx={{ flexShrink: 0 }} onClick={onClickFilter}>
-            <FilterAltIcon/>
-          </Fab>
+            <Fab color='primary' size='medium' sx={{ flexShrink: 0 }} onClick={onClickFilter}>
+              <FilterAltIcon/>
+            </Fab>
           }
-
-          {/* <Button variant='contained' disableElevation endIcon={<ExpandMoreIcon/>}>Экспорт</Button> */}
         </Stack>
-        { !!fields &&
-        <Box width={1}>
-          {(fields?.types != null) && fields.types.map((type, index) => <FilterItem label={type} key={`type-${index}`}/>)}
-          {(fields?.doi != null) && <FilterItem label={`${fields.doi ? 'Есть' : 'Нет'} DOI`}/>}
-          {(fields?.isbn != null) && <FilterItem label={`${fields.isbn ? 'Есть' : 'Нет'} ISBN`}/>}
-          {(fields?.date != null) && <FilterItem label={`${(new Date(fields.date.date_from)).toLocaleDateString()} - ${(new Date(fields.date.date_to)).toLocaleDateString()}`}/>}
-        </Box>}
+        {isShow &&
+          <Box width={1}>
+            {isShowTypes && fields.types.map((type, index) => <FilterItem label={type} key={`type-${index}`}/>)}
+            {isShowDOI && <FilterItem label={`${fields.doi ? 'Есть' : 'Нет'} DOI`}/>}
+            {isShowISBN && <FilterItem label={`${fields.isbn ? 'Есть' : 'Нет'} ISBN`}/>}
+            {isShowDate && <FilterItem label={`${dayjs(fields.date.from).format('DD.MM.YYYY')} - ${dayjs(fields.date.to).format('DD.MM.YYYY')}`}/> }
+          </Box>
+        }
     </Stack>
   )
 }
@@ -76,6 +83,7 @@ const FilterItem = ({ label }) => {
 
 const Publications = () => {
   const gr_xs = useMediaQuery('(min-width:1200px)')
+
   const [isShowingFilter, setIsFilterShowing] = useState(gr_xs)
 
   return(
@@ -84,7 +92,7 @@ const Publications = () => {
       <Divider/>
       <Stack height={1} width={1} direction={'row'} spacing={2} sx={{ overflowX: 'hidden' }} divider={<Divider orientation="vertical" flexItem />}>
         <PublicansPanel/>
-        {(gr_xs || isShowingFilter) && <FilterPanel gr_xs={gr_xs} onClickClose={() => setIsFilterShowing(false)}/>}
+        {(gr_xs || isShowingFilter) && <FilterPanel gr_xs={gr_xs} isShowingFilterState={[isShowingFilter, setIsFilterShowing]} onClickClose={() => setIsFilterShowing(false)}/>}
       </Stack>
       <Outlet/>
     </Stack>

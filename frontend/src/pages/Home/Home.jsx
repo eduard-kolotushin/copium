@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react'
-import { Outlet, useMatches, useNavigate } from 'react-router-dom'
+import { Outlet, useNavigate, useSearchParams } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 
 import { fetchGetLogout } from '../../API/API'
@@ -39,8 +39,10 @@ import { useLogout } from '../../hooks/useLogout'
 const SideBar = ({ gr_xs }) => {
 
   const navigate = useNavigate()
+  const [currentRoute, setCurrentRoute] = useState(0)
 
-  const handlerClick = (path) => (event) => {
+  const handlerClick = (path, id) => (event) => {
+    setCurrentRoute(id)
     navigate(path)
   }
 
@@ -59,13 +61,13 @@ const SideBar = ({ gr_xs }) => {
           width: '250px',
         }}>
           <List>
-            {routes.map((route, index) => (
-                  <ListItem disablePadding key={index}>
-                    <ListItemButton sx={{ color: '#575757'}} onClick={handlerClick(route.path)}>
+            {routes.map((route, id) => (
+                  <ListItem disablePadding key={id}>
+                    <ListItemButton sx={{ color: currentRoute === id ? 'primary.main' : '#575757'}} onClick={handlerClick(route.path, id)}>
                       <ListItemIcon sx={{ color: 'inherit'}}>
                         {route.icon}
                       </ListItemIcon>
-                      <ListItemText primary={route.title}/>
+                      <ListItemText color='inherit' primary={route.title}/>
                     </ListItemButton>
                   </ListItem>
             ))}
@@ -76,8 +78,13 @@ const SideBar = ({ gr_xs }) => {
   }
   else{
     return(
-      <BottomNavigation>
-        {routes.map((route, id) => <BottomNavigationAction key={id} label={route.title} icon={route.icon} path={route.path} onClick={handlerClick(route.path)}/>)}
+      <BottomNavigation 
+      showLabels
+      value={currentRoute}
+      onChange={(event, route) => {
+        setCurrentRoute(route);
+      }}>
+        {routes.map((route, id) => <BottomNavigationAction key={id} label={route.title} icon={route.icon} path={route.path} onClick={handlerClick(route.path, id)}/>)}
       </BottomNavigation>
     )
   }
@@ -100,7 +107,7 @@ const Search = () => {
   )
 }
 
-const Profile = ({ user: { firstname }, gr_xs }) => {
+const Profile = ({ user: { firstname }, gr_xs, setSearchParams }) => {
   const [anchorEl, setAnchorEl] = useState(null);
 
   return(
@@ -112,12 +119,12 @@ const Profile = ({ user: { firstname }, gr_xs }) => {
         {gr_xs && <Typography px={'12px'}>{firstname}</Typography>}
         <ExpandMoreIcon/>
       </ListItemButton>
-      <ProfileMenu onClose={() => setAnchorEl(null)} anchorEl={anchorEl}/>
+      <ProfileMenu setSearchParams={setSearchParams} onClose={() => setAnchorEl(null)} anchorEl={anchorEl}/>
     </Box>
   )
 }
 
-const ProfileMenu = ({ anchorEl, onClose }) => {
+const ProfileMenu = ({ anchorEl, onClose, setSearchParams }) => {
   const logout = useLogout()
 
   return(
@@ -137,7 +144,7 @@ const ProfileMenu = ({ anchorEl, onClose }) => {
       open={!!anchorEl}
       anchorEl={anchorEl}
       onClose={onClose}>
-      <ListItemButton disableRipple>
+      <ListItemButton disableRipple onClick={() => setSearchParams({ act: 'setting' })}>
         <ListItemIcon>
           <SettingsIcon/>
         </ListItemIcon>
@@ -154,7 +161,7 @@ const ProfileMenu = ({ anchorEl, onClose }) => {
   )
 }
 
-const ToolBar = ({ user, gr_xs }) => {
+const ToolBar = ({ user, gr_xs, setSearchParams }) => {
   return(
     <Stack flexDirection={'row'} justifyContent={'space-between'} alignItems={'center'} sx={{
       backgroundColor: 'white',
@@ -176,7 +183,7 @@ const ToolBar = ({ user, gr_xs }) => {
             </Badge>
           </IconButton>
         </Box>
-        <Profile user={user} gr_xs={gr_xs}/>
+        <Profile user={user} gr_xs={gr_xs} setSearchParams={setSearchParams}/>
       </Stack>
     </Stack>
   )
@@ -186,6 +193,7 @@ const Home = () => {
 
   const gr_xs = useMediaQuery('(min-width:1200px)')
   const user = useSelector(state => state.user.credential)
+  const [searchParams, setSearchParams] = useSearchParams()
 
   return (
     <Container maxWidth={false} sx={{ height: '100vh' }} disableGutters>
@@ -193,7 +201,7 @@ const Home = () => {
         <SideBar gr_xs={gr_xs}/>
         
         <Stack flexDirection={'column'} width={1} height={1} mx={gr_xs ? '24px' : '0px'}>
-          <ToolBar user={user} gr_xs={gr_xs}/>
+          <ToolBar user={user} gr_xs={gr_xs} setSearchParams={setSearchParams}/>
           <Box sx={{ 
             display: 'flex',
             flexGrow: 1,

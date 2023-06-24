@@ -1,8 +1,9 @@
 import React from 'react'
-import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers'
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { Controller } from 'react-hook-form'
-import { TextField } from '@mui/material';
+import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers'
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
+import { TextField } from '@mui/material'
+import dayjs from 'dayjs'
 
 
 const InputDate = ({ name, control, label, rules, defaultValue, sx, ...props }) => {
@@ -13,11 +14,13 @@ const InputDate = ({ name, control, label, rules, defaultValue, sx, ...props }) 
         control={control}
         defaultValue={defaultValue}
         rules={rules}
-        render={({ field, formState: { errors } }) => (
+        render={({ field : { onChange, onBlur, value, ref } }) => (
           <DatePicker
             label={rules?.required ? `${label}*` : label}
             inputFormat="DD.MM.YYYY"
-            {...field}
+            value={dayjs(value)}
+            onChange={v => onChange(dayjs(v).toString())}
+            ref={ref}
             renderInput={(params) => <TextField {...params} sx={sx}/>}
           />
         )}

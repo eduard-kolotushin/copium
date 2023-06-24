@@ -14,7 +14,6 @@ import Messenger from '../pages/Home/Messenger'
 import Cloud from '../pages/Home/Cloud'
 
 import Publications from '../pages/Home/Publications'
-import Filter from '../components/Filter/Filter.jsx'
 import Add from '../components/Add/Add.jsx'
 
 import { isFirstEnter } from '../API/API.js'
@@ -48,7 +47,6 @@ const AppRoutes = () => {
                 </ProtectedRoute>}>
                 <Route index element={<Navigate to='publications'/>}/>
                 <Route path='publications' element={<Publications/>}>
-                    <Route path='filter' element={<Filter/>}/>
                     <Route path='add' element={<Add/>}/>
                 </Route>
                 <Route path='documents' element={<Documents/>}/>

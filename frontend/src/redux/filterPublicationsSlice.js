@@ -1,14 +1,29 @@
 import { createSlice } from "@reduxjs/toolkit";
+import dayjs from "dayjs";
+
+const initialState = {
+    types: [],
+    doi: null,
+    isbn: null,
+    date: {
+      from: dayjs().toString(),
+      to: dayjs().toString(),
+    },
+    fs: [],
+    db: [],
+}
 
 const filterPublicationsAlert = createSlice({
     name: 'filter',
-    initialState: { fields: null },
+    initialState: { 
+        fields: initialState
+    },
     reducers: {
         setFilterPublications: (state, actions) => {
             state.fields = actions.payload
         },
         clearFilterPublications: (state, actions) => {
-            state.fields = null
+            state.fields = initialState
         }
     }
 })

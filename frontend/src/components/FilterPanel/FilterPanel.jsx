@@ -1,190 +1,153 @@
 import React, { useState } from 'react'
+import { useForm } from 'react-hook-form'
+import { useDispatch, useSelector } from 'react-redux'
 import { 
-  Accordion, 
-  AccordionDetails, 
-  AccordionSummary, 
   Box, 
   Button, 
-  Chip, 
   Dialog, 
-  DialogContent, 
   IconButton, 
-  MenuItem, 
   Stack, 
   Toolbar, 
   Typography, 
   useMediaQuery } from '@mui/material'
-import InputSelect from '../InputSelect/InputSelect'
+import CloseIcon from '@mui/icons-material/Close'
+
 import { schemePublications } from '../../schemes/schemePublications'
-import { useForm } from 'react-hook-form'
-import InputCheck from '../InputCheck/InputCheck'
-import InputDate from '../InputDate/InputDate'
-import ScrollableBox from '../ScrollableBox/ScrollableBox'
-import { useDispatch, useSelector } from 'react-redux'
+
 import { clearFilterPublications, setFilterPublications } from '../../redux/filterPublicationsSlice'
-import CloseIcon from '@mui/icons-material/Close';
 
-const ResponsivePanel = ({ children, gr_xs }) => {
+import ScrollableBox from '../ScrollableBox/ScrollableBox'
+import SelectableTabs from './SelectableTabs'
+import BooleanTabs from './BooleanTabs'
+import InputDateRange from '../InputDateRange/InputDateRange'
+import ResponsivePanel from './ResponsivePanel'
 
-  if(gr_xs){
-    return(
-      <Stack width={'500px'} height={1} pr={'24px'}>
-        {children}
-      </Stack>
-    )
-  }
-  else{
-    return(
-      <Dialog open fullScreen sx={{ minHeight: 1 }}>
-        <Stack flexDirection={'column'} p={'24px'} height={1}>
-          {children}
-        </Stack>
-      </Dialog>
-    )
-  }
+// const ResponsivePanel = ({ children, gr_xs }) => {
 
-}
+//   if(gr_xs){
+//     return(
+//       <Stack width={'450px'} height={1} pr={'24px'} flexShrink={0}>
+//         {children}
+//       </Stack>
+//     )
+//   }
+//   else{
+//     return(
+//       <Dialog open fullScreen sx={{ minHeight: 1 }}>
+//         <Stack flexDirection={'column'} p={'24px'} height={1}>
+//           {children}
+//         </Stack>
+//       </Dialog>
+//     )
+//   }
+// }
 
-const FilterPanel = ({ onClickClose }) => {
+const FilterPanel = ({ onClickClose, isShowingFilterState }) => {
 
   const gr_xs = useMediaQuery('(min-width:1200px)')
 
   const dispatch = useDispatch()
-  const filterPublications = useSelector(state => state.filterPublications)
+  const fields = useSelector(state => state.filterPublications.fields)
 
-  const allTypes = schemePublications.map(pub => pub.title)
-  const { control, getValues, handleSubmit } = useForm({ 
-      defaultValues: {
-          types: [],
-          doi: false,
-          isbn: false,
-          date: {
-            date_from: new Date(),
-            date_to: new Date(),
-          },
-      }
+  const [isShowingFilter, setIsFilterShowing] = isShowingFilterState
+
+  const all_types_publications = schemePublications.map(pub => ({ value: pub.p_type, label: pub.title }))
+  const all_types_finsupports = [
+    {
+      value: 'rnf',
+      label: 'РНФ'
+    },
+    {
+      value: 'basis',
+      label: 'Фонд "Базис"'
+    },
+    {
+      value: 'gt',
+      label: 'Государственное задание'
+    },
+  ]
+  const all_types_database = [
+    {
+      value: 'wos',
+      label: 'WoS'
+    },
+    {
+      value: 'scopus',
+      label: 'Scopus'
+    },
+    {
+      value: 'rinc',
+      label: 'РИНЦ'
+    },
+  ]
+
+  const { control, handleSubmit } = useForm({ 
+      defaultValues: fields
   })
 
-  const initialExpandedFields = {
-    types: false,
-    doi: false,
-    isbn: false,
-    date: false
-  }
-  const [expandedFields, setExpandedFields] = useState(initialExpandedFields)
-
-  const countExpandedFields = () => {
-    let c = 0
-    for(var key in expandedFields)
-    {
-      if(expandedFields[key] === true) c++
-    }
-    return c
-  }
-
-  const expandField = (name) => {
-    setExpandedFields({...expandedFields, [name]: true})
-  }
-
-  const hideField = (name) => {
-    setExpandedFields({...expandedFields, [name]: false})
-  }
-
-  const handleChange = (name) => {
-    return (__, isExpanded) => isExpanded ? expandField(name) : hideField(name)
-  }
-
   const clearFilter = () => {
-    setExpandedFields(initialExpandedFields)
     dispatch(clearFilterPublications())
+    setIsFilterShowing(false)
   }
 
   const applyFilter = (data) => {
-
-    let filter = {}
-
-    if(expandedFields.types) filter.types = data.types
-    if(expandedFields.doi) filter.doi = data.doi
-    if(expandedFields.isbn) filter.isbn = data.isbn
-    if(expandedFields.date) filter.date = {
-        date_from: data.date.date_from.toString(),
-        date_to: data.date.date_to.toString(),
-      }
-
-    dispatch(setFilterPublications(filter))
+    console.log(data)
+    dispatch(setFilterPublications(data))
+    setIsFilterShowing(false)
   }
 
   return (
       <ResponsivePanel gr_xs={gr_xs}>
         <Toolbar disableGutters>
-          <Typography variant='h4' flexGrow={1}>
-            {`Фильтр  ${countExpandedFields()}`}
-          </Typography>
           {!gr_xs &&
-          <IconButton size='large' onClick={onClickClose}>
-            <CloseIcon fontSize='16px'/>
-          </IconButton>
+            <IconButton size='medium' onClick={onClickClose}>
+              <CloseIcon fontSize='16px'/>
+            </IconButton>
           }
+          <Typography variant='h5' flexGrow={1}>
+            Фильтр
+          </Typography>
+          <Button variant='text' onClick={clearFilter}>Сбросить</Button>
         </Toolbar>
 
         <ScrollableBox p={'4px'} sx={{ overflowY: 'auto', flexGrow: 1 }}>
-          <Accordion expanded={expandedFields.types} onChange={handleChange('types')}>
-            <AccordionSummary>
-              <Typography>Тип публикации</Typography>
-            </AccordionSummary>
-            <AccordionDetails>
-              <InputSelect name={'types'} 
-                    control={control}
-                    label='Типы публикаций'
-                    multiple={true}
-                    renderValue={(selected) => (
-                      <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                        {selected.map((value) => (
-                          <Chip key={value} label={value} />
-                        ))}
-                      </Box>
-                    )}>
-                {allTypes.map(type => <MenuItem key={type} value={type}>{type}</MenuItem>)}
-              </InputSelect>
-            </AccordionDetails>
-          </Accordion>
+          <Stack direction={'column'} spacing={3}>
+            <Box>
+              <Typography fontWeight={'bold'}>Тип публикации</Typography>
+              <SelectableTabs control={control} name={'types'} options={all_types_publications}/>
+            </Box>
 
-          <Accordion expanded={expandedFields.doi} onChange={handleChange('doi')}>
-            <AccordionSummary>
-              <Typography>Наличие DOI</Typography>
-            </AccordionSummary>
-            <AccordionDetails>
-              <InputCheck control={control} name={'doi'} label={'Есть DOI'}/>
-            </AccordionDetails>
-          </Accordion>
+            <Box>
+              <Typography fontWeight={'bold'}>Наличие DOI</Typography>
+              <BooleanTabs control={control} name={'doi'}/>
+            </Box>
 
-          <Accordion expanded={expandedFields.isbn} onChange={handleChange('isbn')}>
-            <AccordionSummary>
-              <Typography>Наличие ISBN</Typography>
-            </AccordionSummary>
-            <AccordionDetails>
-              <InputCheck control={control} name={'isbn'} label={'Есть ISBN'}/>
-            </AccordionDetails>
-          </Accordion>
+            <Box>
+              <Typography fontWeight={'bold'}>Наличие ISBN</Typography>
+              <BooleanTabs control={control} name={'isbn'}/>
+            </Box>
 
-          <Accordion expanded={expandedFields.date} onChange={handleChange('date')}>
-            <AccordionSummary>
-              <Typography>Выбрать дату</Typography>
-            </AccordionSummary>
-            <AccordionDetails>
-              <Stack direction={'column'} spacing={2}>
-                <InputDate name={'date.date_from'} control={control} label={'С этой даты'}/>
-                <InputDate name={'date.date_to'} control={control} label={'До этой даты'}/>
-              </Stack>
-            </AccordionDetails>
-          </Accordion>
+            <Box>
+              <Typography fontWeight={'bold'}>Временной интервал</Typography>
+              <InputDateRange control={control} name={'date'}/>
+            </Box>
+
+            <Box>
+              <Typography fontWeight={'bold'}>Финансовая поддержка</Typography>
+              <SelectableTabs control={control} name={'fs'} options={all_types_finsupports}/>
+            </Box>
+
+            <Box>
+              <Typography fontWeight={'bold'}>Система цитирования</Typography>
+              <SelectableTabs control={control} name={'db'} options={all_types_database}/>
+            </Box>
+          </Stack>
         </ScrollableBox>
 
         <Box display={'flex'} width={1}>
           <form onSubmit={handleSubmit(applyFilter)} style={{ width: '100%' }}>
             <Stack direction={'row'} justifyContent={'right'} py={'12px'} spacing={3} width={1}>
-              <Button disabled={countExpandedFields() == 0} variant='outlined' onClick={clearFilter}>Сбросить</Button>
-              <Button variant='contained' type='submit'>Применить</Button>
+              <Button variant='contained' fullWidth type='submit'>Применить</Button>
             </Stack>
           </form>
         </Box>

@@ -14,19 +14,19 @@ const PublicansPanel = () => {
 
   let articles = data
 
-  if(fields?.types !== undefined) articles = articles.filter((article) => {
-    const types = fields.types.map(type => schemePublications.find(el => el.title == type).p_type)
-    return types.includes(article.p_type)
-  })
-  if(fields?.doi !== undefined) articles = articles.filter((article) => !!article.doi)
-  if(fields?.isbn !== undefined) articles = articles.filter((article) => !!article.isbn)
-  if(fields?.date !== undefined) articles = articles.filter((articles) => {
-    const date_from = (new Date(fields.date.date_from)).getTime()
-    const date_to = (new Date(fields.date.date_to)).getTime()
-    const date_current = (new Date(articles.date)).getTime()
+  // if(fields?.types !== undefined) articles = articles.filter((article) => {
+  //   const types = fields.types.map(type => schemePublications.find(el => el.title == type).p_type)
+  //   return types.includes(article.p_type)
+  // })
+  // if(fields?.doi !== undefined) articles = articles.filter((article) => !!article.doi)
+  // if(fields?.isbn !== undefined) articles = articles.filter((article) => !!article.isbn)
+  // if(fields?.date !== undefined) articles = articles.filter((articles) => {
+  //   const date_from = (new Date(fields.date.date_from)).getTime()
+  //   const date_to = (new Date(fields.date.date_to)).getTime()
+  //   const date_current = (new Date(articles.date)).getTime()
 
-    return date_current >= date_from && date_current <= date_to
-  })
+  //   return date_current >= date_from && date_current <= date_to
+  // })
 
   if(isLoading) 
     return(

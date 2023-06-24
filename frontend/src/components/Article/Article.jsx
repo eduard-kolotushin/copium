@@ -84,7 +84,7 @@ const Buttons = ({ isLoading, handlerEdit, handlerDelete }) => {
     const l_xl = useMediaQuery('(max-width:1536px)')
 
     return(
-        <Stack direction={'row'} spacing={2}>
+        <Stack direction={'row'} spacing={2} pr={'28px'} mb={'auto'}>
             <Fab disabled={isLoading} variant={l_xl ? "circled" : "extended"} color="primary" size="medium" aria-label="edit" onClick={handlerEdit}>
                 <ModeEditOutlineOutlinedIcon/>
                 {l_xl ? null : "Изменить" }
@@ -139,7 +139,9 @@ const Article = ({ publication: {
     return (
         <>
             { isOpenDialogConfirm && <DialogConfirm title={title} id={id} deletePublication={deletePublication} setIsOpenDialogConfirm={setIsOpenDialogConfirm}/>}
-            <ListItem disablePadding disableGutters>
+            <ListItem disablePadding disableGutters secondaryAction={
+                <Buttons isLoading={isLoading} handlerDelete={() => setIsOpenDialogConfirm(true)} handlerEdit={null}/>
+                }>
                 <ListItemButton disableRipple={gr_xs} 
                     alignItems='flex-start' 
                     onClick={() => !gr_xs ? setIsExpanded(prev => !prev) : null} 
@@ -159,7 +161,7 @@ const Article = ({ publication: {
                             </Typography>}
                         <Databases databases={{ wos, scopus, rinc }}/>
                     </Stack>
-                    <Buttons isLoading={isLoading} handlerDelete={() => setIsOpenDialogConfirm(true)} handlerEdit={null}/>
+                    
                 </ListItemButton>
             </ListItem>
             <Divider variant="middle"/>
