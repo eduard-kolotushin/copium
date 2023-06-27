@@ -23,17 +23,16 @@ import FilterPanel from '../../components/FilterPanel/FilterPanel'
 const Header = ({ gr_xs, onClickFilter }) => {
 
   const navigate = useNavigate()
-  const fields = useSelector(state => state.filterPublications.fields)
+  const { fields, initialState } = useSelector(state => state.filterPublications)
 
   const isShowTypes = fields.types.length !== 0
   const isShowFS = fields.fs.length !== 0
   const isShowDB = fields.db.length !== 0
   const isShowDOI = fields.doi !== null
   const isShowISBN = fields.isbn !== null
-  const isShowDate = !dayjs(fields.date.from).isToday() ||  !dayjs(fields.date.to).isToday()
+  const isShowDate = !dayjs(fields.date.from).isToday() || !dayjs(fields.date.to).isToday()
 
-  const isShow = () => {
-    return (
+  const isShow = (
       isShowTypes ||
       isShowFS ||
       isShowDB ||
@@ -41,8 +40,6 @@ const Header = ({ gr_xs, onClickFilter }) => {
       isShowISBN ||
       isShowDate
       )
-  }
-
 
   return(
     <Stack p='16px' spacing={2}>
@@ -65,10 +62,12 @@ const Header = ({ gr_xs, onClickFilter }) => {
         </Stack>
         {isShow &&
           <Box width={1}>
-            {isShowTypes && fields.types.map((type, index) => <FilterItem label={type} key={`type-${index}`}/>)}
+            {isShowTypes && fields.types.map((type, index) => <FilterItem label={type.label} key={`type-${index}`}/>)}
             {isShowDOI && <FilterItem label={`${fields.doi ? 'Есть' : 'Нет'} DOI`}/>}
             {isShowISBN && <FilterItem label={`${fields.isbn ? 'Есть' : 'Нет'} ISBN`}/>}
             {isShowDate && <FilterItem label={`${dayjs(fields.date.from).format('DD.MM.YYYY')} - ${dayjs(fields.date.to).format('DD.MM.YYYY')}`}/> }
+            {isShowFS && fields.fs.map((type, index) => <FilterItem label={type.label} key={`fs-${index}`}/>)}
+            {isShowDB && fields.db.map((type, index) => <FilterItem label={type.label} key={`db-${index}`}/>)}
           </Box>
         }
     </Stack>
@@ -76,8 +75,10 @@ const Header = ({ gr_xs, onClickFilter }) => {
 }
 
 const FilterItem = ({ label }) => {
+  const gr_xs = useMediaQuery('(min-width:1200px)')
+
   return(
-    <Chip onDelete={() => {}} label={label} sx={{ m: '6px'}}/>
+    <Chip onDelete={() => {}} label={label} sx={{ m: '6px'}} size={!gr_xs ? 'small' : 'default'}/>
   )
 }
 
@@ -92,7 +93,7 @@ const Publications = () => {
       <Divider/>
       <Stack height={1} width={1} direction={'row'} spacing={2} sx={{ overflowX: 'hidden' }} divider={<Divider orientation="vertical" flexItem />}>
         <PublicansPanel/>
-        {(gr_xs || isShowingFilter) && <FilterPanel gr_xs={gr_xs} isShowingFilterState={[isShowingFilter, setIsFilterShowing]} onClickClose={() => setIsFilterShowing(false)}/>}
+        {(gr_xs || isShowingFilter) && <FilterPanel gr_xs={gr_xs} isShowingFilterState={[isShowingFilter, setIsFilterShowing]}/>}
       </Stack>
       <Outlet/>
     </Stack>

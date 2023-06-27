@@ -1,3 +1,5 @@
+import dayjs from "dayjs";
+
 export const schemePublications = [
     {
         p_type: 'article',
@@ -34,7 +36,7 @@ export const schemePublications = [
                 name: 'date',
                 title: 'Дата публикации',
                 type: 'date',
-                initialState: new Date(),
+                initialState:  dayjs().format('YYYY-MM-DD'),
                 rules: {
                     required: 'Это обязательное поле',
                 }
@@ -115,7 +117,7 @@ export const schemePublications = [
                 name: 'date',
                 title: 'Дата публикации',
                 type: 'date',
-                initialState: new Date(),
+                initialState:  dayjs().format('YYYY-MM-DD'),
                 rules: {
                     required: 'Это обязательное поле',
                 }

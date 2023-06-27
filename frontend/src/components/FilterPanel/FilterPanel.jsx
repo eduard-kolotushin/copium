@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useDispatch, useSelector } from 'react-redux'
 import { 
@@ -22,32 +22,12 @@ import BooleanTabs from './BooleanTabs'
 import InputDateRange from '../InputDateRange/InputDateRange'
 import ResponsivePanel from './ResponsivePanel'
 
-// const ResponsivePanel = ({ children, gr_xs }) => {
-
-//   if(gr_xs){
-//     return(
-//       <Stack width={'450px'} height={1} pr={'24px'} flexShrink={0}>
-//         {children}
-//       </Stack>
-//     )
-//   }
-//   else{
-//     return(
-//       <Dialog open fullScreen sx={{ minHeight: 1 }}>
-//         <Stack flexDirection={'column'} p={'24px'} height={1}>
-//           {children}
-//         </Stack>
-//       </Dialog>
-//     )
-//   }
-// }
-
-const FilterPanel = ({ onClickClose, isShowingFilterState }) => {
+const FilterPanel = ({ isShowingFilterState }) => {
 
   const gr_xs = useMediaQuery('(min-width:1200px)')
 
   const dispatch = useDispatch()
-  const fields = useSelector(state => state.filterPublications.fields)
+  const { fields, initialState } = useSelector(state => state.filterPublications)
 
   const [isShowingFilter, setIsFilterShowing] = isShowingFilterState
 
@@ -81,12 +61,13 @@ const FilterPanel = ({ onClickClose, isShowingFilterState }) => {
     },
   ]
 
-  const { control, handleSubmit } = useForm({ 
+  const { control, handleSubmit, watch, reset, formState: { isDirty } } = useForm({ 
       defaultValues: fields
   })
 
   const clearFilter = () => {
-    dispatch(clearFilterPublications())
+    reset(initialState)
+    dispatch(setFilterPublications(watch()))
     setIsFilterShowing(false)
   }
 
@@ -96,11 +77,19 @@ const FilterPanel = ({ onClickClose, isShowingFilterState }) => {
     setIsFilterShowing(false)
   }
 
+  useEffect(() => {
+    const subscription = watch((value, { name, type }) => { 
+      console.log(value)
+      if(gr_xs){ applyFilter(value) }
+    })
+    return () => subscription.unsubscribe()
+  }, [watch])
+
   return (
       <ResponsivePanel gr_xs={gr_xs}>
         <Toolbar disableGutters>
           {!gr_xs &&
-            <IconButton size='medium' onClick={onClickClose}>
+            <IconButton size='medium' onClick={() => setIsFilterShowing(false)}>
               <CloseIcon fontSize='16px'/>
             </IconButton>
           }
@@ -143,14 +132,15 @@ const FilterPanel = ({ onClickClose, isShowingFilterState }) => {
             </Box>
           </Stack>
         </ScrollableBox>
-
-        <Box display={'flex'} width={1}>
-          <form onSubmit={handleSubmit(applyFilter)} style={{ width: '100%' }}>
-            <Stack direction={'row'} justifyContent={'right'} py={'12px'} spacing={3} width={1}>
-              <Button variant='contained' fullWidth type='submit'>Применить</Button>
-            </Stack>
-          </form>
-        </Box>
+        {!gr_xs &&
+          <Box display={'flex'} width={1}>
+            <form onSubmit={handleSubmit(applyFilter)} style={{ width: '100%' }}>
+              <Stack direction={'row'} justifyContent={'right'} py={'12px'} spacing={3} width={1}>
+                <Button disabled={!isDirty} variant='contained' fullWidth type='submit'>Применить</Button>
+              </Stack>
+            </form>
+          </Box>
+        }
 
       </ResponsivePanel>
   )

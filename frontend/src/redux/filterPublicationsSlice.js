@@ -6,8 +6,8 @@ const initialState = {
     doi: null,
     isbn: null,
     date: {
-      from: dayjs().toString(),
-      to: dayjs().toString(),
+      from: dayjs().format('YYYY-MM-DD'),
+      to: dayjs().format('YYYY-MM-DD'),
     },
     fs: [],
     db: [],
@@ -16,7 +16,8 @@ const initialState = {
 const filterPublicationsAlert = createSlice({
     name: 'filter',
     initialState: { 
-        fields: initialState
+        fields: initialState,
+        initialState: initialState
     },
     reducers: {
         setFilterPublications: (state, actions) => {

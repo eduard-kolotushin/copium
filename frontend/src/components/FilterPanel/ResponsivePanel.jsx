@@ -1,5 +1,5 @@
-import { Dialog, Stack } from '@mui/material'
 import React from 'react'
+import { Dialog, Stack } from '@mui/material'
 
 const ResponsivePanel = ({ children, gr_xs }) => {
 

@@ -11,14 +11,14 @@ import { ChevronLeft, ChevronRight } from "@mui/icons-material"
 const SelectableTabs = ({ name, control, options, children, width, spacing }) => {
 
   const OFFSET = 300
-  const DELTA_OFFSET = 1
+  const DELTA_OFFSET = 2
 
   const { field: { onChange }, formState: { defaultValues } } = useController({
     control,
     name,
   })
 
-  const [chosen, setChosen] = useState(defaultValues[name])
+  const [chosen, setChosen] = useState(defaultValues[name].map(option => options.findIndex(el => el.value === option.value && el.label === option.label)))
 
   const containerRef = useRef()
 
@@ -35,8 +35,12 @@ const SelectableTabs = ({ name, control, options, children, width, spacing }) =>
   }
 
   useEffect(() => {
-    changeVisibleButtons()
-    containerRef.current.addEventListener('scroll', () => changeVisibleButtons())
+    const handler = () => changeVisibleButtons()
+    handler()
+    window.addEventListener('risize', handler)
+    containerRef.current.addEventListener('scroll', handler)
+
+    return () => window.removeEventListener('resize', handler)
   }, [])
 
   const MoveButton = ({ isShow, direction }) => {

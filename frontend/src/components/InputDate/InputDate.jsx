@@ -19,7 +19,8 @@ const InputDate = ({ name, control, label, rules, defaultValue, sx, ...props }) 
             label={rules?.required ? `${label}*` : label}
             inputFormat="DD.MM.YYYY"
             value={dayjs(value)}
-            onChange={v => onChange(dayjs(v).toString())}
+            onChange={v => onChange(dayjs(v).format('YYYY-MM-DD'))}
+            onBlur={onBlur}
             ref={ref}
             renderInput={(params) => <TextField {...params} sx={sx}/>}
           />
