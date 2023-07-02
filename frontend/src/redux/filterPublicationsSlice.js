@@ -17,7 +17,6 @@ const filterPublicationsAlert = createSlice({
     name: 'filter',
     initialState: { 
         fields: initialState,
-        initialState: initialState
     },
     reducers: {
         setFilterPublications: (state, actions) => {
@@ -25,10 +24,13 @@ const filterPublicationsAlert = createSlice({
         },
         clearFilterPublications: (state, actions) => {
             state.fields = initialState
+        },
+        clearFilterField: (state, actions) => {
+            state.fields[actions.payload.name] = actions.payload?.value ? state.fields[actions.payload.name].toSpliced(state.fields[actions.payload.name].indexOf(state.fields[actions.payload.value]), 1) : initialState[actions.payload.name]
         }
     }
 })
 
-export const { setFilterPublications, clearFilterPublications } = filterPublicationsAlert.actions
+export const { setFilterPublications, clearFilterPublications, clearFilterField } = filterPublicationsAlert.actions
 
 export default filterPublicationsAlert.reducer

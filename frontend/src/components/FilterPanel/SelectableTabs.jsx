@@ -30,21 +30,20 @@ const SelectableTabs = ({ name, control, options, children, width, spacing }) =>
     const sw = containerRef.current?.scrollWidth
     const sl = containerRef.current?.scrollLeft
 
-    setIsShowLeftButton(sl > DELTA_OFFSET && cw < sw)
-    setIsShowRightButton(sw - sl - cw > DELTA_OFFSET && cw < sw)
+    setIsShowLeftButton(sl >= DELTA_OFFSET && cw <= sw)
+    setIsShowRightButton(sw - sl - cw >= DELTA_OFFSET && cw <= sw)
   }
 
   useEffect(() => {
     const handler = () => changeVisibleButtons()
     handler()
-    window.addEventListener('risize', handler)
+    window.addEventListener('resize', handler)
     containerRef.current.addEventListener('scroll', handler)
 
     return () => window.removeEventListener('resize', handler)
   }, [])
 
   const MoveButton = ({ isShow, direction }) => {
-
 
     const handlerClick = () => {
       const k = (() => {

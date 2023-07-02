@@ -10,6 +10,7 @@ import { store } from './redux/store'
 
 require('dayjs/locale/ru')
 dayjs.extend(require('dayjs/plugin/isToday'))
+dayjs.extend(require('dayjs/plugin/isBetween'))
 dayjs.locale('ru')
 
 let vh = window.innerHeight * 0.01;

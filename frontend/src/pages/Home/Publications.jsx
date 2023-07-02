@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Outlet, useNavigate } from 'react-router-dom'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import dayjs from 'dayjs'
 
 import {
@@ -18,6 +18,7 @@ import AddIcon from '@mui/icons-material/Add'
 
 import PublicansPanel from '../../components/PublicationsPanel/PublicationsPanel'
 import FilterPanel from '../../components/FilterPanel/FilterPanel'
+import { clearFilterField } from '../../redux/filterPublicationsSlice'
 
 
 const Header = ({ gr_xs, onClickFilter }) => {
@@ -54,31 +55,33 @@ const Header = ({ gr_xs, onClickFilter }) => {
               <ExpandMoreIcon/>
             </Fab>
           </Stack>
-          {!gr_xs &&
-            <Fab color='primary' size='medium' sx={{ flexShrink: 0 }} onClick={onClickFilter}>
-              <FilterAltIcon/>
-            </Fab>
-          }
+          {/* {!gr_xs && */}
+          <Fab variant={gr_xs ? 'extended' : 'circular'} color='primary' size='medium' sx={{ flexShrink: 0 }} onClick={onClickFilter}>
+            <FilterAltIcon/>
+            {gr_xs ? 'Фильтр' : null}
+          </Fab>
+          {/* } */}
         </Stack>
         {isShow &&
           <Box width={1}>
-            {isShowTypes && fields.types.map((type, index) => <FilterItem label={type.label} key={`type-${index}`}/>)}
-            {isShowDOI && <FilterItem label={`${fields.doi ? 'Есть' : 'Нет'} DOI`}/>}
-            {isShowISBN && <FilterItem label={`${fields.isbn ? 'Есть' : 'Нет'} ISBN`}/>}
-            {isShowDate && <FilterItem label={`${dayjs(fields.date.from).format('DD.MM.YYYY')} - ${dayjs(fields.date.to).format('DD.MM.YYYY')}`}/> }
-            {isShowFS && fields.fs.map((type, index) => <FilterItem label={type.label} key={`fs-${index}`}/>)}
-            {isShowDB && fields.db.map((type, index) => <FilterItem label={type.label} key={`db-${index}`}/>)}
+            {isShowTypes && fields.types.map((type, index) => <FilterItem name='types' value={type} label={type.label} key={`type-${index}`}/>)}
+            {isShowDOI && <FilterItem name='doi' label={`${fields.doi ? 'Есть' : 'Нет'} DOI`}/>}
+            {isShowISBN && <FilterItem name='isbn' label={`${fields.isbn ? 'Есть' : 'Нет'} ISBN`}/>}
+            {isShowDate && <FilterItem name='date' label={`${dayjs(fields.date.from).format('DD.MM.YYYY')} - ${dayjs(fields.date.to).format('DD.MM.YYYY')}`}/> }
+            {isShowFS && fields.fs.map((type, index) => <FilterItem name='fs' value={type} label={type.label} key={`fs-${index}`}/>)}
+            {isShowDB && fields.db.map((type, index) => <FilterItem name='db' value={type} label={type.label} key={`db-${index}`}/>)}
           </Box>
         }
     </Stack>
   )
 }
 
-const FilterItem = ({ label }) => {
+const FilterItem = ({ label, name, value }) => {
   const gr_xs = useMediaQuery('(min-width:1200px)')
+  const dispatch = useDispatch()
 
   return(
-    <Chip onDelete={() => {}} label={label} sx={{ m: '6px'}} size={!gr_xs ? 'small' : 'default'}/>
+    <Chip onDelete={() => dispatch(clearFilterField({ name, value })) } label={label} sx={{ m: '6px'}} size={!gr_xs ? 'small' : 'default'}/>
   )
 }
 
@@ -93,7 +96,8 @@ const Publications = () => {
       <Divider/>
       <Stack height={1} width={1} direction={'row'} spacing={2} sx={{ overflowX: 'hidden' }} divider={<Divider orientation="vertical" flexItem />}>
         <PublicansPanel/>
-        {(gr_xs || isShowingFilter) && <FilterPanel gr_xs={gr_xs} isShowingFilterState={[isShowingFilter, setIsFilterShowing]}/>}
+        {/* {(gr_xs || isShowingFilter) && <FilterPanel gr_xs={gr_xs} isShowingFilterState={[isShowingFilter, setIsFilterShowing]}/>} */}
+        {isShowingFilter && <FilterPanel gr_xs={gr_xs} isShowingFilterState={[isShowingFilter, setIsFilterShowing]}/>}
       </Stack>
       <Outlet/>
     </Stack>

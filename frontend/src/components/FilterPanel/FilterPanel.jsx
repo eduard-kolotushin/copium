@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import { 
   Box, 
   Button, 
-  Dialog, 
   IconButton, 
   Stack, 
   Toolbar, 
@@ -27,7 +26,7 @@ const FilterPanel = ({ isShowingFilterState }) => {
   const gr_xs = useMediaQuery('(min-width:1200px)')
 
   const dispatch = useDispatch()
-  const { fields, initialState } = useSelector(state => state.filterPublications)
+  const { fields } = useSelector(state => state.filterPublications)
 
   const [isShowingFilter, setIsFilterShowing] = isShowingFilterState
 
@@ -61,38 +60,36 @@ const FilterPanel = ({ isShowingFilterState }) => {
     },
   ]
 
-  const { control, handleSubmit, watch, reset, formState: { isDirty } } = useForm({ 
+  const { control, handleSubmit, formState: { isDirty } } = useForm({ 
       defaultValues: fields
   })
 
   const clearFilter = () => {
-    reset(initialState)
-    dispatch(setFilterPublications(watch()))
+    // reset()
+    dispatch(clearFilterPublications())
     setIsFilterShowing(false)
   }
 
   const applyFilter = (data) => {
-    console.log(data)
     dispatch(setFilterPublications(data))
     setIsFilterShowing(false)
   }
 
-  useEffect(() => {
-    const subscription = watch((value, { name, type }) => { 
-      console.log(value)
-      if(gr_xs){ applyFilter(value) }
-    })
-    return () => subscription.unsubscribe()
-  }, [watch])
+  // useEffect(() => {
+  //   const subscription = watch((value, { name, type }) => { 
+  //     if(gr_xs){ applyFilter(value) }
+  //   })
+  //   return () => subscription.unsubscribe()
+  // }, [watch])
 
   return (
       <ResponsivePanel gr_xs={gr_xs}>
         <Toolbar disableGutters>
-          {!gr_xs &&
-            <IconButton size='medium' onClick={() => setIsFilterShowing(false)}>
-              <CloseIcon fontSize='16px'/>
-            </IconButton>
-          }
+          {/* {!gr_xs && */}
+          <IconButton size='medium' onClick={() => setIsFilterShowing(false)}>
+            <CloseIcon fontSize='16px'/>
+          </IconButton>
+          {/* } */}
           <Typography variant='h5' flexGrow={1}>
             Фильтр
           </Typography>
@@ -132,15 +129,15 @@ const FilterPanel = ({ isShowingFilterState }) => {
             </Box>
           </Stack>
         </ScrollableBox>
-        {!gr_xs &&
-          <Box display={'flex'} width={1}>
-            <form onSubmit={handleSubmit(applyFilter)} style={{ width: '100%' }}>
-              <Stack direction={'row'} justifyContent={'right'} py={'12px'} spacing={3} width={1}>
-                <Button disabled={!isDirty} variant='contained' fullWidth type='submit'>Применить</Button>
-              </Stack>
-            </form>
-          </Box>
-        }
+        {/* {!gr_xs && */}
+        <Box display={'flex'} width={1}>
+          <form onSubmit={handleSubmit(applyFilter)} style={{ width: '100%' }}>
+            <Stack direction={'row'} justifyContent={'right'} py={'12px'} spacing={3} width={1}>
+              <Button disabled={!isDirty} variant='contained' fullWidth type='submit'>Применить</Button>
+            </Stack>
+          </form>
+        </Box>
+        {/* } */}
 
       </ResponsivePanel>
   )

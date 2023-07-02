@@ -1,13 +1,20 @@
 import React from 'react'
-import { Dialog, Stack } from '@mui/material'
+import { Dialog, DialogContent, Stack } from '@mui/material'
 
 const ResponsivePanel = ({ children, gr_xs }) => {
 
     if(gr_xs){
         return(
-            <Stack width={'450px'} height={1} pr={'24px'} flexShrink={0}>
-                {children}
-            </Stack>
+            // <Stack width={'450px'} height={1} pr={'24px'} flexShrink={0}>
+            //     {children}
+            // </Stack>
+            <Dialog open maxWidth='sm'>
+                <DialogContent>
+                    <Stack flexDirection={'column'}>
+                        {children}
+                    </Stack>
+                </DialogContent>
+            </Dialog>
         )
     }
     else{
