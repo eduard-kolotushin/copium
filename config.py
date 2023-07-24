@@ -1,10 +1,13 @@
 import os
+from typing import Type
+
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 
 class Config:
     SECRET_KEY = os.getenv("SECRET_KEY", default="LIASUDBFO87F8QWEOF8D")
     FLASK_ENV = os.getenv("FLASK_ENV", default="development")
+    SQLALCHEMY_DATABASE_URI = None
 
 
 class DevelopConfig(Config):
@@ -58,3 +61,16 @@ class TestingConfig(Config):
     FLASK_ENV = "testing"
     SQLALCHEMY_DATABASE_URI = "".join(["sqlite:///", os.path.join(basedir, "copium_db.db")])
     SQLALCHEMY_TRACK_MODIFICATIONS = True
+
+
+def get_config(config_string: str = "development") -> Type[Config]:
+    match config_string:
+        case "development":
+            config_object = DevelopConfig
+        case "production":
+            config_object = ProductionConfig
+        case "testing":
+            config_object = TestingConfig
+        case _:
+            config_object = DevelopConfig
+    return config_object
