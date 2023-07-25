@@ -6,6 +6,7 @@ import Article from '../Article/Article'
 import { useSelector } from 'react-redux'
 import { schemePublications } from '../../schemes/schemePublications'
 import dayjs from 'dayjs'
+import CircleLoading from '../CircleLoading/CircleLoading'
 
 const PublicansPanel = () => {
     
@@ -26,9 +27,7 @@ const PublicansPanel = () => {
 
   if(isLoading) 
     return(
-      <Box width={1} display='flex' justifyContent='center' my='18px'>
-        <CircularProgress color='inherit'/>
-      </Box>
+      <CircleLoading/>
     )
 
   if(isError) 

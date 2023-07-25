@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../index.css"/>
+    <title>Document</title>
+</head>
+<body>
+    <div class="container">
+        <div class="box-right">
+            <div class="box-minimized width-8">
+                <p class="text-left">Зам.  директора<br>ИРЭ им. В.А.Котельникова РАН<br>Ладнушкину С.М. от</p>
+                <p class="string-underlined text-center fullwidth">{{data.middlename_rod}}</p>
+                <p class="string-underlined text-center fullwidth">{{data.middlename_rod}}</p>
+                <p class="string-underlined text-center fullwidth">{{data.middlename_rod}}</p>
+                <p class="text-center fontsize-9 fullwidth">(фамилия, имя, отчество – полностью)</p>
+                <p class="string-underlined text-center fullwidth">{{data.position_short}},</p>
+                <p class="string-underlined text-center fullwidth">{{data.structure_short}}</p>
+                <p class="text-center fontsize-9 fullwidth">(должность, подразделение)</p>
+            </div>
+        </div>
+
+        <div class="hfill-2"></div>
+        <p class="text-center fontsize-16">Заявление</p>
+        <div class="hfill-1"></div>
+
+        <p class="text-stretch indent-125">Прошу предоставить мне очередной оплачиваемый отпуск в количестве <span class="string-underlined">{{add.count_days}}</span> календарных дней с <span class="string-underlined">{{add.date_from}}</span> до <span class="string-underlined">{{add.date_to}}</span>.</p>
+
+        <div class="hfill-1"></div>
+
+        <div class="text-left">{{add.access_to_secret}}</div>
+
+        <!-- <dpiv class="text-left">Допуска к государственной тайне не имею</p>
+        <p class="text-left">Заявление на выезд за рубеж оформил(а)</p>
+        <hr class="divider-3">
+        <p class="text-center">(нужное подчеркнуть)</p> -->
+
+        <div class="hfill-1"></div>
+
+        <div class="grid-hor-1-1">
+            <div class="box-left">
+                <p class="text-left">Подпись </p>
+                <div class="string-underlined width-3"></div>
+            </div>
+            <div class="box-right ">
+                <p class="text-right">Дата </p>
+                <p class="string-underlined text-center">{{add.date_current}}</p>
+            </div>
+        </div>
+
+        <div class="hfill-2"></div>
+
+        <div class="grid-hor-1-1-1 grid-gap-1">
+            <p class="text-left">Зав. лабораторией</p>
+            <div class="string-underlined"></div>
+            <p class="string-underlined text-center">Фамилия И.О.</p>
+        </div>
+        <div class="grid-hor-1-1-1 grid-gap-1">
+            <p></p>
+            <p class="text-center fontsize-9">(подпись)</p>
+            <p class="text-center fontsize-9">(расшифровка подписи)</p>
+        </div>
+
+        <div class="hfill-1"></div>
+
+        <div class="grid-hor-1-1-1 grid-gap-1">
+            <p class="text-left">Отв. за табельный учет</p>
+            <div class="string-underlined"></div>
+            <p class="string-underlined text-center">Фамилия И.О.</p>
+        </div>
+        <div class="grid-hor-1-1-1 grid-gap-1">
+            <p></p>
+            <p class="text-center fontsize-9">(подпись)</p>
+            <p class="text-center fontsize-9">(расшифровка подписи)</p>
+        </div>
+
+        <div class="hfill-2"></div>
+
+        <p class="text-left">Для лиц имеющих доступ к гос. тайне</p>
+
+        <div class="hfill-1"></div>
+
+        <div class="grid-hor-1-1-1 grid-gap-1">
+            <p class="text-left">Согласовано с 1 отделом</p>
+            <div class="string-underlined"></div>
+            <p class="string-underlined text-center">Фамилия И.О.</p>
+        </div>
+        <div class="grid-hor-1-1-1 grid-gap-1">
+            <p></p>
+            <p class="text-center fontsize-9">(подпись)</p>
+            <p class="text-center fontsize-9">(расшифровка подписи)</p>
+        </div>
+    </div>
+</body>
+</html>

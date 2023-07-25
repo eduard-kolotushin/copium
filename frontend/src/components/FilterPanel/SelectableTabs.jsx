@@ -35,13 +35,15 @@ const SelectableTabs = ({ name, control, options, children, width, spacing }) =>
   }
 
   useEffect(() => {
-    const handler = () => changeVisibleButtons()
-    handler()
-    window.addEventListener('resize', handler)
-    containerRef.current.addEventListener('scroll', handler)
+    window.addEventListener('resize', changeVisibleButtons)
+    containerRef.current.addEventListener('scroll', changeVisibleButtons)
 
-    return () => window.removeEventListener('resize', handler)
+    return () => window.removeEventListener('resize', changeVisibleButtons)
   }, [])
+
+  useEffect(() => {
+    changeVisibleButtons()
+  },[containerRef.current])
 
   const MoveButton = ({ isShow, direction }) => {
 

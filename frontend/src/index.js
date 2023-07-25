@@ -7,6 +7,8 @@ import { Provider } from 'react-redux'
 import App from './App'
 
 import { store } from './redux/store'
+import { LocalizationProvider } from '@mui/x-date-pickers'
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 
 require('dayjs/locale/ru')
 dayjs.extend(require('dayjs/plugin/isToday'))
@@ -18,7 +20,9 @@ document.documentElement.style.setProperty('--vh', `${vh}px`);
 
 ReactDOM.render(
   <Provider store={store}>
-    <App />
+    <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale='ru'>
+      <App />
+    </LocalizationProvider>
   </Provider>,
   document.getElementById('root')
 );

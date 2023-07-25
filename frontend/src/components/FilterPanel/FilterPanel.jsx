@@ -60,7 +60,7 @@ const FilterPanel = ({ isShowingFilterState }) => {
     },
   ]
 
-  const { control, handleSubmit, formState: { isDirty } } = useForm({ 
+  const { control, handleSubmit, formState: { isDirty, isValid } } = useForm({ 
       defaultValues: fields
   })
 
@@ -133,7 +133,7 @@ const FilterPanel = ({ isShowingFilterState }) => {
         <Box display={'flex'} width={1}>
           <form onSubmit={handleSubmit(applyFilter)} style={{ width: '100%' }}>
             <Stack direction={'row'} justifyContent={'right'} py={'12px'} spacing={3} width={1}>
-              <Button disabled={!isDirty} variant='contained' fullWidth type='submit'>Применить</Button>
+              <Button disabled={!isDirty || !isValid} variant='contained' fullWidth type='submit'>Применить</Button>
             </Stack>
           </form>
         </Box>

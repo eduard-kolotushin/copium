@@ -1,0 +1,186 @@
+body, html, p{
+    margin: 0;
+    padding: 0;
+}
+
+p{
+    white-space: pre-wrap;
+}
+
+html{
+    --pper1cm: 0.035278cm;
+    --point: var(--point14);
+    --point1: calc(1 * var(--pper1cm));
+    --point2: calc(2 * var(--pper1cm));
+    --point3: calc(3 * var(--pper1cm));
+    --point4: calc(4 * var(--pper1cm));
+    --point5: calc(5 * var(--pper1cm));
+    --point6: calc(6 * var(--pper1cm));
+    --point7: calc(7 * var(--pper1cm));
+    --point8: calc(8 * var(--pper1cm));
+    --point9: calc(9 * var(--pper1cm));
+    --point10: calc(10 * var(--pper1cm));
+    --point11: calc(11 * var(--pper1cm));
+    --point12: calc(12 * var(--pper1cm));
+    --point14: calc(14 * var(--pper1cm));
+    --point16: calc(16 * var(--pper1cm));
+    --point18: calc(18 * var(--pper1cm));
+    font-size: var(--point);
+}
+
+.container{
+    box-sizing: border-box;
+    width: 100%;
+    padding: 2cm;
+}
+
+.fullwidth{
+    width: 100%;
+}
+
+/* 
+box
+*/
+
+.box-minimized{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.box-left{
+    display: flex;
+    justify-content: left;
+}
+
+.box-right{
+    display: flex;
+    justify-content: right;
+}
+
+.width-1{
+    width: 8cm;
+}
+
+.width-2{
+    width: 2cm;
+}
+
+.width-3{
+    width: 3cm;
+}
+
+.width-8{
+    width: 8cm;
+}
+
+/* 
+hfill
+*/
+
+.hfill-1{
+    height: 1cm;
+}
+
+.hfill-2{
+    height: 2cm;
+}
+
+.hfill-3{
+    height: 3cm;
+}
+
+
+/*
+text
+*/
+
+.fontsize-16{
+    font-size: var(--point16);
+}
+
+.fontsize-14{
+    font-size: var(--point14);
+}
+
+.fontsize-12{
+    font-size: var(--point12);
+}
+
+.fontsize-11{
+    font-size: var(--point11);
+}
+
+.fontsize-10{
+    font-size: var(--point10);
+}
+
+.fontsize-9{
+    font-size: var(--point9);
+}
+
+
+.indent-125{
+    text-indent: 1.25cm;
+}
+
+
+.text-center{
+    text-align: center;
+}
+
+.text-left{
+    text-align: left;
+}
+
+.text-right{
+    text-align: right;
+}
+
+.text-stretch{
+    text-align: justify;
+}
+
+.string-underlined{
+    border-bottom: 1px solid black;
+}
+
+/* 
+Divider
+*/
+
+.divider-1{
+    border-top: 1px solid black;
+}
+
+.divider-3{
+    border-top: 3px solid black;
+}
+
+.divider-5{
+    border-top: 5px solid black;
+}
+
+/* 
+grid
+*/
+
+.grid-hor-1-1{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: auto;
+}
+
+.grid-hor-1-1-1{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: auto;
+}
+
+.grid-hor-2-1-1{
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+}
+
+.grid-gap-1{
+    gap: 1cm;
+}

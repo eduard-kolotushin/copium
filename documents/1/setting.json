@@ -1,0 +1,25 @@
+{
+    "title": "",
+    "description": "",
+    "fields": [
+        {
+            "type": "date",
+            "title": "date_current",
+            "label": "Дата составления"
+        },
+        {
+            "type": "date-range",
+            "title": "date",
+            "label": "Дата отпуска"
+        },
+        {
+            "type": "select",
+            "title": "access_to_secret",
+            "label": "Допуск к государственной тайне",
+            "options": [
+                "Допуска к государственной тайне не имею.",
+                "Заявление на выезд за рубеж оформил(а)."
+            ]
+        }
+    ]
+}
