@@ -1,8 +1,8 @@
 from flask_restx import Namespace, Resource, fields
-from ..model import User
 from flask_restx import reqparse
 from utils.logger import create_logger
 from flask_login import login_user, login_required, current_user
+from ..core.user_operations import usr_ops
 
 api = Namespace('login', description='Login related operations')
 api.logger = create_logger(__name__)
@@ -28,15 +28,16 @@ class Login(Resource):
     @api.marshal_with(login_model, skip_none=True)
     @api.expect(login_parser)
     def post(self):
-        args = login_parser.parse_args()
+        args: dict = login_parser.parse_args()
         email = args.get('email')
         password = args.get('password')
-        user = User.query.filter_by(email=email).first()
+        users = usr_ops.get_users_by_filter(email=email)
+        user = None if len(users) == 0 else users[0]
         if user is None:
             return {"result": f"Not found user with email {email}"}, 404
-        if user.check_password(password=password):
+        if usr_ops.check_password(user, password=password):
             login_user(user)
-            filled, to_fill = user.check_credentials()
+            filled, to_fill = usr_ops.check_credentials(user)
             if to_fill:
                 return {"result": "Successfully logged in, need specify some credentials.",
                         "to_fill": to_fill, "filled": filled}, 200

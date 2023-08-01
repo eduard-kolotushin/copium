@@ -1,5 +1,5 @@
 from flask_restx import Api
-from flask_login import LoginManager
+from flask_security import Security
 
 api = Api(
     version="1.0",
@@ -8,4 +8,4 @@ api = Api(
     prefix="/api",
     doc="/api/doc"
 )
-login = LoginManager()
+security = Security()

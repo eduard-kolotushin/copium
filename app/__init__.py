@@ -1,6 +1,6 @@
 from flask import Flask
 import config
-from .extensions import api, login
+from .extensions import api, security
 from . import route
 from . import model
 from utils.logger import create_logger
@@ -17,4 +17,4 @@ def create_app(config_string: str = "development"):
 
 def register_extensions(app):
     api.init_app(app)    #, doc=False, add_specs=False
-    login.init_app(app)
+    security.init_app(app)
