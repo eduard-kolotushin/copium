@@ -17,7 +17,7 @@
             </column>
             <column name="degree" type="varchar(1000)"/>
             <column name="position" type="varchar(1000)"/>
-            <column name="password_hash" type="varchar(1000)"/>
+            <column name="password" type="varchar(255)"/>
             <column name="fs_uniquifier" type="varchar(64)">
                 <constraints nullable="false" unique="true"/>
             </column>
