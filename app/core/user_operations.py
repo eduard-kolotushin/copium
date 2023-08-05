@@ -1,4 +1,5 @@
-from ..model import StorageOperations, db, User
+from ..storage import StorageOperations
+from ..model import UserModel
 from werkzeug.security import generate_password_hash, check_password_hash
 
 
@@ -7,20 +8,20 @@ class UserOperations:
         self.dp_ops = db_ops
 
     @staticmethod
-    def string(user: User) -> str:
+    def string(user: UserModel) -> str:
         return f"User {user.firstname} {user.lastname} " \
                f"with email {user.email} and id {user.id}"
 
     @staticmethod
-    def set_password(user: User, password: str) -> None:
+    def set_password(user: UserModel, password: str) -> None:
         user.password_hash = generate_password_hash(password)
 
     @staticmethod
-    def check_password(user: User, password: str) -> bool:
+    def check_password(user: UserModel, password: str) -> bool:
         return check_password_hash(user.password_hash, password)
 
     @staticmethod
-    def check_credentials(user: User) -> tuple[dict, list[str]]:
+    def check_credentials(user: UserModel) -> tuple[dict, list[str]]:
         required: list[str] = ['email', 'firstname', 'lastname', 'degree', 'position']
         to_fill: list[str] = []
         filled: dict = dict()
@@ -32,8 +33,8 @@ class UserOperations:
                 filled[field] = attr
         return filled, to_fill
 
-    def get_users_by_filter(self, **kwargs: dict) -> list[User]:
-        return self.dp_ops.read(User, **kwargs)
+    def get_users_by_filter(self, **kwargs: dict) -> list[UserModel]:
+        return self.dp_ops.read(UserModel, **kwargs)
 
 
 usr_ops = UserOperations(db_ops=db)

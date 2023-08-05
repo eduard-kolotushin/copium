@@ -1,9 +1,8 @@
 from flask_login import login_required
 from flask_restx import Namespace, Resource, fields
-from ..extensions import db
-from ..model import User
 from flask_restx import reqparse
 from utils.logger import create_logger
+from ..model import UserModel, db_session
 
 api = Namespace('users', description='User related operations')
 api.logger = create_logger(__name__)
@@ -29,7 +28,7 @@ class Users(Resource):
     @api.marshal_list_with(user_model)
     @login_required
     def get(self):
-        users = User.query.all()
+        users = UserModel.query.all()
         return users
 
     @api.marshal_with(user_id_model)
@@ -37,9 +36,9 @@ class Users(Resource):
     @login_required
     def post(self):
         args = user_id_parser.parse_args()
-        user = User(firstname=args.get('firstname'),
-                    lastname=args.get('lastname'),
-                    email=args.get('email'))
+        user = UserModel(firstname=args.get('firstname'),
+                         lastname=args.get('lastname'),
+                         email=args.get('email'))
         error = user.save_db()
         response = {"response": f"User with id {user.id}",
                     "user": user,
@@ -51,7 +50,7 @@ class UserId(Resource):
     @api.marshal_with(user_id_model, skip_none=True)
     @login_required
     def get(self, uid):
-        user = User.query.filter_by(id=uid).first()
+        user = UserModel.query.filter_by(id=uid).first()
         response = {"response": f"User with id {uid}",
                     "user": user,
                     "error": None}
@@ -61,7 +60,7 @@ class UserId(Resource):
     @login_required
     def put(self, uid):
         args = user_id_parser.parse_args()
-        user = User.query.filter_by(id=uid).first()
+        user = UserModel.query.filter_by(id=uid).first()
         if user is None:
             return user, 404
         user.first_name = args.get('firstname')
@@ -79,10 +78,10 @@ class UserId(Resource):
         user = None
         error = None
         try:
-            user = User.query.filter_by(id=uid).first()
+            user = UserModel.query.filter_by(id=uid).first()
             if user is not None:
-                db.session.delete(user)
-                db.session.commit()
+                db_session.delete(user)
+                db_session.commit()
         except Exception as e:
             error = str(e)
         response = {"response": f"User with id {uid} successfully deleted.",

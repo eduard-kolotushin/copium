@@ -1,8 +1,6 @@
 from flask_login import login_required, current_user
 from flask_restx import Namespace, Resource, fields
-from ..extensions import db
-from ..model import Publication, Article, Thesis, Monograph
-from ..core.publication_manufacture import PublicationFactory
+from ..model import PublicationsModel, db_session
 from flask_restx import reqparse, inputs
 from utils.logger import create_logger
 import datetime
@@ -38,11 +36,8 @@ class Publications(Resource):
     @api.marshal_list_with(publication_model)
     @login_required
     def get(self):
-        pubs = Publication.query.all()
-        articles = Article.query.all()
-        theses = Thesis.query.all()
-        monographs = Monograph.query.all()
-        return pubs + articles + theses + monographs
+        pubs = PublicationsModel.query.all()
+        return pubs
 
     @api.marshal_with(publication_model)
     @api.expect(publication_parser)
@@ -51,8 +46,9 @@ class Publications(Resource):
         args = publication_parser.parse_args()
         args["user_id"] = current_user.id
         api.logger.info(f"Create publication with properties {args}")
-        pub = PublicationFactory.get_publication(args.get('p_type'), args)
-        pub.save_db()
+        pub = PublicationsModel(**args)
+        db_session.add(pub)
+        db_session.commit()
         return pub, 201
 
 
@@ -60,15 +56,14 @@ class PublicationsId(Resource):
     @api.marshal_with(publication_model, skip_none=True)
     @login_required
     def get(self, pid):
-        pub = Publication.query.filter_by(id=pid).first()
+        pub = db_session.query(Publications).filter_by(id=pid).first()
         return pub, 200
 
     @api.marshal_with(publication_model, skip_none=True)
     @login_required
     def put(self, pid):
         args = publication_parser.parse_args()
-        pub_cls = PublicationFactory.get_publication_cls(publication_type=args.get('p_type'))
-        pub = pub_cls.query.filter_by(id=pid).first()
+        pub = db_session.query(Publications).filter_by(id=pid).first()
         if pub is None:
             return pub, 404
 
@@ -83,10 +78,10 @@ class PublicationsId(Resource):
     def delete(self, pid):
         pub = None
         try:
-            pub = Publication.query.filter_by(id=pid).first()
+            pub = db_session.query(Publications).filter_by(id=pid).first()
             if pub is not None:
-                db.session.delete(pub)
-                db.session.commit()
+                db_session.delete(pub)
+                db_session.commit()
         except Exception as e:
             error = str(e)
             api.logger.error(error)

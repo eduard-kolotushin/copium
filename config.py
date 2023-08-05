@@ -6,10 +6,11 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 
 class Config:
     SECRET_KEY = os.getenv("SECRET_KEY", default="LIASUDBFO87F8QWEOF8D")
-    SECURITY_PASSWORD_SALT = os.getenv("SECURITY_PASSWORD_SALT", default="146585145368132386173505678016728509634")
+    SECURITY_PASSWORD_SALT = os.getenv("SECURITY_PASSWORD_SALT", default="123877190450587514317174152507510896291")
     SECURITY_EMAIL_VALIDATOR_ARGS = {"check_deliverability": False}
     FLASK_ENV = os.getenv("FLASK_ENV", default="development")
     SQLALCHEMY_DATABASE_URI = None
+    SECURITY_ADMIN_PASSWORD = os.getenv("SECURITY_ADMIN_PASSWORD", default="org_admin_765")
 
 
 class DevelopConfig(Config):
