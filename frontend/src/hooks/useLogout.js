@@ -12,7 +12,7 @@ export function useLogout(){
         try{
             const status = await fetchGetLogout().then(responce => responce.status)
 
-            if(status == 200)
+            if(status === 200)
             {
                 dispatch(setUser(null))
                 navigate('/auth', { replace: true })

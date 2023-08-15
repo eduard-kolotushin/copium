@@ -1,19 +1,10 @@
-import React, { useState } from 'react'
+import React, { useMemo, useState } from 'react'
 
 import {
-    Box,
     Stack,
     Typography,
-    ButtonGroup,
-    Button,
-    Chip,
     IconButton,
     Divider,
-    Dialog,
-    DialogTitle,
-    DialogContent,
-    DialogActions,
-    DialogContentText,
     useMediaQuery,
     Fab,
     ListItem,
@@ -24,60 +15,13 @@ import ModeEditOutlineOutlinedIcon from '@mui/icons-material/ModeEditOutlineOutl
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import ExpandLessIcon from '@mui/icons-material/ExpandLess'
-import { ExpandLess } from '@mui/icons-material'
 import { useDeletePublicationMutation } from '../../redux/servicePublications'
 import { showErrorAlert } from '../../redux/alertSlice'
 import { schemePublications } from '../../schemes/schemePublications'
+import DialogConfirm from './DialogConfirm'
+import Databases from './Databases'
+import ShowElement from '../../hoc/ShowElement'
 
-const DialogConfirm = ({ title, id, deletePublication, setIsOpenDialogConfirm }) => {
-
-    const handlerClickDelete = async () => {
-        setIsOpenDialogConfirm(false)
-        await deletePublication(id).unwrap()
-    }
-
-    const handlerClickBack = async () => {
-        setIsOpenDialogConfirm(false)
-    }
-
-    return(
-    <Dialog open scroll='paper'>
-        <DialogTitle sx={{ textAlign: 'center' }}>Удаление публикации</DialogTitle>
-        <DialogContent>
-          <Stack sx={{ minWidth: '250px' }}>
-            <DialogContentText>Вы уверены, что хотите удалить публикацию?</DialogContentText>
-            {/* <Typography>Вы уверены, что хотите удалить публикацию?</Typography> */}
-            <Typography fontWeight='bold'>{title}</Typography>
-          </Stack>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => handlerClickBack()}>Отмена</Button>
-          <Button onClick={() => handlerClickDelete()} color='error'>Удалить</Button>
-        </DialogActions>
-    </Dialog>
-    )
-  }
-
-const Databases = ({ databases: { wos, scopus, rinc } }) => {
-    const Database = ({ template: { color, label } }) => { return(<Chip label={label} size='small' sx={{ 
-        backgroundColor: color,
-        color: 'white'
-        }}/>)}
-
-    const databases = {
-        scopus: { label: 'Scopus', color: '#e9711c' },
-        wos: { label: 'WoS', color: '#5E33BF' },
-        rinc: { label: 'РИНЦ', color: '#5674b9' },
-    }
-
-    return(
-        <Stack direction='row' alignItems='center' spacing={1} mt='6px'>
-            {wos && <Database template={databases.wos}/>}
-            {scopus && <Database template={databases.scopus}/>}
-            {rinc && <Database template={databases.rinc}/>}
-        </Stack>
-    )
-}
 
 const Buttons = ({ isLoading, handlerEdit, handlerDelete }) => {
     
@@ -102,28 +46,36 @@ const Buttons = ({ isLoading, handlerEdit, handlerDelete }) => {
 //     </ButtonGroup>
 }
 
-const ExpandButton = ({ gr_xs, isExpanded, onClick }) => {
+// const ExpandButton = ({ gr_xs, isExpanded, onClick }) => {
 
-    if(gr_xs){
-        return(
-            <IconButton size='large' onClick={onClick}>
-                { !isExpanded ? <ExpandMoreIcon/> : <ExpandLessIcon/>}
-            </IconButton>
-        )
-    }
-    else return null
-}
+//     if(gr_xs){
+//         return(
+//             <IconButton size='large' onClick={onClick}>
+//                 { !isExpanded ? <ExpandMoreIcon/> : <ExpandLessIcon/>}
+//             </IconButton>
+//         )
+//     }
+//     else return null
+// }
 
 const Article = ({ publication: {
+    id,
     p_type,
     title,
     authors,
-    wos,
-    scopus,
-    rinc,
     date,
-    id
-} }) => {
+    rinc_id,
+    web_of_science_id,
+    astrophysics_data_system_id,
+    mathscinet_id,
+    zbmath_id,
+    chemical_abstaracts_id,
+    springer_id,
+    agris_id,
+    scopus_id,
+    pubmed_id,
+    edn_id,
+    }}) => {
 
     const gr_xs = useMediaQuery('(min-width:1200px)')
 
@@ -150,7 +102,12 @@ const Article = ({ publication: {
                         cursor: 'auto',
                         userSelect: 'auto'  
                     } : null}>
-                    <ExpandButton gr_xs={gr_xs} isExpanded={isExpanded} onClick={() => setIsExpanded(prev => !prev)}/>
+                    {/* <ExpandButton gr_xs={gr_xs} isExpanded={isExpanded} onClick={() => setIsExpanded(prev => !prev)}/> */}
+                    <ShowElement isVisible={gr_xs}>
+                        <IconButton size='large' onClick={() => setIsExpanded(prev => !prev)}>
+                            { !isExpanded ? <ExpandMoreIcon/> : <ExpandLessIcon/>}
+                        </IconButton>
+                    </ShowElement>
                     <Stack flexDirection='column' width={1} px={'12px'}>
                         <Typography variant='overline' color='#9C9C9C'>{schemePublications.find(el => el.p_type === p_type )?.title || 'Тип не определен'}</Typography> 
                         <Typography variant='body1' fontWeight='bold'>{title}</Typography>
@@ -159,9 +116,20 @@ const Article = ({ publication: {
                             <Typography variant='body2'>
                                 {`Дата публикации: ${(new Date(date)).toLocaleDateString()}`}
                             </Typography>}
-                        <Databases databases={{ wos, scopus, rinc }}/>
+                        <Databases databases_ids={{
+                            rinc_id,
+                            web_of_science_id,
+                            astrophysics_data_system_id,
+                            mathscinet_id,
+                            zbmath_id,
+                            chemical_abstaracts_id,
+                            springer_id,
+                            agris_id,
+                            scopus_id,
+                            pubmed_id,
+                            edn_id,
+                        }}/>
                     </Stack>
-                    
                 </ListItemButton>
             </ListItem>
             <Divider variant="middle"/>
