@@ -1,7 +1,9 @@
-from flask_login import login_required, current_user
 from flask_restx import Namespace, Resource, fields
 from flask_restx import reqparse
+from flask_security import auth_required, current_user
+
 from utils.logger import create_logger
+from ..core.user_operations import user_operations
 
 api = Namespace('credentials', description='Credentials related operations')
 api.logger = create_logger(__name__)
@@ -23,29 +25,17 @@ credentials_model = api.model('credentials_model', {"firstname": fields.String,
 class Credentials(Resource):
 
     @api.marshal_with(credentials_model)
-    @login_required
+    @auth_required("session")
     def get(self):
         return current_user, 200
 
     @api.expect(credentials_parser)
-    @login_required
+    @api.marshal_with(credentials_model)
+    @auth_required("session")
     def post(self):
         args = credentials_parser.parse_args()
-        firstname = args.get('firstname')
-        middlename = args.get('middlename')
-        lastname = args.get('lastname')
-        degree = args.get('degree')
-        position = args.get('position')
-        current_user.firstname = firstname
-        current_user.middlename = middlename
-        current_user.lastname = lastname
-        current_user.degree = degree
-        current_user.position = position
-        error = current_user.update_db()
-        if error:
-            return {"result": f"Error: {error}"}, 500
-        else:
-            return {"result": f"Success"}, 200
+        user = user_operations.update_user(current_user.id, args)
+        return user, 200
 
 
 api.add_resource(Credentials, '/')

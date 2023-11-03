@@ -1,4 +1,5 @@
 from flask_restx import Namespace, Resource, fields
+
 from utils.logger import create_logger
 
 api = Namespace('home', description='User related operations')
@@ -14,8 +15,9 @@ class Home(Resource):
     @api.marshal_with(home_model, skip_none=True)
     def get(self):
         api.logger.info("Access to home resource...")
-        response = {"response": "Hello there!",
-                    "error": None}
+        response = {
+            "response": "Hello there!"
+        }
         return response, 200
 
 

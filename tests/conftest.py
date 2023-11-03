@@ -1,8 +1,9 @@
-import pytest
-from app import create_app
-from app.extensions import db
-from app.model import User, Publication
 import datetime
+
+import pytest
+
+from app import create_app
+from app.model import UserModel, PublicationsModel, db_session
 
 
 # noinspection PyArgumentList
@@ -10,9 +11,9 @@ import datetime
 def app():
     app = create_app(config_string="testing")
     with app.app_context():
-        db.drop_all()
-        db.create_all()
-        admin = User(
+        db_session.drop_all()
+        db_session.create_all()
+        admin = UserModel(
             email='ekolotushin@gmoil.cam',
             firstname='Egor',
             lastname='Kolotushin',
@@ -21,8 +22,8 @@ def app():
             position='Assistant Professor',
         )
         admin.set_password("admin")
-        db.session.add(admin)
-        db.session.add(User(
+        db_session.add(admin)
+        db_session.add(UserModel(
             email='drodionov@gmoil.cim',
             firstname='Danil',
             lastname='Rodionov',
@@ -30,7 +31,7 @@ def app():
             degree='PhD',
             position='Assistant Professor',
         ))
-        db.session.add(Publication(
+        db_session.add(PublicationsModel(
             title='Wow paper',
             authors=['Egor Kolotushin', 'Danil Rodionov'],
             journal='Nature',
@@ -41,10 +42,10 @@ def app():
             date=datetime.datetime(2020, 1, 1),
             publication_type='Article',
         ))
-        db.session.commit()
+        db_session.commit()
     yield app
     with app.app_context():
-        db.drop_all()
+        db_session.drop_all()
 
 
 @pytest.fixture()

@@ -1,29 +1,12 @@
-from flask_login import login_required, current_user
+from flask import request
 from flask_restx import Namespace, Resource, fields
-from ..model import PublicationsModel, db_session
-from flask_restx import reqparse, inputs
+from flask_security import auth_required, current_user
+
 from utils.logger import create_logger
-import datetime
+from ..core.publication_operations import publication_operations
 
 api = Namespace('publications', description='Publication related operations')
 api.logger = create_logger(__name__)
-
-publication_parser = reqparse.RequestParser()
-publication_parser.add_argument('title', help='Publication title', required=True, type=str)
-publication_parser.add_argument('authors', help='Publication authors', required=True, type=list, location='json')
-publication_parser.add_argument('journal', help='Publication journal', type=str)
-publication_parser.add_argument('volume', help='Publication volume', type=int)
-publication_parser.add_argument('page', help='Publication page', type=int)
-publication_parser.add_argument('doi', help='Publication doi', type=str)
-publication_parser.add_argument('abstract', help='Publication abstract', type=str)
-publication_parser.add_argument('date', help='Publication date', type=inputs.date_from_iso8601)
-publication_parser.add_argument('p_type', help='Publication type', type=str)
-publication_parser.add_argument('isbn', help='Publication isbn', type=str)
-publication_parser.add_argument('financial_support', help='Publication financial support', type=str)
-publication_parser.add_argument('publisher', help='Publication publisher', type=str)
-publication_parser.add_argument('url', help='Publication url', type=str)
-publication_parser.add_argument('title_book_of_abstracts', help='Publication title book of abstracts', type=str)
-publication_parser.add_argument('total_pages', help='Publication total pages', type=int)
 
 publication_model = api.model('publication_model', {"id": fields.Integer,
                                                     "title": fields.String,
@@ -31,61 +14,43 @@ publication_model = api.model('publication_model', {"id": fields.Integer,
                                                     "date": fields.Date})
 
 
-# noinspection PyArgumentList
 class Publications(Resource):
     @api.marshal_list_with(publication_model)
-    @login_required
+    @auth_required("session")
     def get(self):
-        pubs = PublicationsModel.query.all()
+        pubs = publication_operations.get_all_publications()
         return pubs
 
     @api.marshal_with(publication_model)
-    @api.expect(publication_parser)
-    @login_required
+    @auth_required("session")
     def post(self):
-        args = publication_parser.parse_args()
+        args = request.get_json()
         args["user_id"] = current_user.id
         api.logger.info(f"Create publication with properties {args}")
-        pub = PublicationsModel(**args)
-        db_session.add(pub)
-        db_session.commit()
-        return pub, 201
+        publication = publication_operations.create_publication(args)
+        return publication, 201
 
 
 class PublicationsId(Resource):
     @api.marshal_with(publication_model, skip_none=True)
-    @login_required
+    @auth_required("session")
     def get(self, pid):
-        pub = db_session.query(Publications).filter_by(id=pid).first()
+        pub = publication_operations.get_publication_by_id(pid)
         return pub, 200
 
     @api.marshal_with(publication_model, skip_none=True)
-    @login_required
+    @auth_required("session")
     def put(self, pid):
-        args = publication_parser.parse_args()
-        pub = db_session.query(Publications).filter_by(id=pid).first()
-        if pub is None:
-            return pub, 404
-
+        args = request.get_json()
         api.logger.info(f"Update publication with properties {args}")
-
-        pub.update(args)
-        pub.update_db()
+        pub = publication_operations.update_publication(pid, args)
         return pub, 200
 
     @api.marshal_with(publication_model)
-    @login_required
+    @auth_required("session")
     def delete(self, pid):
-        pub = None
-        try:
-            pub = db_session.query(Publications).filter_by(id=pid).first()
-            if pub is not None:
-                db_session.delete(pub)
-                db_session.commit()
-        except Exception as e:
-            error = str(e)
-            api.logger.error(error)
-        return pub
+        publication_operations.delete_publications([pid])
+        return "", 204
 
 
 api.add_resource(Publications, '/')

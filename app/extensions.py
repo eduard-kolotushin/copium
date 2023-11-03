@@ -1,5 +1,6 @@
 from flask_restx import Api
 from flask_security import Security
+
 from app.security import user_datastore
 
 api = Api(
@@ -9,4 +10,4 @@ api = Api(
     prefix="/api",
     doc="/api/doc"
 )
-security = Security(datastore=user_datastore)
+security = Security(datastore=user_datastore, register_blueprint=False)
