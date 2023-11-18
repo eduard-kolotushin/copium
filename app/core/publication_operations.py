@@ -99,6 +99,7 @@ class PublicationOperations:
             if publication is None:
                 logger.warning(f"Publication with id {id} not found")
             self.db.delete(publication)
+            self.db.commit()
             logger.info(f"Publication with id {id} deleted")
 
 
