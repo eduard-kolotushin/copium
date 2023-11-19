@@ -1,30 +1,22 @@
 from flask import Flask
-from .extensions import db, api, migrate, login
-from config import DevelopConfig, ProductionConfig, TestingConfig
+import config
+from .extensions import api, security
 from . import route
 from . import model
 from utils.logger import create_logger
+from app.security import setup_security
 
 
-def create_app(config_string="development"):
-    match config_string:
-        case "development":
-            config_object = DevelopConfig
-        case "production":
-            config_object = ProductionConfig
-        case "testing":
-            config_object = TestingConfig
-        case _:
-            config_object = DevelopConfig
-    app = Flask(__name__)
+def create_app(config_string: str = "development") -> Flask:
+    config_object = config.get_config(config_string)
+    app: Flask = Flask(__name__)
     app.config.from_object(config_object)
     app.logger = create_logger(__name__)
     register_extensions(app)
     return app
 
 
-def register_extensions(app):
-    db.init_app(app)
+def register_extensions(app: Flask) -> None:
     api.init_app(app)    #, doc=False, add_specs=False
-    migrate.init_app(app, db)
-    login.init_app(app)
+    security.init_app(app)
+    setup_security(app, security)

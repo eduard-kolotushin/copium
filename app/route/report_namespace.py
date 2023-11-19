@@ -1,24 +1,26 @@
+from flask import send_file
 from flask_login import login_required
 from flask_restx import Namespace, Resource
-from ..model import Publication, Article, Thesis, Monograph
-from utils.logger import create_logger
+
 from app.core.report_creator import create_report
-from flask import send_file
+from utils.logger import create_logger
+from ..core.publication_operations import publication_operations
 
 api = Namespace('report', description='Report related operations')
 api.logger = create_logger(__name__)
 
 
-# noinspection PyArgumentList
 class Report(Resource):
     @login_required
     def get(self):
-        pubs = Publication.query.all()
-        articles = Article.query.all()
-        theses = Thesis.query.all()
-        monographs = Monograph.query.all()
+        pubs = publication_operations.get_all_publications()
+        if not isinstance(pubs, list):
+            return {
+                "error": "Couldn't get publications for the report",
+                "description": pubs
+            }
         filename = create_report(
-            publications=pubs + articles + theses + monographs
+            publications=pubs
         )
         return send_file(
             filename,

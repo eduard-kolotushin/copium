@@ -1,14 +1,16 @@
-from flask_login import login_required
-from flask_restx import Namespace, Resource, fields
-from ..extensions import api as app
+from flask_restx import Namespace, Resource
+from flask_security import auth_required, roles_required
+
 from utils.logger import create_logger
+from ..extensions import api as app
 
 api = Namespace('help', description='User related operations')
 api.logger = create_logger(__name__)
 
 
 class Help(Resource):
-    @login_required
+    @auth_required("session")
+    @roles_required("admin")
     def get(self):
         """Print all defined routes and their endpoint docstrings
 

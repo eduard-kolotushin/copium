@@ -15,133 +15,72 @@
             <column name="email" type="varchar(1000)">
                 <constraints unique="true"/>
             </column>
+            <column name="active" type="boolean">
+                <constraints nullable="false"/>
+            </column>
             <column name="degree" type="varchar(1000)"/>
             <column name="position" type="varchar(1000)"/>
-            <column name="password_hash" type="varchar(1000)"/>
+            <column name="password" type="varchar(255)"/>
+            <column name="fs_uniquifier" type="varchar(64)">
+                <constraints nullable="false" unique="true"/>
+            </column>
         </createTable>
         <createTable tableName="publications">
             <column name="id" type="int" autoIncrement="true">
                 <constraints nullable="false" primaryKey="true"/>
             </column>
-            <column name="title" type="varchar(1000)">
-                <constraints nullable="false" unique="true"/>
+            <column name="uploaded_by" type="int">
+                <constraints nullable="false" foreignKeyName="fk_publications_user" referencedTableName="users" referencedColumnNames="id"/>
             </column>
-            <column name="authors" type="clob">
-                <constraints nullable="false"/>
-            </column>
+            <column name="uploaded_from" type="clob"/>
+            <column name="title" type="varchar(1000)"/>
+            <column name="authors" type="varchar(128) []"/>
+            <column name="authors_ids" type="int []"/>
+            <column name="affilations" type="varchar(1000) []"/>
+            <column name="topics" type="varchar(1000) []"/>
+            <column name="publisher" type="clob"/>
             <column name="journal" type="clob"/>
             <column name="volume" type="int"/>
-            <column name="page" type="int"/>
-            <column name="doi" type="varchar(1000)">
-                <constraints unique="true"/>
-            </column>
+            <column name="page" type="varchar(32)"/>
+            <column name="isbn" type="varchar(1000)"/>
+            <column name="doi" type="varchar(1000)"/>
             <column name="abstract" type="clob"/>
-            <column name="date" type="date">
-                <constraints nullable="false"/>
-            </column>
-            <column name="created" type="datetime" defaultValueDate="current_timestamp">
-                <constraints nullable="false"/>
-            </column>
-            <column name="publication_type" type="varchar(128)">
-                <constraints nullable="false"/>
-            </column>
+            <column name="date" type="date"/>
+            <column name="rinc_id" type="varchar(1000)"/>
+            <column name="issn" type="varchar(1000)"/>
+            <column name="web_of_science_id" type="varchar(1000)"/>
+            <column name="astrophysics_data_system_id" type="varchar(1000)"/>
+            <column name="mathscinet_id" type="varchar(1000)"/>
+            <column name="zbmath_id" type="varchar(1000)"/>
+            <column name="chemical_abstaracts_id" type="varchar(1000)"/>
+            <column name="springer_id" type="varchar(1000)"/>
+            <column name="agris_id" type="varchar(1000)"/>
+            <column name="georef_id" type="varchar(1000)"/>
+            <column name="scopus_id" type="varchar(1000)"/>
+            <column name="pubmed_id" type="varchar(1000)"/>
+            <column name="edn_id" type="varchar(1000)"/>
+            <column name="created" type="datetime" defaultValueDate="CURRENT_TIMESTAMP"/>
+            <column name="updated" type="datetime" defaultValueDate="CURRENT_TIMESTAMP"/>
+            <column name="publication_type" type="varchar(128)"/>
         </createTable>
-        <createTable tableName="articles">
+        <createTable tableName="role">
             <column name="id" type="int" autoIncrement="true">
                 <constraints nullable="false" primaryKey="true"/>
             </column>
-            <column name="title" type="varchar(1000)">
-                <constraints nullable="false" unique="true"/>
-            </column>
-            <column name="authors" type="varchar(128) []">
-                <constraints nullable="false"/>
-            </column>
-            <column name="volume" type="int">
-                <constraints nullable="false"/>
-            </column>
-            <column name="page" type="int">
-                <constraints nullable="false"/>
-            </column>
-            <column name="journal" type="clob">
-                <constraints nullable="false"/>
-            </column>
-            <column name="doi" type="varchar(1000)">
+            <column name="name" type="varchar(80)">
                 <constraints unique="true"/>
             </column>
-            <column name="date" type="date">
-                <constraints nullable="false"/>
-            </column>
-            <column name="created" type="datetime" defaultValueDate="current_timestamp">
-                <constraints nullable="false"/>
-            </column>
-            <column name="isbn" type="clob"/>
-            <column name="financial_support" type="clob"/>
-            <column name="publisher" type="clob"/>
-            <column name="user_id" type="int">
-                <constraints nullable="false" foreignKeyName="fk_article_user" referencedTableName="users" referencedColumnNames="id"/>
+            <column name="description" type="varchar(255)"/>
+            <column name="permissions" type="clob">
+                <constraints nullable="true"/>
             </column>
         </createTable>
-        <createTable tableName="theses">
-            <column name="id" type="int" autoIncrement="true">
-                <constraints nullable="false" primaryKey="true"/>
-            </column>
-            <column name="title_book_of_abstracts" type="varchar(1000)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="title" type="varchar(1000)">
-                <constraints nullable="false" unique="true"/>
-            </column>
-            <column name="authors" type="varchar(128) []">
-                <constraints nullable="false"/>
-            </column>
-            <column name="page" type="int"/>
-            <column name="doi" type="varchar(1000)">
-                <constraints unique="true"/>
-            </column>
-            <column name="url" type="varchar(1000)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="date" type="date">
-                <constraints nullable="false"/>
-            </column>
-            <column name="created" type="datetime" defaultValueDate="current_timestamp">
-                <constraints nullable="false"/>
-            </column>
-            <column name="financial_support" type="clob"/>
-            <column name="publisher" type="clob"/>
+        <createTable tableName="roles_users">
             <column name="user_id" type="int">
-                <constraints nullable="false" foreignKeyName="fk_thesis_user" referencedTableName="users" referencedColumnNames="id"/>
+                <constraints nullable="false" foreignKeyName="fk_roles_users_user" referencedTableName="users" referencedColumnNames="id"/>
             </column>
-        </createTable>
-        <createTable tableName="monographs">
-            <column name="id" type="int" autoIncrement="true">
-                <constraints nullable="false" primaryKey="true"/>
-            </column>
-            <column name="title" type="varchar(1000)">
-                <constraints nullable="false" unique="true"/>
-            </column>
-            <column name="authors" type="varchar(128) []">
-                <constraints nullable="false"/>
-            </column>
-            <column name="page" type="int"/>
-            <column name="doi" type="varchar(1000)">
-                <constraints unique="true"/>
-            </column>
-            <column name="url" type="varchar(1000)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="date" type="date">
-                <constraints nullable="false"/>
-            </column>
-            <column name="created" type="datetime" defaultValueDate="current_timestamp">
-                <constraints nullable="false"/>
-            </column>
-            <column name="isbn" type="clob"/>
-            <column name="financial_support" type="clob"/>
-            <column name="publisher" type="clob"/>
-            <column name="total_pages" type="int"/>
-            <column name="user_id" type="int">
-                <constraints nullable="false" foreignKeyName="fk_monograph_user" referencedTableName="users" referencedColumnNames="id"/>
+            <column name="role_id" type="int">
+                <constraints nullable="false" foreignKeyName="fk_roles_users_role" referencedTableName="role" referencedColumnNames="id"/>
             </column>
         </createTable>
     </changeSet>
