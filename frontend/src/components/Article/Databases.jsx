@@ -25,6 +25,9 @@ const Databases = ({ databases_ids }) => {
         let mas = []
         
         switch(true){
+            case databases_ids.rinc: {
+                mas.push(scheme.rinc)
+            }
             case databases_ids.web_of_science_id: {
                 mas.push(scheme.web_of_science)
             }
@@ -62,7 +65,7 @@ const Databases = ({ databases_ids }) => {
 
     return(
         <Stack direction='row' alignItems='center' spacing={1} mt='6px'>
-            {existingDatabases.map(db => (<Database template={db}/>))}
+            {existingDatabases.map((db, ind) => (<Database key={`db-${ind}`} template={db}/>))}
             {/* {web_of_science_id && <Database template={databases.wos}/>}
             {scopus && <Database template={databases.scopus}/>}
             {rinc && <Database template={databases.rinc}/>} */}

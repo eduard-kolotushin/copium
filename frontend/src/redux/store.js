@@ -7,6 +7,8 @@ import userReducer from './userSlice'
 import publicationsReducer from './publicationsSlice'
 import filterPublicationsReducer from './filterPublicationsSlice'
 import { publicationsApi } from './servicePublications'
+import { usersApi } from './serviceUsers'
+import { eventsApi } from './serviceEvents'
 
 export const store = configureStore(
   {
@@ -16,8 +18,10 @@ export const store = configureStore(
         user: userReducer,
         publications: publicationsReducer,
         filterPublications: filterPublicationsReducer,
-        [publicationsApi.reducerPath] : publicationsApi.reducer
+        [publicationsApi.reducerPath] : publicationsApi.reducer,
+        [usersApi.reducerPath] : usersApi.reducer,
+        [eventsApi.reducerPath] : eventsApi.reducer
     },
-    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(publicationsApi.middleware),
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(publicationsApi.middleware).concat(usersApi.middleware).concat(eventsApi.middleware),
     devTools: process.env.NODE_ENV === 'development'
   })

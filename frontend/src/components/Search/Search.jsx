@@ -15,14 +15,14 @@ const Search = ({ control, name, sx, placeholder, disabled }) => {
     name={name}
     control={control}
     render={({ field: { onBlur, onChange, ref, value } }) => (
-        <Box sx={{ ...sx, boxSizing: 'border-box' }}>
+        <Box sx={{ ...sx, width: 1, boxSizing: 'border-box' }}>
             <Box display={'flex'} sx={{
             backgroundColor: '#F5F5F5',
-            borderRadius: '12px'
+            borderRadius: '12px',
             }}>
                 <InputBase disabled={disabled} placeholder={placeholder || 'Поиск...'} sx={{
                     ml: '8px',
-                    flexGrow: 1
+                    flexGrow: 1,
                 }}
                 onChange={onChange}
                 onBlur={onBlur}

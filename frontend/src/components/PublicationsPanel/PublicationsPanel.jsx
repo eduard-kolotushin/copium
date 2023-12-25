@@ -8,11 +8,11 @@ import { schemePublications } from '../../schemes/schemePublications'
 import dayjs from 'dayjs'
 import CircleLoading from '../CircleLoading/CircleLoading'
 
-const PublicansPanel = () => {
+const PublicationsPanel = () => {
     
   const { data = [], isFetching, isLoading, isError } = useGetPublicationsQuery()
 
-  const fields = useSelector(state => state.filterPublications.fields)
+  const { fields, isInitialState } = useSelector(state => state.filterPublications)
 
   let articles = data
 
@@ -39,7 +39,7 @@ const PublicansPanel = () => {
     <List disablePadding sx={{ width: 1 }}>
         { articles.length != 0 ? 
           articles.map(pub => <Article key={pub.id} publication={pub}/>) : 
-          <Typography width={1} textAlign='center' my={'12px'}>{fields == null ? 'Список пока пуст.' : 'Соответсвий не найдено.'}</Typography> }
+          <Typography width={1} textAlign='center' my={'12px'}>{ isInitialState ? 'Список пока пуст.' : 'Соответсвий не найдено.'}</Typography> }
     </List>
       // <ScrollableBox height={1} width={1} sx={{ overflowY: 'auto'}}>
       //   { data.length != 0 ? 
@@ -49,4 +49,4 @@ const PublicansPanel = () => {
   )
 }
 
-export default PublicansPanel
+export default PublicationsPanel

@@ -48,33 +48,62 @@ const SideBar = ({ gr_xs }) => {
 
   if(gr_xs){
     return(
-      <Stack flexDirection={'column'} sx={{
-        height: 1,
-        width: '250px',
-        backgroundColor: '#F5F5F5'
+      <Box sx={{
+        mt: '24px',
+        mr: '24px',
       }}>
-        <Box mx={'auto'} pt={'16px'}>
-          <Logo fontSize={35}/>
-        </Box>
         <Box sx={{
-          my: '150px',
-          width: '250px',
+          borderRadius: '12px',
+          backgroundColor: 'white',
         }}>
           <List>
             {routes.map((route, id) => (
-                  <ListItem disablePadding key={id}>
-                    <ListItemButton sx={{ color: currentRoute === id ? 'primary.main' : '#575757'}} onClick={handlerClick(route.path, id)}>
-                      <ListItemIcon sx={{ color: 'inherit'}}>
-                        {route.icon}
-                      </ListItemIcon>
-                      <ListItemText color='inherit' primary={route.title}/>
-                    </ListItemButton>
-                  </ListItem>
+                <ListItem disablePadding key={id}>
+                  <ListItemButton sx={{ color: currentRoute === id ? 'primary.main' : '#575757'}} onClick={handlerClick(route.path, id)}>
+                    <ListItemIcon sx={{ color: 'inherit'}}>
+                      {route.icon}
+                    </ListItemIcon>
+                    <ListItemText color='inherit' primary={route.title}/>
+                  </ListItemButton>
+                </ListItem>
             ))}
           </List>
         </Box>
-      </Stack>
+      </Box>
+      
     )
+    // return(
+    //   <Box display={'inline-flex'} sx={{
+    //     // height: 1,
+    //     // width: '250px',
+    //     mt: '24px',
+    //     mr: '24px',
+    //     borderRadius: '12px',
+    //     backgroundColor: 'white',
+    //     // backgroundColor: '#F5F5F5'
+    //   }}>
+    //     {/* <Box mx={'auto'} pt={'16px'}>
+    //       <Logo fontSize={35}/>
+    //     </Box> */}
+    //     <Box display={'block'} sx={{
+    //       // my: '150px',
+    //       // width: '250px',
+    //     }}>
+    //       <List>
+    //         {routes.map((route, id) => (
+    //               <ListItem disablePadding key={id}>
+    //                 <ListItemButton sx={{ color: currentRoute === id ? 'primary.main' : '#575757'}} onClick={handlerClick(route.path, id)}>
+    //                   <ListItemIcon sx={{ color: 'inherit'}}>
+    //                     {route.icon}
+    //                   </ListItemIcon>
+    //                   <ListItemText color='inherit' primary={route.title}/>
+    //                 </ListItemButton>
+    //               </ListItem>
+    //         ))}
+    //       </List>
+    //     </Box>
+    //   </Box>
+    // )
   }
   else{
     return(
@@ -171,7 +200,8 @@ const ToolBar = ({ user, gr_xs, setSearchParams }) => {
       flexShrink: 0
     }}>
       <Stack direction='row' alignItems='center' spacing={3}>
-        {!gr_xs && <Logo fontSize={'32px'} shortForm={true}/>}
+        {/* {!gr_xs && <Logo fontSize={'32px'} shortForm={true}/>} */}
+        <Logo fontSize={'32px'} shortForm={!gr_xs}/>
         <Search/>
       </Stack>
 
@@ -195,13 +225,14 @@ const Home = () => {
   const user = useSelector(state => state.user.credential)
   const [searchParams, setSearchParams] = useSearchParams()
 
+
   return (
-    <Container maxWidth={false} sx={{ height: '100vh' }} disableGutters>
-      <Stack flexDirection={gr_xs ? 'row' : 'column-reverse'} height={1}>
-        <SideBar gr_xs={gr_xs}/>
-        
-        <Stack flexDirection={'column'} width={1} height={1} mx={gr_xs ? '24px' : '0px'}>
-          <ToolBar user={user} gr_xs={gr_xs} setSearchParams={setSearchParams}/>
+    <Container maxWidth={'lg'} sx={{ height: '100vh' }} disableGutters>
+      <Stack flexDirection={'column'} width={1} height={1} mx={gr_xs ? '24px' : '0px'}>
+        <ToolBar user={user} gr_xs={gr_xs} setSearchParams={setSearchParams}/>
+
+        <Stack flexDirection={gr_xs ? 'row' : 'column-reverse'} height={1}>
+          <SideBar gr_xs={gr_xs}/>
           <Box sx={{ 
             display: 'flex',
             flexGrow: 1,
@@ -217,6 +248,29 @@ const Home = () => {
       </Stack>
     </Container>
   )
+
+  // return (
+  //   <Container maxWidth={'lg'} sx={{ height: '100vh' }} disableGutters>
+  //     <Stack flexDirection={gr_xs ? 'row' : 'column-reverse'} height={1}>
+  //       <SideBar gr_xs={gr_xs}/>
+        
+  //       <Stack flexDirection={'column'} width={1} height={1} mx={gr_xs ? '24px' : '0px'}>
+  //         <ToolBar user={user} gr_xs={gr_xs} setSearchParams={setSearchParams}/>
+  //         <Box sx={{ 
+  //           display: 'flex',
+  //           flexGrow: 1,
+  //           width: 1, 
+  //           my: '24px',
+  //           backgroundColor: 'white',
+  //           borderRadius: '12px',
+  //           overflowY: 'hidden'
+  //         }}>
+  //           <Outlet/>
+  //         </Box>
+  //       </Stack>
+  //     </Stack>
+  //   </Container>
+  // )
 }
 
 export default Home

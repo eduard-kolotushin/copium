@@ -65,7 +65,7 @@ const Field = ({ control, name, type, title, rules, initialState, sx }) => {
   }
 }
 
-const Add = () => {
+const AddPublications = () => {
 
   const gr_sm = useMediaQuery('(min-width: 600px)')
   const navigate = useNavigate()
@@ -115,4 +115,4 @@ const Add = () => {
   )
 }
 
-export default Add
+export default AddPublications

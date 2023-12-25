@@ -130,7 +130,6 @@ export const schemePublications = [
             }
         ]
     },
-    
     {
         p_type: 'monography',
         title: 'Монография',
@@ -187,6 +186,49 @@ export const schemePublications = [
                 type: 'text',
                 initialState: '',
             }
+        ]
+    },
+    {
+        p_type: 'dissertation',
+        title: 'Диссертация',
+        fields: [
+            {
+                name: 'title',
+                title: 'Название',
+                type: 'text',
+                initialState: '',
+                rules: {
+                    required: 'Это обязательное поле'
+                }
+            },
+            {
+                name: 'authors',
+                title: 'Авторы',
+                type: 'text',
+                initialState: '',
+                rules: {
+                    required: 'Это обязательное поле',
+                }
+            },
+            {
+                name: 'date',
+                title: 'Дата печати',
+                type: 'date',
+                initialState:  dayjs().format('YYYY-MM-DD'),
+                rules: {
+                    required: 'Это обязательное поле',
+                }
+            },
+            {
+                name: 'page',
+                title: 'Количество страниц',
+                type: 'number',
+                initialState: 0,
+                xs: 12,
+                rules: {
+                    required: 'Это обязательное поле',
+                }
+            },
         ]
     },
 ]

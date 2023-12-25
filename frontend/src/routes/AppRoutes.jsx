@@ -8,15 +8,17 @@ import Home from '../pages/Home/Home.jsx'
 import ProtectedRoute from '../hoc/ProtectedRoute.jsx'
 import Register from '../pages/Register/Register.jsx'
 
+import Users from '../pages/Home/Users.jsx'
 import Documents from '../pages/Home/Documents'
 import Mail from '../pages/Home/Mail'
 import Messenger from '../pages/Home/Messenger'
 import Cloud from '../pages/Home/Cloud'
-
 import Publications from '../pages/Home/Publications'
-import Add from '../components/Add/Add.jsx'
+import AddPublications from '../components/AddPublications/AddPublications.jsx'
+import AddUsers from '../components/AddUsers/AddUsers.jsx'
 
 import { isFirstEnter } from '../API/API.js'
+import Events from '../pages/Home/Events.jsx'
 
 const AppRoutes = () => {
     const credential = useSelector(state => state.user.credential)
@@ -45,10 +47,14 @@ const AppRoutes = () => {
                         <Home/>
                     </ProtectedRoute>
                 </ProtectedRoute>}>
-                <Route index element={<Navigate to='publications'/>}/>
-                <Route path='publications' element={<Publications/>}>
-                    <Route path='add' element={<Add/>}/>
+                <Route index element={<Navigate to='users'/>}/>
+                <Route path='users' element={<Users/>}>
+                    <Route path='add' element={<AddUsers/>}/>
                 </Route>
+                <Route path='publications' element={<Publications/>}>
+                    <Route path='add' element={<AddPublications/>}/>
+                </Route>
+                <Route path='events' element={<Events/>}/>
                 <Route path='documents' element={<Documents/>}/>
                 <Route path='email' element={<Mail/>}/>
                 <Route path='cloud' element={<Cloud/>}/>

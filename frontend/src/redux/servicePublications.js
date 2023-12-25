@@ -15,18 +15,17 @@ export const publicationsApi = createApi({
             : [{ type: 'Publications', id: 'LIST' }]
         }),
         addPublication: build.mutation({
-            query: (publications) => ({
+            query: (publication) => ({
                 url: '/publication/',
                 method: 'POST',
-                body: publications
+                body: publication
             }),
             invalidatesTags: [{ type: 'Publications', id: 'LIST' }]
         }),
         deletePublication: build.mutation({
             query: (id) => ({
-                url: '/publication/',
+                url: `/publication/${id}`,
                 method: 'DELETE',
-                body: { id }
             }),
             invalidatesTags: [{ type: 'Publications', id: 'LIST' }]
         })

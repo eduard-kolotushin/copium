@@ -1,6 +1,6 @@
 const ShowElement = ({ isVisible, children }) => {
     if(isVisible)
-        return({ children })
+        return(children)
     else return(null)
 }
 
