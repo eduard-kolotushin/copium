@@ -17,11 +17,11 @@ import {
 } from '@mui/material'
 import Grid from '@mui/material/Unstable_Grid2'
 
-import InputSelect from '../InputSelect/InputSelect'
-import InputText from '../InputText/InputText'
-import InputDate from '../InputDate/InputDate'
-import { useAddPublicationMutation } from '../../redux/servicePublications'
+import InputSelect from '../../components/InputSelect/InputSelect'
+import InputText from '../../components/InputText/InputText'
+import InputDate from '../../components/InputDate/InputDate'
 
+import { useAddPublicationMutation } from '../../redux/servicePublications'
 
 const CurrentPanel = ({ panel, control }) => {
   if(panel)

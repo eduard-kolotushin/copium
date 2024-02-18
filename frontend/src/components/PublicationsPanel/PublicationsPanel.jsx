@@ -35,11 +35,16 @@ const PublicationsPanel = () => {
       <Typography width={1} textAlign='center' my={'12px'}>Ошибка. Попробуйте обновить страницу.</Typography>
     )
 
+  if(articles.length == 0)
+    return(
+      <Typography width={1} textAlign='center' my={'12px'}>
+        { isInitialState ? 'Список пока пуст.' : 'Соответсвий не найдено.' }
+      </Typography>
+    )
+
   return(
     <List disablePadding sx={{ width: 1 }}>
-        { articles.length != 0 ? 
-          articles.map(pub => <Article key={pub.id} publication={pub}/>) : 
-          <Typography width={1} textAlign='center' my={'12px'}>{ isInitialState ? 'Список пока пуст.' : 'Соответсвий не найдено.'}</Typography> }
+      { articles.map(pub => <Article key={pub.id} publication={pub}/>) }
     </List>
       // <ScrollableBox height={1} width={1} sx={{ overflowY: 'auto'}}>
       //   { data.length != 0 ? 

@@ -13,6 +13,11 @@ import {
   Divider,
   Fab,
   useMediaQuery,
+  Button,
+  Paper,
+  Tabs,
+  Tab,
+  Typography
   } from '@mui/material'
 
 import FilterAltIcon from '@mui/icons-material/FilterAlt'
@@ -20,13 +25,13 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import AddIcon from '@mui/icons-material/Add'
 import SortIcon from '@mui/icons-material/Sort'
 
-import PublicansPanel from '../../components/PublicationsPanel/PublicationsPanel'
+import PublicationsPanel from '../../components/PublicationsPanel/PublicationsPanel'
 import FilterPanel from '../../components/FilterPanel/FilterPanel'
 import Search from '../../components/Search/Search'
 import ShowElement from '../../hoc/ShowElement'
 
 
-const Header = ({ gr_xs, onClickFilter }) => {
+const Header = ({ control, name, onClickFilter }) => {
 
   const navigate = useNavigate()
   const { fields, initialState } = useSelector(state => state.filterPublications)
@@ -48,27 +53,28 @@ const Header = ({ gr_xs, onClickFilter }) => {
       )
 
   return(
-    <Stack p='16px' spacing={2}>
+    <Stack p='8px'>
         <Stack direction='row' width={1} justifyContent='space-between' boxSizing='border-box'>
           <Stack direction='row' spacing={2} alignItems={'center'}>
-            <Fab variant={gr_xs ? 'extended' : 'circular'} color='primary' size={'small'} onClick={() => navigate('add')}>
-              <AddIcon sx={{ mr: gr_xs ? 1 : 0 }}/>
-              {gr_xs ? 'Добавить' : null}
-            </Fab>
-            <Fab variant='extended' color='primary' size='small'>
+            <Button variant="text" startIcon={<AddIcon/>} onClick={() => navigate('add')}>
+              Добавить
+            </Button>
+            <Button variant='text' endIcon={<ExpandMoreIcon/>}>
               Действия
-              <ExpandMoreIcon sx={{ ml: gr_xs ? 1 : 0 }}/>
-            </Fab>
+            </Button>
           </Stack>
-          {/* {!gr_xs && */}
-          <Fab variant={gr_xs ? 'extended' : 'circular'} color='primary' size='small' sx={{ flexShrink: 0 }} onClick={onClickFilter}>
-            <FilterAltIcon sx={{ mr: gr_xs ? 1 : 0 }}/>
-            {gr_xs ? 'Фильтр' : null}
-          </Fab>
-          {/* } */}
+          <Stack direction='row' spacing={2} alignItems={'center'}>
+            <Box flexShrink={0}>
+              <Search control={control} name={name}/>
+            </Box>
+            <Button variant="text" startIcon={<FilterAltIcon/>} onClick={onClickFilter}>
+            Фильтр
+          </Button>
+          </Stack>
         </Stack>
         <ShowElement isVisible={isShow}>
           <Box width={1}>
+            {isShow && <Chip variant='outlined' onClick={() => null} label={'Очистить фильтр'} color='primary'/>}
             {isShowTypes && fields.types.map((type, index) => <FilterItem name='types' value={type} label={type.label} key={`type-${index}`}/>)}
             {isShowDOI && <FilterItem name='doi' label={`${fields.doi ? 'Есть' : 'Нет'} DOI`}/>}
             {isShowISBN && <FilterItem name='isbn' label={`${fields.isbn ? 'Есть' : 'Нет'} ISBN`}/>}
@@ -81,26 +87,26 @@ const Header = ({ gr_xs, onClickFilter }) => {
   )
 }
 
-const Subheader = ({ control, name }) => {
+const Subheader = ({ counts }) => {
 
-  const [sortType, setSortType] = useState('new')
+  const [sortType, setSortType] = useState(0)
 
   const label = useMemo(() => {
     switch(sortType){
-      case 'new':
+      case 0:
         return 'Сначала новые'
-      case 'old':
+      case 1:
         return 'Сначала старые'
     }
   }, [sortType])
 
   return(
-    <Stack direction={'row'} width={1} spacing={3} justifyContent={'space-between'} p={'16px'} boxSizing={'border-box'} alignItems={'center'}>
-      <Search control={control} name={name} sx={{ maxWidth: '550px' }}/>
-      <Fab variant='extended' size='small' sx={{ flexShrink: 0 }}>
+    <Stack direction={'row'} width={1} spacing={3} justifyContent={'space-between'} p={'8px'} boxSizing={'border-box'} alignItems={'center'}>
+      <Typography fontWeight={'bold'}>{`Найдено публикаций (${counts | 0})`}</Typography>
+      <Button variant='text' color='inherit' size='small' sx={{ flexShrink: 0 }} >
         { label }
-        <SortIcon sx={{ ml: 1 }}/>
-      </Fab>
+        <SortIcon/>
+      </Button>
     </Stack>
   )
 }
@@ -125,13 +131,37 @@ const Publications = () => {
     }
   })
 
+  const [id, setId] = useState(0)
+
+  return(
+    <Stack direction='column' width={1}>
+      <Tabs value={id} onChange={(__, newId) => setId(newId)}>
+        <Tab label='Публикации' id='tab-0'/>
+        <Tab label='Конференции' id='tab-1'/>
+        <Tab label='Патенты' id='tab-2'/>
+        <Tab label='Гранты' id='tab-3'/>
+      </Tabs>
+      <Divider/>
+      <Header control={control} name={'search_publication'} onClickFilter={() => setIsFilterShowing(prev => !prev)}/>
+      <Divider/>
+      <Subheader control={control} name={'search_article'}/>
+      <Stack height={1} width={1} direction={'row'} spacing={2} sx={{ overflowX: 'hidden' }} divider={<Divider orientation="vertical" flexItem />}>
+        <PublicationsPanel/>
+      </Stack>
+      <ShowElement isVisible={isShowingFilter}>
+        <FilterPanel gr_xs={gr_xs} isShowingFilterState={[isShowingFilter, setIsFilterShowing]}/>
+      </ShowElement>
+      <Outlet/>
+    </Stack>
+  )
+
   return(
     <Stack direction='column' width={1}>
       <Header gr_xs={gr_xs} onClickFilter={() => setIsFilterShowing(prev => !prev)}/>
       <Divider/>
       <Subheader control={control} name={'search_article'}/>
       <Stack height={1} width={1} direction={'row'} spacing={2} sx={{ overflowX: 'hidden' }} divider={<Divider orientation="vertical" flexItem />}>
-        <PublicansPanel/>
+        <PublicationsPanel/>
         {/* {(gr_xs || isShowingFilter) && <FilterPanel gr_xs={gr_xs} isShowingFilterState={[isShowingFilter, setIsFilterShowing]}/>} */}
       </Stack>
       {isShowingFilter && <FilterPanel gr_xs={gr_xs} isShowingFilterState={[isShowingFilter, setIsFilterShowing]}/>}

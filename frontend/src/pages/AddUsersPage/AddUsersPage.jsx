@@ -18,9 +18,9 @@ import {
   useMediaQuery
 } from '@mui/material'
 
-import InputSelect from '../InputSelect/InputSelect'
-import InputText from '../InputText/InputText'
-import InputDate from '../InputDate/InputDate'
+import InputSelect from '../../components/InputSelect/InputSelect'
+import InputText from '../../components/InputText/InputText'
+import InputDate from '../../components/InputDate/InputDate'
 
 import AddIcon from '@mui/icons-material/Add'
 import RemoveIcon from '@mui/icons-material/Remove';

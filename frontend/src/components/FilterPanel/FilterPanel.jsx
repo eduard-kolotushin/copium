@@ -85,15 +85,13 @@ const FilterPanel = ({ isShowingFilterState }) => {
   return (
       <ResponsivePanel gr_xs={gr_xs}>
         <Toolbar disableGutters>
-          {/* {!gr_xs && */}
+        <Typography variant='h5' flexGrow={1}>
+            Фильтр
+          </Typography>
           <IconButton size='medium' onClick={() => setIsFilterShowing(false)}>
             <CloseIcon fontSize='16px'/>
           </IconButton>
-          {/* } */}
-          <Typography variant='h5' flexGrow={1}>
-            Фильтр
-          </Typography>
-          <Button variant='text' onClick={clearFilter}>Сбросить</Button>
+          {/* <Button variant='text' onClick={clearFilter}>Сбросить</Button> */}
         </Toolbar>
 
         <ScrollableBox p={'4px'} sx={{ overflowY: 'auto', flexGrow: 1 }}>
@@ -132,7 +130,8 @@ const FilterPanel = ({ isShowingFilterState }) => {
         {/* {!gr_xs && */}
         <Box display={'flex'} width={1}>
           <form onSubmit={handleSubmit(applyFilter)} style={{ width: '100%' }}>
-            <Stack direction={'row'} justifyContent={'right'} py={'12px'} spacing={3} width={1}>
+            <Stack direction={'row'} justifyContent={'space-between'} py={'12px'} spacing={2} width={1}>
+              <Button variant='outlined' fullWidth onClick={clearFilter}>Сбросить</Button>
               <Button disabled={!isDirty || !isValid} variant='contained' fullWidth type='submit'>Применить</Button>
             </Stack>
           </form>

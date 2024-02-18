@@ -1,24 +1,24 @@
 import React from 'react'
 import { Route, Routes, Navigate, Outlet} from 'react-router-dom'
-import {useSelector} from 'react-redux'
+import { useSelector } from 'react-redux'
 
-import Login from '../pages/Login/Login.jsx'
-import Auth from '../pages/Auth/Auth.jsx'
-import Home from '../pages/Home/Home.jsx'
 import ProtectedRoute from '../hoc/ProtectedRoute.jsx'
-import Register from '../pages/Register/Register.jsx'
 
-import Users from '../pages/Home/Users.jsx'
-import Documents from '../pages/Home/Documents'
-import Mail from '../pages/Home/Mail'
-import Messenger from '../pages/Home/Messenger'
-import Cloud from '../pages/Home/Cloud'
-import Publications from '../pages/Home/Publications'
-import AddPublications from '../components/AddPublications/AddPublications.jsx'
-import AddUsers from '../components/AddUsers/AddUsers.jsx'
+import Login from '../pages/LoginPage/LoginPage.jsx'
+import Auth from '../pages/AuthPage/AuthPage.jsx'
+import Home from '../pages/HomePage/HomePage.jsx'
+import Register from '../pages/RegisterPage/RegisterPage.jsx'
+import Users from '../pages/UsersPage/UsersPage.jsx'
+import Documents from '../pages/DocumentsPage/DocumentsPage.jsx'
+import Mail from '../pages/MailPage/MailPage.jsx'
+import Messenger from '../pages/MessengerPage/MessengerPage.jsx'
+import Cloud from '../pages/CloudPage/CloudPage.jsx'
+import Publications from '../pages/PublicationsPage/PublicationsPage.jsx'
+import AddPublications from '../pages/AddPublicationsPage/AddPublicationsPage.jsx'
+import AddUsers from '../pages/AddUsersPage/AddUsersPage.jsx'
+import Events from '../pages/EventsPage/EventsPage.jsx'
 
 import { isFirstEnter } from '../API/API.js'
-import Events from '../pages/Home/Events.jsx'
 
 const AppRoutes = () => {
     const credential = useSelector(state => state.user.credential)
