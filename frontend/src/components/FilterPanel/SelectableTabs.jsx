@@ -59,7 +59,7 @@ const SelectableTabs = ({ name, control, options, children, width, spacing }) =>
       const container = containerRef.current
       container.scrollTo({
         left: container.scrollLeft + k * OFFSET,
-        behaviour: 'smooth'
+        behavior: 'smooth'
       })
     }
 

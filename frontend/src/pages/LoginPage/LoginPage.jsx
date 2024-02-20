@@ -5,11 +5,14 @@ import {
     Container, 
     Typography, 
     Card, 
-    Fade
+    Fade,
+    Divider,
+    Chip,
+    Stack,
+    CardContent,
+    Button,
+    Link
 } from '@mui/material'
-import CardContent from '@mui/material/CardContent'
-import Button from '@mui/material/Button'
-import Stack from '@mui/material/Stack'
 
 import Logo from '../../components/Logo/Logo'
 import { useForm } from 'react-hook-form'
@@ -19,6 +22,10 @@ import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 // import { showErrorAlert } from '../../redux/alertSlice'
 import { useLogin } from '../../hooks/useLogin'
+
+import VKIcon from '../../icons/VKIcon'
+import GosuslugiIcon from '../../icons/GosuslugiIcon'
+import SberIcon from '../../icons/SberIcon'
 
 
 const Login = () => {
@@ -61,15 +68,14 @@ const Login = () => {
                     <form onSubmit={handleSubmit(login)}>
                         <Stack direction='column' justifyContent='center' alignItems='center'>
 
-                            <Logo fontSize='50px' mt='24px' mb='24px'/>
+                            <Logo fontSize='50px' my='16px'/>
 
                             <Typography sx={{
-                                py: '18px',
+                                py: '12px',
                                 fontSize: '25px',
                                 fontFamily: 'TimesNewRoman',
                                 letterSpacing: '15px',
                                 textTransform: 'uppercase',
-                                userSelect: 'none',
                                 color: 'rgb(106, 106, 106)'
                             }}>
                                 Вход
@@ -118,16 +124,43 @@ const Login = () => {
                                         }
                                     }} fullWidth label='Пароль' variant='standard' type={'password'}/>
                                 </Box>
-
-                                <InputCheck name='remember' control={control} label='Запомнить'/>
+                                <Stack direction={'row'} justifyContent={'space-between'} alignItems={'center'} width={1}>
+                                    <InputCheck name='remember' control={control} label='Запомнить'/>
+                                    <Link>Забыли пароль?</Link>
+                                </Stack>
                             </Stack>
 
                             <Button fullWidth disabled={isSubmitting} type='submit' variant='contained' size='large' sx={{
                                 mt: '25px',
                             }}>
-                                {isSubmitting ? 'Вход в систему...' : 'Войти в систему'}
+                                {isSubmitting ? 'Вход...' : 'Войти'}
                             </Button>
+                            <Stack flexDirection={'column'} spacing={2} width={1} mt={'12px'}>
+                                <Divider>
+                                    <Chip label='или' size='small'/>
+                                </Divider>
                                 
+                                <Stack direction={'row'} justifyContent={'center'} spacing={5}>
+                                    <Button variant='outlined' format='square'>
+                                        <VKIcon fontSize='large'/>
+                                    </Button>
+                                    <Button variant='outlined' format='square'>
+                                        <GosuslugiIcon fontSize='large'/>
+                                    </Button>
+                                    <Button variant='outlined' format='square'>
+                                        <SberIcon fontSize='large'/>
+                                    </Button>
+                                </Stack>
+
+                                <Button variant='outlined' fullWidth>
+                                    вход с цифровой подписью
+                                </Button>
+                                <Divider/>
+                                <Stack direction={'row'} justifyContent={'center'} spacing={3}>
+                                    <Typography display={'inline'} variant='body1'>Нет аккаунта?</Typography>
+                                    <Link>Зарегестрироваться</Link>
+                                </Stack>
+                            </Stack>
                         </Stack>
                     </form>
                 </CardContent>

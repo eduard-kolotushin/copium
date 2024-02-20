@@ -85,7 +85,7 @@ const FilterPanel = ({ isShowingFilterState }) => {
   return (
       <ResponsivePanel gr_xs={gr_xs}>
         <Toolbar disableGutters>
-        <Typography variant='h5' flexGrow={1}>
+          <Typography variant='h5' flexGrow={1}>
             Фильтр
           </Typography>
           <IconButton size='medium' onClick={() => setIsFilterShowing(false)}>
@@ -137,7 +137,6 @@ const FilterPanel = ({ isShowingFilterState }) => {
           </form>
         </Box>
         {/* } */}
-
       </ResponsivePanel>
   )
 }

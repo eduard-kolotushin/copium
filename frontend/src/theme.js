@@ -34,9 +34,18 @@ export const theme = createTheme({
         MuiButton: {
             styleOverrides: {
                 root: {
-                    borderRadius: '8px'
+                    borderRadius: '8px',
                 }
-            }
+            },
+            variants: [
+                {
+                    props: { format: 'square' },
+                    style: {
+                        minWidth: 0,
+                        padding: '5px'
+                    }
+                }
+            ]
         },
         MuiAvatar: {
             variants: [
@@ -49,6 +58,17 @@ export const theme = createTheme({
                     }
                 }
             ]
+        },
+        MuiLink: {
+            styleOverrides: {
+                root: ({ theme }) => ({
+                    cursor: 'pointer',
+                    textDecoration: 'none',
+                    ':hover' : {
+                        color: theme.palette.primary.light
+                    }
+                })
+            }
         }
     }
 })

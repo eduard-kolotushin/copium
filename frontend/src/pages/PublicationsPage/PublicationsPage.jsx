@@ -29,6 +29,7 @@ import PublicationsPanel from '../../components/PublicationsPanel/PublicationsPa
 import FilterPanel from '../../components/FilterPanel/FilterPanel'
 import Search from '../../components/Search/Search'
 import ShowElement from '../../hoc/ShowElement'
+import ActionsMenu from './ActionsMenu'
 
 
 const Header = ({ control, name, onClickFilter }) => {
@@ -52,6 +53,8 @@ const Header = ({ control, name, onClickFilter }) => {
       isShowDate
       )
 
+  const [anchorEl, setAnchorEl] = useState(null)
+
   return(
     <Stack p='8px'>
         <Stack direction='row' width={1} justifyContent='space-between' boxSizing='border-box'>
@@ -59,9 +62,10 @@ const Header = ({ control, name, onClickFilter }) => {
             <Button variant="text" startIcon={<AddIcon/>} onClick={() => navigate('add')}>
               Добавить
             </Button>
-            <Button variant='text' endIcon={<ExpandMoreIcon/>}>
+            <Button variant='text' endIcon={<ExpandMoreIcon/>} onClick={(event) => setAnchorEl(event.currentTarget)}>
               Действия
             </Button>
+            <ActionsMenu onClose={() => setAnchorEl(null)} anchorEl={anchorEl} numberElements={1} maxNumberElements={3}/>
           </Stack>
           <Stack direction='row' spacing={2} alignItems={'center'}>
             <Box flexShrink={0}>

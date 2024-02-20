@@ -12,7 +12,8 @@ import {
     ListItem,
     ListItemButton,
     Box,
-    Link
+    Link,
+    CssBaseline
 } from '@mui/material'
 
 import { showErrorAlert } from '../../redux/alertSlice'
@@ -67,6 +68,7 @@ const Article = ({ publication: {
     p_type,
     title,
     authors,
+    journal,
     date,
     doi,
     rinc_id,
@@ -120,10 +122,14 @@ const Article = ({ publication: {
                     <Stack direction={'row'} width={1}>
                         <Stack flexDirection='column' width={1} px={'12px'}>
                             <Typography variant='overline' color='#9C9C9C'>{schemePublications.find(el => el.p_type === p_type)?.title || 'Тип не определен'}</Typography>
+                            <span>
+                                <Typography display={'inline'} variant='overline'>{journal || 'Неопознано'}</Typography>
+                                <Typography display={'inline'} variant='overline'>{` | Опубликовано ${(new Date(date)).toLocaleDateString()}`}</Typography>
+                            </span>
                             <Typography variant='body1' fontWeight='bold'>{title}</Typography>
                             <Typography variant='body2' fontStyle='italic'>{authors.join(', ')}</Typography>
                             <Link href={`https://doi.org/${doi}`} underline='none'>
-                                {doi}
+                                {doi || 'doi не опознан'}
                             </Link>
                             <ShowElement isVisible={isExpanded && date}>
                                 <Box display={'flex'} justifyContent={'space-between'}>

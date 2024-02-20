@@ -69,10 +69,10 @@ const User = ({ user }) => {
     <ListItem disableGutters py={'6px'}>
       <Grid container alignItems={'center'} spacing={2}>
         <Grid item xs>
-          <Typography>{user.firstname || '-'}</Typography>
+          <Typography>{user.lastname || '-'}</Typography>
         </Grid>
         <Grid item xs>
-          <Typography>{user.lastname  || '-'}</Typography>
+          <Typography>{user.firstname  || '-'}</Typography>
         </Grid>
         <Grid item xs>
           <Typography>{user.middlename  || '-'}</Typography>

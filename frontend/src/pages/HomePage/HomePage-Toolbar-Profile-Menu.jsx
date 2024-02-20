@@ -29,14 +29,14 @@ const ProfileMenu = ({ anchorEl, onClose, setSearchParams }) => {
         onClose={onClose}>
             <ListItemButton disableRipple onClick={() => setSearchParams({ act: 'setting' })}>
                 <ListItemIcon>
-                <SettingsIcon/>
+                    <SettingsIcon/>
                 </ListItemIcon>
                 <Typography>Настройки</Typography>
             </ListItemButton>
             <Divider/>
             <ListItemButton disableRipple onClick={logout}>
                 <ListItemIcon>
-                <Logout/>
+                    <Logout/>
                 </ListItemIcon>
                 <Typography>Выйти</Typography>
             </ListItemButton>
