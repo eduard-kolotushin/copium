@@ -1,29 +1,27 @@
 import React from 'react'
+import { List, Typography } from '@mui/material'
 import { useGetPublicationsQuery } from '../../redux/servicePublications'
-import ScrollableBox from '../ScrollableBox/ScrollableBox'
-import { Box, CircularProgress, List, Typography } from '@mui/material'
 import Article from '../Article/Article'
-import { useSelector } from 'react-redux'
-import { schemePublications } from '../../schemes/schemePublications'
-import dayjs from 'dayjs'
 import CircleLoading from '../CircleLoading/CircleLoading'
+import { useFilter } from '../../hooks/useFilter'
 
-const PublicationsPanel = () => {
+const PublicationsPanel = ({ articles, isLoading, isError, isInitialState}) => {
     
-  const { data = [], isFetching, isLoading, isError } = useGetPublicationsQuery()
+  // const { data = [], isFetching, isLoading, isError } = useGetPublicationsQuery()
+  // const { articles, isInitialState } = useFilter(data)
 
-  const { fields, isInitialState } = useSelector(state => state.filterPublications)
+  // const { fields, isInitialState } = useSelector(state => state.filterPublications)
 
-  let articles = data
+  // let articles = data
 
-  if(fields.types.length !== 0) { articles = articles.filter(article => fields.types.includes(article?.type)) }
-  if(fields.fs.length !== 0) { articles = articles.filter(article => fields.fs.includes(article?.type)) }
-  if(fields.db.length !== 0) { articles = articles.filter(article => fields.db.includes(article?.type)) }
+  // if(fields.types.length !== 0) { articles = articles.filter(article => fields.types.includes(article?.type)) }
+  // if(fields.fs.length !== 0) { articles = articles.filter(article => fields.fs.includes(article?.type)) }
+  // if(fields.db.length !== 0) { articles = articles.filter(article => fields.db.includes(article?.type)) }
 
-  if(fields.doi !== null) { articles = articles.filter(article => article?.doi === fields.doi) }
-  if(fields.isbn !== null) { articles = articles.filter(article => article?.isbn === fields.isbn) }
+  // if(fields.doi !== null) { articles = articles.filter(article => article?.doi === fields.doi) }
+  // if(fields.isbn !== null) { articles = articles.filter(article => article?.isbn === fields.isbn) }
 
-  if(!dayjs(fields.date.from).isToday() || !dayjs(fields.date.to).isToday()) { articles = articles.filter(article => dayjs(article.date).isBetween(fields.date.from, fields.date.to, 'day', '[]')) }
+  // if(!dayjs(fields.date.from).isToday() || !dayjs(fields.date.to).isToday()) { articles = articles.filter(article => dayjs(article.date).isBetween(fields.date.from, fields.date.to, 'day', '[]')) }
 
   if(isLoading) 
     return(

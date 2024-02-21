@@ -68,7 +68,7 @@ const Home = () => {
 
         <Stack flexDirection={gr_xs ? 'row' : 'column-reverse'} height={1}>
           <Sidebar gr_xs={gr_xs}/>
-          <Box sx={{
+          {/* <Box sx={{
             display: 'flex',
             flexGrow: 1,
             width: 1,
@@ -78,9 +78,9 @@ const Home = () => {
             overflowY: 'hidden'
           }}
           component={'main'}
-          >
+          > */}
             <Outlet/>
-          </Box>
+          {/* </Box> */}
         </Stack>
       </Stack>
     </Container>

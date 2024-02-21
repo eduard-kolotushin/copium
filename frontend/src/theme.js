@@ -23,6 +23,27 @@ export const theme = createTheme({
                 }
             }
         },
+        MuiContainer: {
+            variants: [
+                {
+                    props: { variant: ' inner' },
+                    style: {
+                        width: 1,
+                        padding: '8px 0'
+                    }
+                }
+            ]
+        },
+        MuiPaper: {
+            defaultProps: {
+                elevation: 0,
+            },
+            styleOverrides: {
+                root: {
+                    borderRadius: '12px'
+                }
+            }
+        },
         MuiTabs: {
             styleOverrides: {
                 indicator: {

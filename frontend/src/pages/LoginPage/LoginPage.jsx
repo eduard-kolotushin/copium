@@ -142,10 +142,10 @@ const Login = () => {
                                 
                                 <Stack direction={'row'} justifyContent={'center'} spacing={5}>
                                     <Button variant='outlined' format='square'>
-                                        <VKIcon fontSize='large'/>
+                                        <GosuslugiIcon fontSize='large'/>
                                     </Button>
                                     <Button variant='outlined' format='square'>
-                                        <GosuslugiIcon fontSize='large'/>
+                                        <VKIcon fontSize='large'/>
                                     </Button>
                                     <Button variant='outlined' format='square'>
                                         <SberIcon fontSize='large'/>

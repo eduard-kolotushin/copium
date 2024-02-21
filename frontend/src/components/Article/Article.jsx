@@ -28,6 +28,7 @@ import ModeEditOutlineOutlinedIcon from '@mui/icons-material/ModeEditOutlineOutl
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import ExpandLessIcon from '@mui/icons-material/ExpandLess'
+import { useDispatch } from 'react-redux'
 
 
 const Buttons = ({ isLoading, handlerEdit, handlerDelete }) => {
@@ -85,6 +86,8 @@ const Article = ({ publication: {
 } }) => {
 
     const gr_xs = useMediaQuery('(min-width:1200px)')
+    const dispatch = useDispatch()
+
     const { control } = useForm()
 
     const [deletePublication, { isLoading, isError, error }] = useDeletePublicationMutation()
@@ -93,7 +96,7 @@ const Article = ({ publication: {
     const [isExpanded, setIsExpanded] = useState(false)
 
     if (isError) {
-        showErrorAlert(`Публикация не удалена! ${error}`)
+        dispatch(showErrorAlert(`Публикация не удалена! ${error}`))
     }
 
     return (
@@ -105,6 +108,7 @@ const Article = ({ publication: {
                 <ListItemButton disableRipple={gr_xs}
                     alignItems='flex-start'
                     onClick={() => !gr_xs ? setIsExpanded(prev => !prev) : null}
+                    disableGutters
                     sx={gr_xs ? {
                         '&:hover': { backgroundColor: 'transparent' },
                         cursor: 'auto',
@@ -150,7 +154,7 @@ const Article = ({ publication: {
                                 scopus_id,
                                 pubmed_id,
                                 edn_id,
-                            }} />
+                            }}/>
                         </Stack>
                         <Buttons isLoading={isLoading} handlerDelete={() => setIsOpenDialogConfirm(true)} handlerEdit={null} />
                     </Stack>

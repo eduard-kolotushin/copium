@@ -36,6 +36,9 @@ const ActionsMenu = ({ open, anchorEl, onClose, numberElements, maxNumberElement
                     </ListItemIcon>
                     <ListItemText>{`Удалить выбранные элементы (${numberElements}/${maxNumberElements})`}</ListItemText>
                 </MenuItem>
+                <MenuItem>
+                    <ListItemText inset>{'Сбросить выделение'}</ListItemText>
+                </MenuItem>
             </MenuList>
         </Menu>
     )

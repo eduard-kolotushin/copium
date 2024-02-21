@@ -8,7 +8,8 @@ import {
     ListItem, 
     ListItemButton, 
     ListItemIcon, 
-    ListItemText } from '@mui/material'
+    ListItemText, 
+    Paper} from '@mui/material'
 
 import { useNavigate } from 'react-router-dom'
 import routes from '../../routes/routesSidebar'
@@ -26,10 +27,7 @@ const SideBar = ({ gr_xs }) => {
     if(gr_xs){
         return(
         <Box sx={{ mt: '24px', mr: '24px' }}>
-            <Box sx={{
-            borderRadius: '12px',
-            backgroundColor: 'white',
-            }}>
+            <Paper>
                 <List>
                     {routes.map((route, id) => (
                         <ListItem disablePadding key={id}>
@@ -42,7 +40,7 @@ const SideBar = ({ gr_xs }) => {
                         </ListItem>
                     ))}
                 </List>
-            </Box>
+            </Paper>
         </Box>
         )
     }

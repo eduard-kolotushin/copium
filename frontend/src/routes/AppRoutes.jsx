@@ -17,6 +17,7 @@ import Publications from '../pages/PublicationsPage/PublicationsPage.jsx'
 import AddPublications from '../pages/AddPublicationsPage/AddPublicationsPage.jsx'
 import AddUsers from '../pages/AddUsersPage/AddUsersPage.jsx'
 import Events from '../pages/EventsPage/EventsPage.jsx'
+import FilterPanel from '../components/FilterPanel/FilterPanel.jsx'
 
 import { isFirstEnter } from '../API/API.js'
 
@@ -53,6 +54,7 @@ const AppRoutes = () => {
                 </Route>
                 <Route path='publications' element={<Publications/>}>
                     <Route path='add' element={<AddPublications/>}/>
+                    <Route path='filter' element={<FilterPanel/>}/>
                 </Route>
                 <Route path='events' element={<Events/>}/>
                 <Route path='documents' element={<Documents/>}/>

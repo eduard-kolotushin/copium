@@ -20,15 +20,17 @@ import SelectableTabs from './SelectableTabs'
 import BooleanTabs from './BooleanTabs'
 import InputDateRange from '../InputDateRange/InputDateRange'
 import ResponsivePanel from './ResponsivePanel'
+import { useNavigate } from 'react-router-dom'
 
-const FilterPanel = ({ isShowingFilterState }) => {
+const FilterPanel = () => {
 
   const gr_xs = useMediaQuery('(min-width:1200px)')
 
+  const navigate = useNavigate()
   const dispatch = useDispatch()
   const { fields } = useSelector(state => state.filterPublications)
 
-  const [isShowingFilter, setIsFilterShowing] = isShowingFilterState
+  // const [isShowingFilter, setIsFilterShowing] = isShowingFilterState
 
   const all_types_publications = schemePublications.map(pub => ({ value: pub.p_type, label: pub.title }))
   const all_types_finsupports = [
@@ -65,22 +67,16 @@ const FilterPanel = ({ isShowingFilterState }) => {
   })
 
   const clearFilter = () => {
-    // reset()
     dispatch(clearFilterPublications())
-    setIsFilterShowing(false)
+    navigate(-1)
+    // setIsFilterShowing(false)
   }
 
   const applyFilter = (data) => {
     dispatch(setFilterPublications(data))
-    setIsFilterShowing(false)
+    navigate(-1)
+    // setIsFilterShowing(false)
   }
-
-  // useEffect(() => {
-  //   const subscription = watch((value, { name, type }) => { 
-  //     if(gr_xs){ applyFilter(value) }
-  //   })
-  //   return () => subscription.unsubscribe()
-  // }, [watch])
 
   return (
       <ResponsivePanel gr_xs={gr_xs}>
@@ -88,10 +84,10 @@ const FilterPanel = ({ isShowingFilterState }) => {
           <Typography variant='h5' flexGrow={1}>
             Фильтр
           </Typography>
-          <IconButton size='medium' onClick={() => setIsFilterShowing(false)}>
+          <IconButton size='medium' onClick={() => navigate(-1)}>
+            {/* setIsFilterShowing(false) */}
             <CloseIcon fontSize='16px'/>
           </IconButton>
-          {/* <Button variant='text' onClick={clearFilter}>Сбросить</Button> */}
         </Toolbar>
 
         <ScrollableBox p={'4px'} sx={{ overflowY: 'auto', flexGrow: 1 }}>
