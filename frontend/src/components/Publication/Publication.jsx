@@ -45,26 +45,9 @@ const Buttons = ({ isLoading, handlerEdit, handlerDelete }) => {
             </Fab>
         </Stack>
     )
-
-    //     <ButtonGroup variant="outlined" aria-label="text button group">
-    //         <Button disabled={isLoading} size='medium' endIcon={<ModeEditOutlineOutlinedIcon/>}>Изменить</Button>
-    //         <Button disabled={isLoading} size='medium' endIcon={<DeleteOutlineOutlinedIcon/>} color='error' onClick={() => setIsOpenDialogConfirm(true)}>Удалить</Button>
-    //     </ButtonGroup>
 }
 
-// const ExpandButton = ({ gr_xs, isExpanded, onClick }) => {
-
-//     if(gr_xs){
-//         return(
-//             <IconButton size='large' onClick={onClick}>
-//                 { !isExpanded ? <ExpandMoreIcon/> : <ExpandLessIcon/>}
-//             </IconButton>
-//         )
-//     }
-//     else return null
-// }
-
-const Article = ({ publication: {
+const Publication = ({ publication: {
     id,
     p_type,
     title,
@@ -114,7 +97,6 @@ const Article = ({ publication: {
                         cursor: 'auto',
                         userSelect: 'auto'
                     } : null}>
-                    {/* <ExpandButton gr_xs={gr_xs} isExpanded={isExpanded} onClick={() => setIsExpanded(prev => !prev)}/> */}
                     <Stack direction={'column'}>
                         <ShowElement isVisible={gr_xs}>
                             <IconButton size='large' onClick={() => setIsExpanded(prev => !prev)}>
@@ -128,12 +110,12 @@ const Article = ({ publication: {
                             <Typography variant='overline' color='#9C9C9C'>{schemePublications.find(el => el.p_type === p_type)?.title || 'Тип не определен'}</Typography>
                             <span>
                                 <Typography display={'inline'} variant='overline'>{journal || 'Неопознано'}</Typography>
-                                <Typography display={'inline'} variant='overline'>{` | Опубликовано ${(new Date(date)).toLocaleDateString()}`}</Typography>
+                                <Typography display={'inline'} variant='overline'>{` | Опубликовано ${(new Date(date)).toLocaleDateString()} | `}</Typography>
                             </span>
                             <Typography variant='body1' fontWeight='bold'>{title}</Typography>
                             <Typography variant='body2' fontStyle='italic'>{authors.join(', ')}</Typography>
                             <Link href={`https://doi.org/${doi}`} underline='none'>
-                                {doi || 'doi не опознан'}
+                                {doi}
                             </Link>
                             <ShowElement isVisible={isExpanded && date}>
                                 <Box display={'flex'} justifyContent={'space-between'}>
@@ -160,37 +142,9 @@ const Article = ({ publication: {
                     </Stack>
                 </ListItemButton>
             </ListItem>
-            <Divider variant="middle" />
+            <Divider/>
         </>
     )
-
-    // return (
-    //     <>
-    //         { isOpenDialogConfirm && <DialogConfirm title={title} id={id} deletePublication={deletePublication} setIsOpenDialogConfirm={setIsOpenDialogConfirm}/>}
-    //         <Box sx={{ px: '24px', py:'12px' }}>
-    //             <Stack direction='row' justifyContent='space-between' alignItems='center' sx={{ 
-    //                 width: 1
-    //                 }}>
-    //                 <Stack direction='row' spacing={1}>
-    //                     <ExpandButton isExpanded={isExpanded} onClick={() => setIsExpanded(prev => !prev)}/>
-    //                     <Stack flexDirection='column'>
-    //                         <Typography variant='overline' color='#9C9C9C'>{p_type}</Typography> 
-    //                         <Typography variant='body1' fontWeight='bold' sx={{ py: '4px'}}>{title}</Typography>
-    //                         <Typography variant='body2' sx={{ py: '4px'}}>{authors.join(', ')}</Typography>
-    //                         { (isExpanded && date) && <Typography variant='body2' sx={{ py: '4px'}}>
-    //                             {['Дата публикации:', (new Date(date)).toLocaleDateString()].join(' ')}
-    //                             </Typography>}
-    //                         <Databases databases={{ wos, scopus, rinc }}/>
-    //                     </Stack>
-    //                 </Stack>
-    //                 <Box>
-    //                     <Buttons isLoading={isLoading} handlerDelete={() => setIsOpenDialogConfirm(true)} handlerEdit={null}/>
-    //                 </Box>
-    //             </Stack>
-    //             <Divider/>
-    //         </Box>
-    //     </>
-    // )
 }
 
-export default Article
+export default Publication

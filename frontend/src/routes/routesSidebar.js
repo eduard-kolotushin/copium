@@ -14,17 +14,17 @@ const routes=[
         icon: <GroupIcon/>
     },
     {
-        title: 'Публикации',
+        title: 'Научные достижения',
         path: 'publications',
         element: <></>,
         icon: <NewspaperIcon/>
     },
-    {
-        title: 'Мероприятия',
-        path: 'events',
-        element: <></>,
-        icon: <EventIcon/>
-    },
+    // {
+    //     title: 'Мероприятия',
+    //     path: 'events',
+    //     element: <></>,
+    //     icon: <EventIcon/>
+    // },
     {
         title: 'Мессенджер',
         path: 'messenger',

@@ -20,6 +20,7 @@ import AddIcon from '@mui/icons-material/Add'
 import Search from '../../components/Search/Search'
 import ShowElement from '../../hoc/ShowElement'
 import ActionsMenu from './ActionsMenu'
+import { routes } from '../../routes/routesAchievements'
 
 const Header = ({ control, name }) => {
 
@@ -27,14 +28,20 @@ const Header = ({ control, name }) => {
   
     const [anchorEl, setAnchorEl] = useState(null)
     const [id, setId] = useState(0)
-  
+
+    const handlerChange = (event, newId) => {
+        navigate(routes[newId].routePath)
+        setId(newId)
+    }
+
     return(
     <Paper>
-        <Tabs value={id} onChange={(__, newId) => setId(newId)}>
-            <Tab label='Публикации' id='tab-0'/>
+        <Tabs value={id} onChange={handlerChange}>
+            { routes.map((route, id) => (<Tab key={`tab-${id}`} label={route.label} id={`tab-${id}`}/>))}
+            {/* <Tab label='Публикации' id='tab-0'/>
             <Tab label='Конференции' id='tab-1'/>
             <Tab label='Патенты' id='tab-2'/>
-            <Tab label='Гранты' id='tab-3'/>
+            <Tab label='Гранты' id='tab-3'/> */}
         </Tabs>
 
         <Divider/>

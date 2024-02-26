@@ -48,15 +48,25 @@ const AppRoutes = () => {
                         <Home/>
                     </ProtectedRoute>
                 </ProtectedRoute>}>
+
                 <Route index element={<Navigate to='users'/>}/>
                 <Route path='users' element={<Users/>}>
                     <Route path='add' element={<AddUsers/>}/>
                 </Route>
-                <Route path='publications' element={<Publications/>}>
-                    <Route path='add' element={<AddPublications/>}/>
-                    <Route path='filter' element={<FilterPanel/>}/>
-                </Route>
-                <Route path='events' element={<Events/>}/>
+
+                {/* <Route element={<></>}> */}
+                    {/* <Route index element={<Navigate to='publications'/>}/> */}
+                    <Route path='publications' element={<Publications/>}>
+                        <Route path='add' element={<AddPublications/>}/>
+                        <Route path='filter' element={<FilterPanel/>}/>
+                    </Route>
+                    <Route path='conferences' element={<Publications/>}/>
+                    <Route path='patents' element={<Publications/>}/>
+                    <Route path='grants' element={<Publications/>}/>
+                {/* </Route> */}
+
+
+                {/* <Route path='events' element={<Events/>}/> */}
                 <Route path='documents' element={<Documents/>}/>
                 <Route path='email' element={<Mail/>}/>
                 <Route path='cloud' element={<Cloud/>}/>
